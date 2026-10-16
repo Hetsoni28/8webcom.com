@@ -1,26 +1,114 @@
 @import "tailwindcss";
 
+/* ─── Brand Color Palette ──────────────────────────────────── */
 :root {
+  --color-primary:   #0799B3;   /* Teal         */
+  --color-secondary: #F58220;   /* Orange        */
+  --color-tertiary:  #C47B2E;   /* Amber/Brown   */
+  --color-neutral:   #1F2429;   /* Dark Charcoal */
+
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1F2429;
 }
 
+/* ─── Tailwind v4 Theme Registration ──────────────────────── */
 @theme inline {
+  /* Colors */
+  --color-primary:    var(--color-primary);
+  --color-secondary:  var(--color-secondary);
+  --color-tertiary:   var(--color-tertiary);
+  --color-neutral:    var(--color-neutral);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Typography */
+  --font-sans: var(--font-montserrat);
+
+  /* ─── Breakpoints ──────────────────────────────────────────
+     Mobile   : xs-320 | xs-375 | xs-390 | xs-430
+     Tablet   : md-768 | md-820 | lg-1024
+     Desktop  : xl-1280 | xl-1440 | 2xl-1920
+  ──────────────────────────────────────────────────────────── */
+
+  /* Mobile */
+  --breakpoint-xs-320:  320px;
+  --breakpoint-xs-375:  375px;
+  --breakpoint-xs-390:  390px;
+  --breakpoint-xs-430:  430px;
+
+  /* Tablet */
+  --breakpoint-md-768:  768px;
+  --breakpoint-md-820:  820px;
+  --breakpoint-lg-1024: 1024px;
+
+  /* Desktop */
+  --breakpoint-xl-1280: 1280px;
+  --breakpoint-xl-1440: 1440px;
+  --breakpoint-2xl-1920: 1920px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Lenis Smooth Scrolling Optimization (Zero Conflict) ─── */
+html.lenis, html.lenis body {
+  height: auto;
 }
 
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ─── Base Styles ──────────────────────────────────────────── */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@theme {
+  --animate-marquee: marquee 25s linear infinite;
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+}
+
+/* ─── Pure GPU Keyframes (Zero Main Thread Lag) ────────────── */
+@keyframes bounceSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-bounce-subtle {
+  animation: bounceSubtle 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ─── Universal Cross-Browser Scrollbar Hiding ─────────────── */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch; /* iOS Safari momentum scroll */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge, Opera */
+  width: 0;
+  height: 0;
 }
