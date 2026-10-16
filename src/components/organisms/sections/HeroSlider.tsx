@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
+import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
@@ -134,13 +134,14 @@ export function HeroSlider({ slides }: HeroSliderProps) {
           className="absolute inset-0 z-0"
         >
           {/* Authentic 8webcom 3D Banner Asset */}
-          <Image
+          <ImageWithSkeleton
             src={current.image}
             alt={current.title}
             fill
             priority={activeSlide === 0}
             sizes="100vw"
             className="object-cover object-right lg:object-center transform scale-100"
+            skeletonClassName="bg-gray-900"
           />
 
           {/* Deep Agency Gradient Overlay: ensures 100% text legibility without obscuring the 3D art */}

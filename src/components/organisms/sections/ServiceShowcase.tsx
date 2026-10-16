@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Image from 'next/image';
+import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/atoms/Button";
 import { Heading } from "@/components/atoms/Heading";
@@ -35,12 +35,13 @@ export function ServiceShowcase({ service, index }: ServiceShowcaseProps) {
           <div className="w-full lg:w-1/2">
             <div className="relative h-[400px] lg:h-[600px] w-full rounded-[2rem] overflow-hidden shadow-2xl">
               <motion.div style={{ y }} className="absolute inset-[-15%] w-[130%] h-[130%]">
-                <Image
+                <ImageWithSkeleton
                   src={service.image}
                   alt={service.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  skeletonClassName="bg-gray-800"
                 />
               </motion.div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120]/80 via-transparent to-transparent opacity-80" />

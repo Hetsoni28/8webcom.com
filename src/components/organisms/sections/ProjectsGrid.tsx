@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
+import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PROJECTS } from '@/lib/data';
 import { SectionTitle } from '@/components/molecules/SectionTitle';
@@ -87,7 +87,7 @@ export function ProjectsGrid({ projects }: ProjectsGridProps = {}) {
               >
                 {/* Image Card */}
                 <div className="relative h-[400px] rounded-3xl overflow-hidden mb-6 bg-gray-200 shadow-xl">
-                  <Image 
+                  <ImageWithSkeleton 
                     src={project.image} 
                     alt={project.title} 
                     fill 

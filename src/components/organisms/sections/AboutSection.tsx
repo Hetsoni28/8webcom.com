@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import Image from 'next/image';
+import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import Link from 'next/link';
 import {
   motion,
@@ -124,7 +125,7 @@ function ParallaxImage({
       style={{ y, willChange: 'transform' }}
       className={className}
     >
-      <Image
+      <ImageWithSkeleton
         src={src}
         alt={alt}
         width={width}
@@ -132,6 +133,7 @@ function ParallaxImage({
         priority={priority}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 520px"
         className="w-full h-auto object-cover"
+        wrapperClassName="w-full rounded-2xl overflow-hidden"
       />
     </motion.div>
   );

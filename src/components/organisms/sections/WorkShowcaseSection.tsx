@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
+import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 
@@ -179,12 +179,13 @@ export function WorkShowcaseSection({
                 >
                   {/* Card Background / Image */}
                   <div className="relative w-full h-full bg-[#181C20] overflow-hidden group">
-                    <Image
+                    <ImageWithSkeleton
                       src={item.image}
                       alt={item.title}
                       fill
                       sizes="(max-width: 768px) 320px, 480px"
                       className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                      skeletonClassName="bg-gray-800"
                     />
 
                     {/* Gradient Overlay */}

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
@@ -97,14 +97,15 @@ export function CrmSolutionsSection({
                 {/* Top Image Banner with Inset Frame */}
                 <div className="p-4 pb-0">
                   <div className="relative h-[230px] w-full rounded-2xl overflow-hidden bg-gray-900">
-                    <Image
+                    <ImageWithSkeleton
                       src={item.image}
                       alt={item.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                      skeletonClassName="bg-gray-800"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity pointer-events-none" />
                   </div>
                 </div>
 

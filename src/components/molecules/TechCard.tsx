@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -24,14 +25,14 @@ export function TechCard({ name, image, icon, description, className }: TechCard
     >
       {/* ── Top Cover Image (Edge-to-edge inside rounded top) ── */}
       <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-gray-100">
-        <Image
+        <ImageWithSkeleton
           src={image}
           alt={`${name} cover`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       </div>
 
       {/* ── Content Area ── */}

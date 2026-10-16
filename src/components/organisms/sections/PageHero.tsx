@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import { Heading } from '@/components/atoms/Heading';
 import { Badge } from '@/components/atoms/Badge';
 
@@ -29,15 +29,16 @@ export function PageHero({ title, highlight, titleSuffix, subTitle, image }: Pag
     <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-[#1F2429] overflow-hidden">
       {image && (
         <div className="absolute inset-0 z-0">
-          <Image 
+          <ImageWithSkeleton 
             src={image}
             alt={typeof title === 'string' ? title : "Hero Image"}
             fill
             priority
             sizes="100vw"
             className="object-cover opacity-20"
+            skeletonClassName="bg-gray-900"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1F2429] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1F2429] to-transparent pointer-events-none" />
         </div>
       )}
       

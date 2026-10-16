@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ImageWithSkeleton } from "@/components/atoms/ImageWithSkeleton";
 
 interface ServiceCardProps {
   number: string;
@@ -27,12 +27,13 @@ export function ServiceCard({
         className
       )}
     >
-      <Image
+      <ImageWithSkeleton
         src={image}
         alt={title}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
         className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+        skeletonClassName="bg-gray-800/80"
       />
       
       {/* Overlay gradient - becomes slightly more opaque on hover */}
