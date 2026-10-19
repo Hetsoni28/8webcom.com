@@ -59,29 +59,20 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Contact Us",   href: "/contacts" },
 ];
 
-// ─── Footer Links ─────────────────────────────────────────────
-export const FOOTER_COMPANY_LINKS = [
-  { label: "About Us",     href: "/about-us" },
+// ─── Footer Links (matches live site) ─────────────────────────
+export const FOOTER_USEFUL_LINKS = [
+  { label: "About us",     href: "/about-us" },
+  { label: "Services",     href: "/services" },
   { label: "Our Projects", href: "/projects" },
   { label: "Careers",      href: "/careers" },
   { label: "Contact Us",   href: "/contacts" },
-  { label: "Blog / Insights", href: "/blog" },
-];
-
-export const FOOTER_USEFUL_LINKS = [
-  { label: "Home",               href: "/" },
-  { label: "Services Overview",  href: "/services" },
-  { label: "Privacy Policy",     href: "/privacy-policy" },
-  { label: "Disclaimer Policy",  href: "/disclaimer-policy" },
-  { label: "Refund & Cancellation", href: "/refund-and-cancellation-policy" },
 ];
 
 export const FOOTER_SERVICE_LINKS = [
-  { label: "Web Development",    href: "/services/web-development" },
-  { label: "Web Portal",         href: "/services/web-portal" },
-  { label: "E-commerce",         href: "/services/ecommerce" },
-  { label: "Digital Marketing",  href: "/services/digital-marketing" },
-  { label: "CRM Solutions",      href: "/services/crm-solutions" },
+  { label: "Web Development",   href: "/services/web-development" },
+  { label: "Web Portal",        href: "/services/web-portal" },
+  { label: "Digital Marketing", href: "/services/digital-marketing" },
+  { label: "CRM Solutions",     href: "/services/crm-solutions" },
 ];
 
 export const FOOTER_LEGAL_LINKS = [

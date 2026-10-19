@@ -11,11 +11,11 @@ import {
   XIcon,
   PinterestIcon,
 } from '@/components/atoms/SocialIcons';
-import { MapPin, Phone, Mail, Globe, ArrowUpRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, ArrowUpRight, ChevronRight } from 'lucide-react';
 import {
   FOOTER_USEFUL_LINKS,
   FOOTER_SERVICE_LINKS,
-  FOOTER_COMPANY_LINKS,
+  FOOTER_LEGAL_LINKS,
   CONTACT,
 } from '@/lib/constants';
 
@@ -39,20 +39,21 @@ const SOCIAL_ICONS = [
 ];
 
 const LINK_COLUMNS = [
-  { title: 'Company', links: FOOTER_COMPANY_LINKS },
-  { title: 'Useful Links', links: FOOTER_USEFUL_LINKS },
-  { title: 'Our Services', links: FOOTER_SERVICE_LINKS },
+  { title: 'Useful Link', links: FOOTER_USEFUL_LINKS },
+  { title: 'Our Service', links: FOOTER_SERVICE_LINKS },
 ];
 
 function FooterNavLink({ label, href }: { label: string; href: string }) {
   return (
     <Link
       href={href}
-      className="group inline-flex items-center gap-1.5 text-[15px] text-gray-400 hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded"
+      className="group inline-flex items-center gap-3 text-base text-gray-400 hover:text-white transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded"
     >
-      <span className="relative after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-full after:bg-white after:origin-right after:scale-x-0 after:transition-transform after:duration-500 after:ease-out-expo group-hover:after:origin-left group-hover:after:scale-x-100">
-        {label}
-      </span>
+      <ChevronRight
+        className="w-4 h-4 text-[#0799B3] shrink-0 transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5"
+        aria-hidden="true"
+      />
+      <span className="transition-transform duration-500 ease-out-expo group-hover:translate-x-1">{label}</span>
     </Link>
   );
 }
@@ -121,9 +122,9 @@ export function Footer() {
       <div className="container-site py-16">
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-12">
           {LINK_COLUMNS.map((col) => (
-            <nav key={col.title} aria-label={col.title} className="lg:col-span-2">
-              <h2 className="text-[12px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-6">{col.title}</h2>
-              <ul className="flex flex-col gap-3.5">
+            <nav key={col.title} aria-label={col.title} className="col-span-1 lg:col-span-3">
+              <h2 className="text-xl font-bold tracking-tight text-white mb-7">{col.title}</h2>
+              <ul className="flex flex-col gap-4">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <FooterNavLink label={link.label} href={link.href} />
@@ -134,7 +135,7 @@ export function Footer() {
           ))}
 
           <div className="col-span-2 lg:col-span-5 lg:col-start-8">
-            <h2 className="text-[12px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-6">Get In Touch</h2>
+            <h2 className="text-xl font-bold tracking-tight text-white mb-7">Get In Touch</h2>
             <ul className="space-y-4">
               {contactRows.map(({ Icon, content }, i) => (
                 <li key={i} className="flex items-start gap-3.5 text-[15px] text-gray-400 leading-relaxed">
@@ -170,11 +171,7 @@ export function Footer() {
             &nbsp;— All Rights Reserved.
           </p>
           <ul className="flex items-center gap-6 flex-wrap justify-center text-[13px]">
-            {[
-              { label: 'Disclaimer Policy', href: '/disclaimer-policy' },
-              { label: 'Refund & Cancellation', href: '/refund-and-cancellation-policy' },
-              { label: 'Privacy Policy', href: '/privacy-policy' },
-            ].map((l) => (
+            {FOOTER_LEGAL_LINKS.map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="text-gray-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded">
                   {l.label}
