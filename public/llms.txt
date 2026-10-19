@@ -1,0 +1,21 @@
+# 8webcom.com
+
+> 8webcom.com is a web development and digital marketing company in Ahmedabad, Gujarat, India. Since 2011 it has delivered websites, web portals, digital marketing and CRM solutions to 2,000+ businesses in India and 10+ countries, completing 1,500+ projects.
+
+Office: 503, Sun Gravitas, Near Shyamal Cross Rd, Satellite, Ahmedabad, Gujarat 380015, India
+Phone: +91 97277 00459
+Email: info@8webcom.com
+
+## Services
+
+- [Web Development](https://www.8webcom.com/services/web-development): Custom websites, responsive development, CMS integration (WordPress, Sanity), e-commerce on Shopify, Magento and WooCommerce, performance optimisation, maintenance and support.
+- [Web Portal](https://www.8webcom.com/services/web-portal): B2B and B2C portals, employee portals, vendor management portals, data dashboards, API integrations and role-based access.
+- [Digital Marketing](https://www.8webcom.com/services/digital-marketing): SEO, Google Ads and Meta Ads, social media marketing, content marketing, email marketing, analytics and reporting.
+- [CRM Solutions](https://www.8webcom.com/services/crm-solutions): Custom CRM configured for your business, Managed CRM, and CRM consulting, with lead management, sales pipelines, follow-up automation and WhatsApp/email integration.
+
+## Company
+
+- [About Us](https://www.8webcom.com/about-us): Company story, mission and vision.
+- [Our Projects](https://www.8webcom.com/projects): Portfolio of delivered work.
+- [Careers](https://www.8webcom.com/careers): Open positions in Ahmedabad.
+- [Contact](https://www.8webcom.com/contacts): Request a project consultation.

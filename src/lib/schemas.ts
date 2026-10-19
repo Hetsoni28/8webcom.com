@@ -97,22 +97,21 @@ export function serviceSchema({
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
+    '@id': `${BASE}${url}#service`,
     name,
     description,
     url: `${BASE}${url}`,
     serviceType,
     keywords: keywords ?? [],
+    // References the single business entity declared in the root layout graph
     provider: {
-      '@type': 'LocalBusiness',
+      '@type': 'ProfessionalService',
       '@id': ORG_ID,
       name: '8webcom.com',
       url: BASE,
-      logo: LOGO,
-      address: ADDRESS,
-      telephone: '+919727700459',
-      email: 'info@8webcom.com',
     },
     areaServed: [
+      { '@type': 'City', name: 'Ahmedabad' },
       { '@type': 'Country', name: 'India' },
       { '@type': 'Country', name: 'United States' },
       { '@type': 'Country', name: 'United Kingdom' },
@@ -214,7 +213,8 @@ export function contactPageSchema() {
     description:
       'Contact 8webcom.com at 503, Sun Gravitas, Satellite, Ahmedabad. Call +91 97277 00459 or email info@8webcom.com for a free project consultation.',
     mainEntity: {
-      '@type': 'LocalBusiness',
+      '@type': 'ProfessionalService',
+      '@id': ORG_ID,
       name: '8webcom.com',
       telephone: '+919727700459',
       email: 'info@8webcom.com',
@@ -235,7 +235,7 @@ export function aboutPageSchema() {
     description:
       'Learn about 8webcom.com — a web development and digital marketing agency in Ahmedabad, India, serving businesses since 2011.',
     mainEntity: {
-      '@type': 'Organization',
+      '@type': 'ProfessionalService',
       '@id': ORG_ID,
       name: '8webcom.com',
       url: BASE,

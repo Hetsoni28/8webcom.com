@@ -184,6 +184,14 @@ export function HeroSlider({ slides }: HeroSliderProps) {
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-[#12161C] via-[#12161C]/50 to-transparent" />
         </motion.div>
 
+        {/* ── Page H1: the primary keyword, always in the HTML regardless of slide ── */}
+        <div className="absolute top-6 left-6 sm:top-8 sm:left-10 lg:left-14 right-6 lg:right-auto z-10 hero-fade" style={{ animationDelay: '0.2s' }}>
+          <h1 className="flex items-center gap-2.5 text-white/80 text-[11px] sm:text-[13px] font-semibold uppercase tracking-[0.16em] leading-snug">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F58220] shrink-0" aria-hidden="true" />
+            Web Development &amp; Digital Marketing Company in Ahmedabad
+          </h1>
+        </div>
+
         {/* ── Trust metrics card (desktop) ── */}
         <motion.dl
           className="hidden lg:flex absolute top-8 right-8 z-10 flex-col gap-4 rounded-2xl bg-white/[0.07] backdrop-blur-md border border-white/10 px-6 py-5"
@@ -213,7 +221,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
               </span>
             </div>
 
-            <h1 className="flex flex-wrap gap-x-[0.24em] text-[44px] sm:text-6xl lg:text-[84px] xl:text-[96px] font-extrabold text-white tracking-[-0.04em] leading-none mb-7">
+            <h2 className="flex flex-wrap gap-x-[0.24em] text-[44px] sm:text-6xl lg:text-[84px] xl:text-[96px] font-extrabold text-white tracking-[-0.04em] leading-none mb-7">
               {titleWords.map((word, i) => (
                 <span key={`${word}-${i}`} className="block overflow-hidden pb-[0.08em] mb-[-0.08em]">
                   <span className="hero-word" style={{ animationDelay: `${0.1 + i * 0.08}s` }}>
@@ -221,7 +229,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                   </span>
                 </span>
               ))}
-            </h1>
+            </h2>
 
             <p
               className="hero-fade text-gray-300 text-base sm:text-lg lg:text-[19px] leading-[1.7] mb-9 max-w-145"

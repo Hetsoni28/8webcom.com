@@ -4,7 +4,7 @@ import { MetadataRoute } from 'next';
 const BASE = 'https://www.8webcom.com';
 
 // Pin to a real recent date so search engines see a fresh lastModified
-const SITE_UPDATED = new Date('2026-10-15');
+const SITE_UPDATED = new Date('2026-10-19');
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

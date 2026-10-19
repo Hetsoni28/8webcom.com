@@ -114,201 +114,139 @@ export const metadata: Metadata = {
 };
 
 // ─── JSON-LD Structured Data ──────────────────────────────────
-const organizationSchema = {
+// One connected @graph: the business is described ONCE (ProfessionalService is a
+// LocalBusiness subtype) under a stable @id that every page/service references.
+const ORG_ID = `${SEO.siteUrl}/#organization`;
+
+const ADDRESS = {
+  '@type': 'PostalAddress',
+  streetAddress: '503, Sun Gravitas, Near Shyamal Cross Rd, Satellite',
+  addressLocality: 'Ahmedabad',
+  addressRegion: 'Gujarat',
+  postalCode: '380015',
+  addressCountry: 'IN',
+};
+
+const SERVICE_OFFERS = [
+  { name: 'Web Development', path: '/services/web-development' },
+  { name: 'Web Portal Development', path: '/services/web-portal' },
+  { name: 'Digital Marketing', path: '/services/digital-marketing' },
+  { name: 'CRM Solutions', path: '/services/crm-solutions' },
+];
+
+const siteGraph = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': `${SEO.siteUrl}/#organization`,
-  name: '8webcom.com',
-  legalName: '8webcom.com',
-  url: SEO.siteUrl,
-  logo: {
-    '@type': 'ImageObject',
-    '@id': `${SEO.siteUrl}/#logo`,
-    url: 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png',
-    width: 300,
-    height: 100,
-    caption: '8webcom.com',
-  },
-  image: SEO.ogImage,
-  description:
-    'Custom web development, web portals, digital marketing and CRM solutions company in Ahmedabad, India. Serving businesses since 2011.',
-  foundingDate: '2011',
-  numberOfEmployees: {
-    '@type': 'QuantitativeValue',
-    minValue: 10,
-    maxValue: 50,
-  },
-  contactPoint: [
+  '@graph': [
     {
-      '@type': 'ContactPoint',
+      '@type': 'ProfessionalService',
+      '@id': ORG_ID,
+      name: '8webcom.com',
+      legalName: '8webcom.com',
+      alternateName: '8webcom',
+      url: SEO.siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        '@id': `${SEO.siteUrl}/#logo`,
+        url: 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png',
+        width: 300,
+        height: 100,
+        caption: '8webcom.com',
+      },
+      image: SEO.ogImage,
+      description:
+        'Web development company in Ahmedabad offering custom websites, web portals, digital marketing and CRM solutions. Serving 2,000+ businesses since 2011.',
+      slogan: 'Web Development Company in Ahmedabad',
+      foundingDate: '2011',
+      numberOfEmployees: { '@type': 'QuantitativeValue', minValue: 10, maxValue: 50 },
       telephone: CONTACT.phoneTel,
-      contactType: 'customer service',
-      areaServed: 'IN',
-      availableLanguage: ['English', 'Hindi', 'Gujarati'],
+      email: CONTACT.email,
+      priceRange: '₹₹',
+      currenciesAccepted: 'INR',
+      paymentAccepted: 'Cash, Bank Transfer, UPI, NEFT',
+      address: ADDRESS,
+      geo: { '@type': 'GeoCoordinates', latitude: 23.011063, longitude: 72.531111 },
+      hasMap: 'https://maps.google.com/?q=503+Sun+Gravitas+Near+Shyamal+Cross+Rd+Satellite+Ahmedabad+Gujarat+380015',
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+          opens: '09:00',
+          closes: '18:00',
+        },
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Saturday'],
+          opens: '10:00',
+          closes: '15:00',
+        },
+      ],
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          telephone: CONTACT.phoneTel,
+          email: CONTACT.email,
+          contactType: 'customer service',
+          areaServed: 'IN',
+          availableLanguage: ['English', 'Hindi', 'Gujarati'],
+        },
+        {
+          '@type': 'ContactPoint',
+          telephone: CONTACT.phoneTel,
+          contactType: 'sales',
+          areaServed: ['IN', 'US', 'GB', 'AU', 'AE'],
+          availableLanguage: 'English',
+        },
+      ],
+      areaServed: [
+        { '@type': 'City', name: 'Ahmedabad' },
+        { '@type': 'State', name: 'Gujarat' },
+        { '@type': 'Country', name: 'India' },
+        { '@type': 'Country', name: 'United States' },
+        { '@type': 'Country', name: 'United Kingdom' },
+        { '@type': 'Country', name: 'Australia' },
+        { '@type': 'Country', name: 'United Arab Emirates' },
+      ],
+      knowsAbout: [
+        'Web Development',
+        'Web Design',
+        'Web Portal Development',
+        'E-commerce Development',
+        'Digital Marketing',
+        'Search Engine Optimisation',
+        'Pay-Per-Click Advertising',
+        'Social Media Marketing',
+        'CRM Software Development',
+        'WordPress Development',
+        'Shopify Development',
+        'Magento Development',
+        'React JS Development',
+        'Next.js Development',
+      ],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Digital Services',
+        itemListElement: SERVICE_OFFERS.map((s) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            '@id': `${SEO.siteUrl}${s.path}#service`,
+            name: s.name,
+            url: `${SEO.siteUrl}${s.path}`,
+          },
+        })),
+      },
+      sameAs: SOCIAL.map((s) => s.href.split('?')[0]),
     },
     {
-      '@type': 'ContactPoint',
-      telephone: CONTACT.phoneTel,
-      contactType: 'sales',
-      areaServed: ['IN', 'US', 'GB', 'AU'],
-      availableLanguage: 'English',
+      '@type': 'WebSite',
+      '@id': `${SEO.siteUrl}/#website`,
+      name: '8webcom.com',
+      alternateName: '8webcom',
+      url: SEO.siteUrl,
+      description: SEO.pages.home.description,
+      inLanguage: 'en-IN',
+      publisher: { '@id': ORG_ID },
     },
-  ],
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '503, Sun Gravitas, Near Shyamal Cross Rd, Satellite',
-    addressLocality: 'Ahmedabad',
-    addressRegion: 'Gujarat',
-    postalCode: '380015',
-    addressCountry: 'IN',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 23.011063,
-    longitude: 72.531111,
-  },
-  sameAs: SOCIAL.map((s) => s.href),
-  areaServed: [
-    { '@type': 'Country', name: 'India' },
-    { '@type': 'Country', name: 'United States' },
-    { '@type': 'Country', name: 'United Kingdom' },
-    { '@type': 'Country', name: 'Australia' },
-    { '@type': 'Country', name: 'United Arab Emirates' },
-  ],
-  hasOfferCatalog: {
-    '@type': 'OfferCatalog',
-    name: 'Digital Services',
-    itemListElement: [
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Web Development',
-          url: `${SEO.siteUrl}/services/web-development`,
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Web Portal Development',
-          url: `${SEO.siteUrl}/services/web-portal`,
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Digital Marketing',
-          url: `${SEO.siteUrl}/services/digital-marketing`,
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'CRM Solutions',
-          url: `${SEO.siteUrl}/services/crm-solutions`,
-        },
-      },
-    ],
-  },
-};
-
-const localBusinessSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  '@id': `${SEO.siteUrl}/#localbusiness`,
-  name: '8webcom.com',
-  description:
-    'Web development company in Ahmedabad offering custom websites, web portals, digital marketing and CRM solutions. 15+ years, 2,000+ clients.',
-  url: SEO.siteUrl,
-  telephone: CONTACT.phoneTel,
-  email: CONTACT.email,
-  image: SEO.ogImage,
-  logo: 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png',
-  priceRange: '₹₹',
-  currenciesAccepted: 'INR',
-  paymentAccepted: 'Cash, Bank Transfer, UPI, NEFT',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '503, Sun Gravitas, Near Shyamal Cross Rd, Satellite',
-    addressLocality: 'Ahmedabad',
-    addressRegion: 'Gujarat',
-    postalCode: '380015',
-    addressCountry: 'IN',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 23.011063,
-    longitude: 72.531111,
-  },
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '09:00',
-      closes: '18:00',
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Saturday'],
-      opens: '10:00',
-      closes: '15:00',
-    },
-  ],
-  sameAs: SOCIAL.map((s) => s.href),
-  hasMap: 'https://maps.google.com/?q=503+Sun+Gravitas+Near+Shyamal+Cross+Rd+Satellite+Ahmedabad+Gujarat+380015',
-};
-
-const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': `${SEO.siteUrl}/#website`,
-  name: '8webcom.com',
-  url: SEO.siteUrl,
-  description: SEO.pages.home.description,
-  inLanguage: 'en-IN',
-  publisher: {
-    '@id': `${SEO.siteUrl}/#organization`,
-  },
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${SEO.siteUrl}/?q={search_term_string}`,
-    },
-    'query-input': 'required name=search_term_string',
-  },
-};
-
-// ── Professional Service schema ──────────────────────────────
-const professionalServiceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: '8webcom.com',
-  url: SEO.siteUrl,
-  telephone: CONTACT.phoneTel,
-  email: CONTACT.email,
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '503, Sun Gravitas, Near Shyamal Cross Rd, Satellite',
-    addressLocality: 'Ahmedabad',
-    addressRegion: 'Gujarat',
-    postalCode: '380015',
-    addressCountry: 'IN',
-  },
-  knowsAbout: [
-    'Web Development',
-    'Web Design',
-    'Web Portal Development',
-    'Digital Marketing',
-    'Search Engine Optimisation',
-    'CRM Software Development',
-    'E-commerce Development',
-    'WordPress Development',
-    'React JS Development',
-    'Next.js Development',
   ],
 };
 
@@ -325,22 +263,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.8webcom.com" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
 
-        {/* JSON-LD Structured Data */}
+        {/* JSON-LD Structured Data (single connected graph) */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph) }}
         />
       </head>
       <body

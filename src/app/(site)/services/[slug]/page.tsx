@@ -8,6 +8,7 @@ import { SectionTitle } from "@/components/molecules/SectionTitle";
 import { Reveal } from "@/components/atoms/Reveal";
 import { fadeUp, fadeLeft, fadeRight, staggerContainer, staggerItem } from "@/lib/animations";
 import { SERVICES } from "@/lib/data";
+import { SERVICE_DETAIL } from "@/lib/page-data";
 import { CheckCircle2, Zap, Shield, TrendingUp } from "lucide-react";
 import { JsonLd } from "@/components/atoms/JsonLd";
 import { breadcrumbSchema, webPageSchema, serviceSchema, SERVICE_SCHEMAS } from "@/lib/schemas";
@@ -80,12 +81,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-const DEFAULT_FEATURES = [
-  "End-to-end strategic planning and consultation.",
-  "Seamless integration with your existing systems.",
-  "Scalable architecture for future growth.",
-  "24/7 dedicated support and maintenance.",
-];
+type ServiceFeature = { title: string; description?: string };
+
+// Normalise Sanity features (strings or {title, description}) to one shape
+function toFeatures(raw: unknown): ServiceFeature[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((f) => (typeof f === "string" ? { title: f } : f as ServiceFeature))
+    .filter((f) => f && f.title);
+}
 
 export default async function ServiceInnerPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -102,11 +106,17 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
     notFound();
   }
 
+  // Unique per-service copy (intro, features, technologies) — avoids the
+  // duplicate/thin content all four pages previously shared.
+  const detail = SERVICE_DETAIL[slug as keyof typeof SERVICE_DETAIL];
+  const sanityFeatures = toFeatures(sanityData?.features);
+
   const service = {
     title: sanityData?.title ?? fallback?.title ?? "",
-    description: sanityData?.description ?? fallback?.description ?? "",
+    intro: detail?.intro ?? sanityData?.description ?? fallback?.description ?? "",
     image: sanityData?.image || fallback?.image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2000&q=80",
-    features: (sanityData?.features && sanityData.features.length > 0) ? sanityData.features : DEFAULT_FEATURES,
+    features: sanityFeatures.length > 0 ? sanityFeatures : [...(detail?.features ?? [])] as ServiceFeature[],
+    technologies: [...(detail?.technologies ?? [])] as string[],
   };
 
   const schemaDef = SERVICE_SCHEMAS[slug];
@@ -171,24 +181,43 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
             </Reveal>
 
             <Reveal variants={fadeRight}>
-              <SectionTitle 
+              <SectionTitle
                 subTitle="Service Overview"
-                heading="Transforming Ideas Into"
-                highlight="Reality"
-                description={`${service.description} At 8webcom, we don't just deliver projects; we engineer comprehensive digital solutions that act as catalysts for your business growth. Our approach is deeply analytical, highly creative, and entirely focused on ROI.`}
-                size="beast"
+                heading={schemaDef?.name ?? `${service.title} Services`}
+                description={service.intro}
+                size="lg"
                 noAnimate
                 className="mb-10"
               />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-                {service.features.map((feat: string, idx: number) => (
-                  <div key={idx} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-[#0799B3]/5 hover:shadow-md transition-all duration-300 border border-transparent hover:border-[#0799B3]/20">
-                    <CheckCircle2 className="w-7 h-7 text-[#F58220] shrink-0 mt-0.5" />
-                    <span className="text-[#1F2429] font-bold">{feat}</span>
-                  </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                {service.features.map((feat, idx) => (
+                  <li key={idx} className="flex items-start gap-3.5 p-4 rounded-2xl bg-gray-50 hover:bg-[#0799B3]/5 transition-colors duration-300 border border-transparent hover:border-[#0799B3]/20">
+                    <CheckCircle2 className="w-6 h-6 text-[#F58220] shrink-0 mt-0.5" aria-hidden="true" />
+                    <div>
+                      <h3 className="text-[#1F2429] font-bold leading-snug">{feat.title}</h3>
+                      {feat.description && (
+                        <p className="text-gray-600 text-sm leading-relaxed mt-1">{feat.description}</p>
+                      )}
+                    </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
+
+              {service.technologies.length > 0 && (
+                <div className="mt-10">
+                  <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-gray-500 mb-4">
+                    Technologies We Use
+                  </h3>
+                  <ul className="flex flex-wrap gap-2">
+                    {service.technologies.map((tech) => (
+                      <li key={tech} className="text-sm font-semibold text-[#1F2429] bg-white border border-gray-200 rounded-full px-3.5 py-1.5">
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </Reveal>
 
           </div>

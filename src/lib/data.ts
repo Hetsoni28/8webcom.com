@@ -423,3 +423,42 @@ export const CASE_STUDIES = [
     url: "https://www.jawrawalapetroleum.com/",
   },
 ];
+
+// ─── Homepage FAQs (facts sourced from site content only) ──────
+export const HOME_FAQS = [
+  {
+    question: "Why choose 8webcom.com as your web development company in Ahmedabad?",
+    answer:
+      "8webcom.com has delivered business websites and digital solutions since 2011. Over 2,000 businesses in India and 10+ countries trust us, and we have completed 1,500+ projects. Web development, web portals, digital marketing and CRM are all handled by one team from our office in Satellite, Ahmedabad.",
+  },
+  {
+    question: "What services does 8webcom.com offer?",
+    answer:
+      "We offer four core services: Web Development (custom websites, e-commerce and CMS websites), Web Portal development (B2B, B2C, employee and vendor portals), Digital Marketing (SEO, Google Ads and Meta Ads, social media, content and email marketing) and CRM Solutions (custom CRM, managed CRM and CRM consulting).",
+  },
+  {
+    question: "Do you build e-commerce websites?",
+    answer:
+      "Yes. We build e-commerce websites on Shopify, Magento and WooCommerce as well as custom cart solutions, including the integrations a store needs. Once the store is live, our digital marketing team can help you bring in customers.",
+  },
+  {
+    question: "Which technologies and platforms do you work with?",
+    answer:
+      "For websites and portals we work with WordPress, Next.js, React, Node.js, PHP and MySQL, and for e-commerce with Shopify and Magento. For marketing we use Google Ads, Meta Ads and Google Analytics, and our CRM systems integrate with WhatsApp and email.",
+  },
+  {
+    question: "Can you build a custom CRM for my business?",
+    answer:
+      "Yes. We configure CRM precisely for your business sector and processes, covering lead management, sales pipelines, customer records, follow-up automation and reporting. We also offer Managed CRM, where we run your CRM as your admin partner, and CRM Consulting to plan an automation roadmap.",
+  },
+  {
+    question: "Do you work with clients outside Ahmedabad?",
+    answer:
+      "Yes. Alongside businesses across Ahmedabad and Gujarat, we serve clients throughout India and in more than 10 countries.",
+  },
+  {
+    question: "How do I start a project with 8webcom.com?",
+    answer:
+      "Call us on +91 97277 00459, email info@8webcom.com, or send a message through our contact page. We endeavour to answer all enquiries within 24 hours on business days.",
+  },
+];

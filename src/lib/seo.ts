@@ -9,8 +9,9 @@ export const SEO = {
   // ── Home title: Primary keyword first, brand last ──────────
   defaultTitle: 'Web Development Company in Ahmedabad | 8webcom.com',
 
-  // ── Template: inner pages get " | 8webcom.com" appended ────
-  titleTemplate: '%s | 8webcom.com',
+  // ── Template: pass-through. Every page title already ends with
+  // "| 8webcom.com"; appending it here produced "… | 8webcom.com | 8webcom.com".
+  titleTemplate: '%s',
 
   // ── Home description: 150-160 chars, keyword-rich, action-led ──
   defaultDescription:

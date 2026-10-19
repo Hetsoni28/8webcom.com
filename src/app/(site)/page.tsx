@@ -21,7 +21,11 @@ import {
   STATS,
   TESTIMONIALS,
   CLIENT_LOGOS,
+  HOME_FAQS,
 } from '@/lib/data';
+import { JsonLd } from '@/components/atoms/JsonLd';
+import { faqSchema, webPageSchema } from '@/lib/schemas';
+import { SEO } from '@/lib/seo';
 import dynamic from 'next/dynamic';
 import { Stat } from '@/types';
 import { HeroSlider } from '@/components/organisms/sections/HeroSlider';
@@ -40,6 +44,11 @@ const WorkShowcaseSection = dynamic(
 
 const Testimonials = dynamic(
   () => import('@/components/organisms/sections/Testimonials').then((m) => m.Testimonials),
+  { ssr: true }
+);
+
+const FaqSection = dynamic(
+  () => import('@/components/organisms/sections/FaqSection').then((m) => m.FaqSection),
   { ssr: true }
 );
 
@@ -240,6 +249,19 @@ export default async function Home() {
         heading={cli?.heading ?? "Trusted by Leading Companies"}
         subTitle={cli?.subTitle ?? "Clients Logo"}
         logos={clientLogos as any}
+      />
+
+      {/* FAQ — visible answers + FAQPage structured data */}
+      <FaqSection items={HOME_FAQS} />
+      <JsonLd
+        schema={[
+          webPageSchema({
+            name: SEO.pages.home.title,
+            description: SEO.pages.home.description,
+            url: '/',
+          }),
+          faqSchema(HOME_FAQS),
+        ]}
       />
 
       {/* 10. High-Converting Contact CTA */}
