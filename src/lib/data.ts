@@ -240,13 +240,6 @@ export const CLIENT_LOGOS = [
 ];
 
 // â”€â”€â”€ Contact CTA Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-export const CONTACT_CTA = {
-  subTitle: "Need Expert Help?",
-  heading: "We're here round-the-clock to assist you.",
-  ctaLabel: "Get in touch!",
-  ctaHref: "/contacts",
-};
-
 
 export const PROJECTS = [
   {

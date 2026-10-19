@@ -70,74 +70,17 @@ export const SERVICE_DETAIL = {
 // ─── About Page Content ───────────────────────────────────────
 
 export const ABOUT_PAGE = {
-  subTitle: "About Us",
-  heading: "8WEBCOM.COM",
+  // About-page story (distinct from the homepage blurb to avoid duplicate content)
   story:
     "Welcome to 8webcom.com. We started our journey in 2011 delivering business websites and related services. Since then, we have grown into a full-service digital agency delivering end-to-end business solutions across the globe, expanding into Web Portals, Enterprise Software, Digital Marketing, CRM, E-Commerce, and consulting. With more than 2000 businesses — locally and internationally — trusting us for over a decade, we are proud to be Ahmedabad's most reliable digital partner.",
-  mission:
-    "Our mission is to help businesses of all sizes harness the power of technology to grow, compete, and thrive in the digital world.",
-  vision:
-    "To be the most trusted digital solutions provider in India, empowering businesses with innovative technology and exceptional service.",
   values: [
     { title: "Integrity", description: "We are transparent, honest, and accountable in everything we do." },
     { title: "Innovation", description: "We constantly evolve, adopting the latest technologies to deliver better outcomes." },
     { title: "Excellence", description: "We hold ourselves to the highest standards of quality and delivery." },
     { title: "Client First", description: "Your success is our success. We are deeply invested in your growth." },
   ],
-  whyUs: [
-    { stat: "15+",   label: "Years of Experience" },
-    { stat: "2000+", label: "Happy Clients" },
-    { stat: "1500+", label: "Projects Delivered" },
-    { stat: "10+",   label: "Countries Clients Served" },
-  ],
 } as const;
 
-// ─── Careers Page Content ─────────────────────────────────────
-
-export const CAREERS_PAGE = {
-  subTitle: "Join Our Team",
-  heading: "Build Your Career at 8webcom",
-  description:
-    "We are always looking for talented, passionate individuals to join our growing team. At 8webcom, you will work on real-world projects, learn from industry experts, and grow both professionally and personally.",
-  perks: [
-    { title: "Flexible Work Hours",       icon: "clock" },
-    { title: "Learning & Development",    icon: "book" },
-    { title: "Competitive Salary",        icon: "wallet" },
-    { title: "Friendly Team Culture",     icon: "users" },
-    { title: "Career Growth Path",        icon: "trending-up" },
-    { title: "Modern Office in Satellite", icon: "building" },
-  ],
-  openings: [
-    {
-      title: "Full Stack Developer",
-      type: "Full Time",
-      location: "Ahmedabad, Gujarat",
-      experience: "2–4 years",
-      skills: ["React", "Node.js", "MySQL", "REST APIs"],
-    },
-    {
-      title: "WordPress Developer",
-      type: "Full Time",
-      location: "Ahmedabad, Gujarat",
-      experience: "1–3 years",
-      skills: ["WordPress", "PHP", "WooCommerce", "Elementor"],
-    },
-    {
-      title: "Digital Marketing Executive",
-      type: "Full Time",
-      location: "Ahmedabad, Gujarat",
-      experience: "1–2 years",
-      skills: ["SEO", "Google Ads", "Meta Ads", "Content Writing"],
-    },
-    {
-      title: "UI/UX Designer",
-      type: "Full Time",
-      location: "Ahmedabad, Gujarat",
-      experience: "1–3 years",
-      skills: ["Figma", "Adobe XD", "Prototyping", "User Research"],
-    },
-  ],
-} as const;
 
 // ─── Policy Pages Content ─────────────────────────────────────
 

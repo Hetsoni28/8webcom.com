@@ -17,10 +17,6 @@ export interface SocialLink {
   icon: string;
 }
 
-export interface FooterLink {
-  label: string;
-  href: string;
-}
 
 // ─── Hero ─────────────────────────────────────────────────────
 
@@ -109,22 +105,5 @@ export interface ClientLogo {
   src: string;
 }
 
-// ─── Contact Form ─────────────────────────────────────────────
 
-export interface ContactFormData {
-  name: string;
-  phone: string;
-  email: string;
-  service: string;
-  message: string;
-}
-
-// ─── Page Metadata ────────────────────────────────────────────
-
-export interface PageMeta {
-  title: string;
-  description: string;
-  keywords?: string;
-  ogImage?: string;
-}
 

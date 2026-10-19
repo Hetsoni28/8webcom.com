@@ -5,7 +5,10 @@ import { VisionMissionSection } from "@/components/organisms/sections/VisionMiss
 import { ContactCtaSection } from "@/components/organisms/sections/ContactCtaSection";
 import { JsonLd } from "@/components/atoms/JsonLd";
 import { breadcrumbSchema, webPageSchema, aboutPageSchema } from "@/lib/schemas";
-import { ABOUT } from "@/lib/data";
+import { ABOUT, STATS } from "@/lib/data";
+import { ABOUT_PAGE } from "@/lib/page-data";
+import { StatsSection } from "@/components/organisms/sections/StatsSection";
+import { ValuesSection } from "@/components/organisms/sections/ValuesSection";
 import { sanityFetch } from "@/sanity/fetch";
 import { aboutSettingsQuery } from "@/sanity/queries";
 
@@ -63,9 +66,11 @@ export default async function AboutUsPage() {
   const about = {
     heading: aboutData?.heading ?? ABOUT.heading,
     subTitle: aboutData?.subTitle ?? ABOUT.subTitle,
-    description: aboutData?.description ?? ABOUT.description,
-    ctaLabel: aboutData?.ctaLabel ?? ABOUT.ctaLabel,
-    ctaHref: aboutData?.ctaHref ?? ABOUT.ctaHref,
+    // About-page story differs from the homepage blurb (avoids duplicate content)
+    description: aboutData?.description ?? ABOUT_PAGE.story,
+    // The homepage CTA points here ("Read More" → /about-us); on this page send visitors onward
+    ctaLabel: 'Contact Us',
+    ctaHref: '/contacts',
     images,
     features,
   };
@@ -106,8 +111,14 @@ export default async function AboutUsPage() {
         ctaHref={about.ctaHref}
       />
 
+      {/* Company milestones */}
+      <StatsSection stats={STATS} />
+
       {/* Our Vision, Our Mission, Quality Policy Section */}
       <VisionMissionSection />
+
+      {/* Core values */}
+      <ValuesSection values={ABOUT_PAGE.values} />
 
       {/* Direct Contact CTA */}
       <ContactCtaSection />
