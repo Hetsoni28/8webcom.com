@@ -21,25 +21,49 @@ const SideMenu = dynamic(
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
+  // Compact after 20px; slide away while scrolling down, return on any scroll up
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const update = () => {
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      if (Math.abs(y - lastY) > 6) {
+        setHidden(y > lastY && y > 480);
+        lastY = y;
+      }
+      ticking = false;
     };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const isHidden = hidden && !mobileMenuOpen && !sideMenuOpen;
+
   return (
     <>
-      <header 
+      <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-40 bg-white transition-all duration-300",
-          scrolled 
-            ? "py-3.5 sm:py-4 lg:py-4.5 border-b border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)]" 
-            : "py-5 sm:py-6 lg:py-7 border-b border-gray-100/90 shadow-[0_2px_15px_rgba(0,0,0,0.03)]"
+          "fixed top-0 left-0 right-0 z-40 border-b",
+          "transition-[transform,padding,background-color,box-shadow,border-color] duration-500 ease-out-expo",
+          isHidden ? "-translate-y-full" : "translate-y-0",
+          scrolled
+            ? "py-3 sm:py-3.5 bg-white/90 backdrop-blur-xl backdrop-saturate-150 border-gray-200/70 shadow-[0_8px_30px_-12px_rgba(31,36,41,0.12)]"
+            : "py-5 sm:py-6 lg:py-7 bg-white border-gray-100"
         )}
       >
         <div className="w-full max-w-[1480px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
@@ -51,7 +75,10 @@ export function Header() {
               width={220} 
               height={80} 
               priority
-              className="h-14 sm:h-16 lg:h-[68px] w-auto" 
+              className={cn(
+                "w-auto transition-[height] duration-500 ease-out-expo",
+                scrolled ? "h-12 sm:h-14 lg:h-[58px]" : "h-14 sm:h-16 lg:h-[68px]"
+              )}
             />
           </div>
 
@@ -71,12 +98,15 @@ export function Header() {
           <div className="flex items-center gap-4 sm:gap-5">
             
             {/* Get In Touch Pill Button */}
-            <Link 
+            <Link
               href="/contacts"
-              className="group inline-flex items-center gap-2 bg-[#0799B3] hover:bg-[#06859c] text-white font-bold text-[15px] sm:text-base px-6 sm:px-8 py-3 sm:py-3.5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-95 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
+              className="group hidden xs-390:inline-flex items-center gap-3 bg-[#0799B3] hover:bg-[#068aa1] text-white font-semibold text-[15px] h-12 pl-6 pr-2 rounded-full transition-colors duration-300 shadow-[0_8px_24px_-8px_rgba(7,153,179,0.55)] active:scale-[0.97] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
             >
               <span>Get In Touch</span>
-              <ArrowUpRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+              <span aria-hidden="true" className="relative w-8 h-8 rounded-full bg-white/15 inline-flex items-center justify-center overflow-hidden">
+                <ArrowUpRight className="w-4 h-4 transition-transform duration-500 ease-out-expo group-hover:translate-x-5 group-hover:-translate-y-5" />
+                <ArrowUpRight className="w-4 h-4 absolute -translate-x-5 translate-y-5 transition-transform duration-500 ease-out-expo group-hover:translate-x-0 group-hover:translate-y-0" />
+              </span>
             </Link>
 
             {/* Menu Drawer Toggle */}

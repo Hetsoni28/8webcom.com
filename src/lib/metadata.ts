@@ -5,7 +5,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   home: {
     title: "Web Development Company in Ahmedabad | SEO, Digital Marketing & CRM Solutions India",
     description:
-      "Leading web development company in Ahmedabad offering SEO, digital marketing, CRM & web portal solutions. 10+ years experience, 2000+ clients. Get a free consultation today!",
+      "Leading web development company in Ahmedabad offering SEO, digital marketing, CRM & web portal solutions. 15+ years experience, 2000+ clients. Get a free consultation today!",
     keywords:
       "web development company in ahmedabad, website development company ahmedabad, digital marketing company ahmedabad, seo services ahmedabad, seo services india, web design company, ecommerce website development, crm solutions india",
     ogImage: "https://www.8webcom.com/admin/upload/meta/8webcom.png",

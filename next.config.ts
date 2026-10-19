@@ -5,6 +5,13 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   transpilePackages: ['styled-components'],
+  // Legacy short URLs → canonical policy pages (308 permanent)
+  async redirects() {
+    return [
+      { source: '/disclaimer', destination: '/disclaimer-policy', permanent: true },
+      { source: '/refund-and-cancellation', destination: '/refund-and-cancellation-policy', permanent: true },
+    ];
+  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },

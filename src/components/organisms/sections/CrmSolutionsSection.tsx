@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useSyncExternalStore } from 'react';
 import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import { Tag } from '@/components/atoms/Tag';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { SectionHeader } from '@/components/molecules/SectionHeader';
+import { EASE_OUT } from '@/lib/animations';
 
 export interface CrmCardItem {
   id: number;
@@ -28,126 +29,143 @@ const CRM_TAGS: Record<string, string[]> = {
   'CRM Consulting': ['Audit & Roadmap', 'Process Automation', 'ROI Optimization'],
 };
 
+const STICKY_TOP = 120; // px — clears the compact header
+
+const DESKTOP_QUERY = '(min-width: 1024px)';
+
+function useIsDesktop() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(DESKTOP_QUERY);
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    },
+    () => window.matchMedia(DESKTOP_QUERY).matches,
+    () => false
+  );
+}
+
+function StackCard({
+  item,
+  index,
+  total,
+  progress,
+  stack,
+}: {
+  item: CrmCardItem;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  stack: boolean;
+}) {
+  const tags = CRM_TAGS[item.title] || ['Fast Deployment', 'Secure Cloud', '24/7 Support'];
+  // Earlier cards shrink + dim slightly as later ones slide over them
+  const targetScale = 1 - (total - 1 - index) * 0.05;
+  const scale = useTransform(progress, [index / total, 1], [1, targetScale]);
+  const dim = useTransform(progress, [index / total, 1], [0, (total - 1 - index) * 0.12]);
+
+  return (
+    <div
+      className="lg:sticky lg:h-[min(560px,calc(100svh-160px))] flex items-start"
+      style={stack ? { top: STICKY_TOP + index * 28 } : undefined}
+    >
+      <motion.article
+        style={stack ? { scale, transformOrigin: 'top center' } : undefined}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 1, ease: EASE_OUT }}
+        className="group relative w-full grid grid-cols-1 sm:grid-cols-2 bg-white rounded-2xl border border-gray-200/80 p-3 sm:p-4 gap-3 sm:gap-6 shadow-[0_30px_60px_-36px_rgba(31,36,41,0.35)] overflow-hidden"
+      >
+        <div className="relative aspect-[16/11] sm:aspect-auto sm:min-h-[340px] rounded-xl overflow-hidden bg-gray-100">
+          <ImageWithSkeleton
+            src={item.image}
+            alt={item.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
+            className="object-cover group-hover:scale-[1.06] duration-1200 ease-out-expo"
+          />
+        </div>
+
+        <div className="flex flex-col px-2 sm:px-0 sm:pr-4 pt-3 sm:pt-6 pb-3">
+          <span className="text-sm font-semibold tabular-nums text-[#0799B3] mb-5">
+            {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+          </span>
+
+          <h3 className="text-2xl lg:text-[28px] font-extrabold text-[#1F2429] tracking-[-0.025em] leading-tight mb-3">
+            {item.title}
+          </h3>
+
+          <p className="text-gray-600 text-[15px] leading-relaxed mb-6">{item.description}</p>
+
+          <ul className="flex flex-wrap gap-1.5 mb-8" aria-label={`${item.title} highlights`}>
+            {tags.map((tag) => (
+              <li
+                key={tag}
+                className="text-[11.5px] font-semibold text-gray-600 bg-[#F6F8F9] border border-gray-200/70 rounded-full px-2.5 py-1"
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            href={item.href}
+            aria-label={`Explore CRM solution: ${item.title}`}
+            className="mt-auto inline-flex items-center gap-2 w-fit text-sm font-semibold text-[#1F2429] pb-1 border-b border-[#1F2429]/20 transition-colors duration-300 hover:text-[#0799B3] hover:border-[#0799B3] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded-sm"
+          >
+            <span>More CRM</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-500 ease-out-expo group-hover:translate-x-1" aria-hidden="true" />
+          </Link>
+        </div>
+
+        {/* Dimming veil for cards underneath the stack */}
+        {stack && (
+          <motion.span
+            aria-hidden="true"
+            className="absolute inset-0 bg-[#1F2429] pointer-events-none rounded-2xl"
+            style={{ opacity: dim }}
+          />
+        )}
+      </motion.article>
+    </div>
+  );
+}
+
 export function CrmSolutionsSection({
   subTitle = 'CRM Solutions',
   heading = 'Grow your business with smart CRM solutions',
   description = 'Tailored CRM platforms and automated workflows built specifically for your business processes.',
   cards = [],
 }: CrmSolutionsSectionProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isDesktop = useIsDesktop();
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
+
   return (
-    <section className="py-24 lg:py-32 scroll-mt-28 bg-white relative overflow-hidden" id="crm-solutions-sec">
-      {/* Background Subtle Gradient Blobs */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/3 -left-32 w-80 h-80 rounded-full bg-[#0799B3]/5 blur-[120px]" />
-        <div className="absolute bottom-10 -right-32 w-80 h-80 rounded-full bg-[#F58220]/5 blur-[120px]" />
-      </div>
+    // No overflow-hidden here: it would break position: sticky
+    <section className="py-24 lg:py-32 scroll-mt-28 bg-white" id="crm-solutions-sec">
+      <div className="container-site">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <div className="lg:sticky" style={{ top: STICKY_TOP + 16 }}>
+              <SectionHeader eyebrow={subTitle} title={heading} description={description} />
+            </div>
+          </div>
 
-      <div className="container relative z-10 mx-auto px-4 lg:px-8">
-        
-        {/* Section Header with Vibe-Coded Pill */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0799B3]/10 border border-[#0799B3]/20 mb-4"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#0799B3] animate-pulse" />
-            <span className="text-[#0799B3] text-xs font-bold tracking-widest uppercase">
-              {subTitle}
-            </span>
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-black text-[#1F2429] tracking-tight leading-[1.15]"
-          >
-            {heading}
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="mt-4 text-gray-500 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
-          >
-            {description}
-          </motion.p>
-        </div>
-
-        {/* 3-Column Bento Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {cards.map((item, idx) => {
-            const tags = CRM_TAGS[item.title] || ['Fast Deployment', 'Secure Cloud', '24/7 Support'];
-
-            return (
-              <motion.div
+          <div ref={containerRef} className="lg:col-span-7 flex flex-col gap-6 lg:gap-0">
+            {cards.map((item, idx) => (
+              <StackCard
                 key={item.id || idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.6, delay: idx * 0.12 }}
-                whileHover={{ y: -6, transition: { duration: 0.25 } }}
-                className="group relative flex flex-col h-full bg-white rounded-[28px] border border-gray-100 shadow-[0_10px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(7,153,179,0.12)] hover:border-[#0799B3]/30 transition-all duration-500 overflow-hidden"
-              >
-                {/* Top Image Banner with Inset Frame */}
-                <div className="p-4 pb-0">
-                  <div className="relative h-[230px] w-full rounded-2xl overflow-hidden bg-gray-900">
-                    <ImageWithSkeleton
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
-                      skeletonClassName="bg-gray-800"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity pointer-events-none" />
-                  </div>
-                </div>
-
-                {/* Card Body */}
-                <div className="p-7 pt-6 flex-1 flex flex-col text-left">
-                  
-                  {/* Feature Tags Pill Row */}
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {tags.map((tag) => (
-                      <Tag
-                        key={tag}
-                        label={tag}
-                        className="text-[11px] font-semibold px-2.5 py-0.5 group-hover:bg-[#0799B3]/10 group-hover:text-[#0799B3] transition-colors"
-                      />
-                    ))}
-                  </div>
-
-                  <h3 className="text-xl sm:text-[22px] font-bold text-[#1F2429] group-hover:text-[#0799B3] transition-colors mb-3 leading-snug">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-gray-500 text-sm sm:text-[14.5px] leading-relaxed mb-6 flex-1">
-                    {item.description}
-                  </p>
-
-                  {/* Modern Vibe-Coded Button */}
-                  <div className="mt-auto pt-2">
-                    <Link
-                      href={item.href}
-                      aria-label={`Explore CRM solution: ${item.title}`}
-                      className="inline-flex items-center gap-2 bg-[#0799B3] hover:bg-[#1F2429] text-white text-xs sm:text-[13px] font-bold tracking-wider uppercase px-6 py-3 rounded-full transition-all duration-300 w-fit shadow-md shadow-[#0799B3]/25 group-hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
-                    >
-                      <span>More CRM</span>
-                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                item={item}
+                index={idx}
+                total={cards.length}
+                progress={scrollYProgress}
+                stack={isDesktop}
+              />
+            ))}
+          </div>
         </div>
-
       </div>
     </section>
   );

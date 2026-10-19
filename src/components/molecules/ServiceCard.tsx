@@ -8,6 +8,7 @@ interface ServiceCardProps {
   title: string;
   href: string;
   image: string;
+  description?: string;
   className?: string;
 }
 
@@ -16,6 +17,7 @@ export function ServiceCard({
   title,
   href,
   image,
+  description,
   className,
 }: ServiceCardProps) {
   return (
@@ -23,45 +25,46 @@ export function ServiceCard({
       href={href}
       aria-label={`Service ${number}: ${title}`}
       className={cn(
-        "relative block overflow-hidden rounded-3xl group cursor-pointer h-72 lg:h-[22rem] w-full shadow-lg hover:shadow-2xl hover:shadow-[#0799B3]/20 transition-all duration-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0799B3] focus-visible:ring-offset-4",
+        "group block h-full rounded-2xl bg-white border border-gray-200/80 p-3 sm:p-4",
+        "transition-[border-color,box-shadow,transform] duration-500 ease-out-expo",
+        "hover:border-[#0799B3]/30 hover:shadow-[0_30px_60px_-30px_rgba(31,36,41,0.25)] hover:-translate-y-1",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-4",
         className
       )}
     >
-      <ImageWithSkeleton
-        src={image}
-        alt={title}
-        fill
-        sizes="(max-width: 768px) 100vw, 50vw"
-        className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-        skeletonClassName="bg-gray-800/80"
-      />
-      
-      {/* Overlay gradient - becomes slightly more opaque on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent group-hover:via-black/50 transition-colors duration-500" />
-      
-      {/* Top right number - smoothly slides up on hover */}
-      <div className="absolute top-6 right-6 text-white/20 font-black text-6xl transform group-hover:-translate-y-2 group-hover:text-white/30 transition-all duration-500 pointer-events-none select-none">
-        {number}
+      <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-gray-100">
+        <ImageWithSkeleton
+          src={image}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover group-hover:scale-[1.06] duration-1200 ease-out-expo"
+        />
+        <span className="absolute top-4 left-4 inline-flex items-center h-8 px-3 rounded-full bg-white/95 text-[#1F2429] text-xs font-bold tabular-nums tracking-wider">
+          {number}
+        </span>
       </div>
 
-      {/* Bottom content - Perfectly aligned horizontally across all cards with items-center */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex items-center justify-between gap-4">
-        <h3 className="text-white text-xl sm:text-2xl font-bold flex-1 transform group-hover:-translate-y-0.5 transition-transform duration-300 leading-snug">
-          {title}
-        </h3>
-        
-        {/* Animated Arrow Button — Perfectly centered with zero peeking artifact */}
-        <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#0799B3] flex items-center justify-center overflow-hidden shrink-0 transform group-hover:scale-105 group-hover:bg-[#F58220] transition-all duration-300 shadow-md isolate">
-          {/* Default Arrow: slides out to top-right on hover */}
-          <ArrowUpRight className="w-5 h-5 text-white transform transition-all duration-300 group-hover:translate-x-8 group-hover:-translate-y-8 group-hover:opacity-0" />
-          
-          {/* Incoming Arrow: strictly opacity-0 and translated far offscreen until hover */}
-          <ArrowUpRight className="w-5 h-5 text-white absolute transform -translate-x-8 translate-y-8 opacity-0 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300" />
+      <div className="flex items-start justify-between gap-6 px-2 sm:px-3 pt-6 pb-3">
+        <div className="min-w-0">
+          <h3 className="text-xl sm:text-2xl font-bold text-[#1F2429] tracking-tight leading-snug transition-colors duration-300 group-hover:text-[#0799B3]">
+            {title}
+          </h3>
+          {description && (
+            <p className="mt-2.5 text-gray-600 text-[15px] leading-relaxed max-w-md">
+              {description}
+            </p>
+          )}
         </div>
-      </div>
 
-      {/* Subtle border that glows on hover */}
-      <div className="absolute inset-0 border border-white/10 rounded-3xl group-hover:border-[#0799B3]/50 transition-colors duration-500 pointer-events-none" />
+        <span
+          aria-hidden="true"
+          className="relative w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden shrink-0 text-[#1F2429] transition-colors duration-500 ease-out-expo group-hover:bg-[#0799B3] group-hover:border-[#0799B3] group-hover:text-white"
+        >
+          <ArrowUpRight className="w-5 h-5 transition-transform duration-500 ease-out-expo group-hover:translate-x-6 group-hover:-translate-y-6" />
+          <ArrowUpRight className="w-5 h-5 absolute -translate-x-6 translate-y-6 transition-transform duration-500 ease-out-expo group-hover:translate-x-0 group-hover:translate-y-0" />
+        </span>
+      </div>
     </Link>
   );
 }

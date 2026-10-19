@@ -16,11 +16,11 @@ export function FloatingSocial() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 300);
-    };
-
-    window.addEventListener('scroll', handleScroll);
+    // setState with the same boolean is a no-op render, so this only
+    // re-renders when the 300px threshold is crossed
+    const handleScroll = () => setIsVisible(window.scrollY > 300);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

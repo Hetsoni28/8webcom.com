@@ -152,8 +152,8 @@ export const TECH_PLATFORMS = [
 
 // ─── Stats / Counters ─────────────────────────────────────────
 export const STATS = [
-  { value: 10,   suffix: "+", label: "Years Experience" },
-  { value: 1000, suffix: "+", label: "Happy Clients" },
+  { value: 15,   suffix: "+", label: "Years Experience" },
+  { value: 2000, suffix: "+", label: "Happy Clients" },
   { value: 1500, suffix: "+", label: "Project Completed" },
   { value: 10,   suffix: "+", label: "Countries Clients Served" },
 ];

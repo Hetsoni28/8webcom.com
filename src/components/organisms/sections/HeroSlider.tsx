@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { useState, useCallback, useRef } from 'react';
+import Image from 'next/image';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { HeroSlide } from '@/types';
 import { cn } from '@/lib/utils';
+import { EASE_OUT } from '@/lib/animations';
+import { CtaLink } from '@/components/atoms/CtaLink';
 
 export interface HeroSliderProps {
   slides?: HeroSlide[];
@@ -55,8 +55,16 @@ const AUTHENTIC_SLIDES: SlideItem[] = [
   },
 ];
 
+const SLIDE_DURATION = 7; // seconds
+
+const TRUST_METRICS = [
+  { value: '15+ Years', label: 'Experience' },
+  { value: '1,500+', label: 'Projects Delivered' },
+  { value: '2,000+', label: 'Happy Clients' },
+];
+
 export function HeroSlider({ slides }: HeroSliderProps) {
-  const activeSlides = slides && slides.length > 0 ? slides.map((s, i) => ({
+  const activeSlides: SlideItem[] = slides && slides.length > 0 ? slides.map((s, i) => ({
     ...s,
     id: s.id || i + 1,
     title: s.title || AUTHENTIC_SLIDES[i]?.title || "Web Solutions",
@@ -68,234 +76,215 @@ export function HeroSlider({ slides }: HeroSliderProps) {
   })) : AUTHENTIC_SLIDES;
 
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-
+  const [isPaused, setIsPaused] = useState(false);
+  // Images after the first are only mounted once needed — keeps first load light
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0, 1]));
   const totalSlides = activeSlides.length;
 
-  const nextSlide = useCallback(() => {
-    setActiveSlide((prev) => (prev + 1) % totalSlides);
-  }, [totalSlides]);
+  const goTo = useCallback(
+    (i: number) => {
+      const next = (i + totalSlides) % totalSlides;
+      setActiveSlide(next);
+      setLoaded((prev) => {
+        const n = (next + 1) % totalSlides;
+        if (prev.has(next) && prev.has(n)) return prev;
+        return new Set([...prev, next, n]);
+      });
+    },
+    [totalSlides]
+  );
 
-  const prevSlide = useCallback(() => {
-    setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  }, [totalSlides]);
+  const nextSlide = useCallback(() => goTo(activeSlide + 1), [goTo, activeSlide]);
+  const prevSlide = useCallback(() => goTo(activeSlide - 1), [goTo, activeSlide]);
 
-  // 6-second auto transition, pauses on hover or focus
-  useEffect(() => {
-    if (isHovered || isFocused || totalSlides <= 1) return;
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [nextSlide, isHovered, isFocused, totalSlides]);
+  // Swipe (touch + pen + mouse drag)
+  const pointerStart = useRef<number | null>(null);
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') prevSlide();
-      if (e.key === 'ArrowRight') nextSlide();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [prevSlide, nextSlide]);
+  // Parallax as the hero scrolls away
+  const frameRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: frameRef, offset: ['start start', 'end start'] });
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '16%']);
+  const frameScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '22%']);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   const current = activeSlides[activeSlide];
+  const titleWords = current.title.split(' ');
 
   return (
-    <section 
+    <section
       id="hero-slider-track"
       role="region"
       aria-roledescription="carousel"
       aria-label="Services Hero Carousel"
-      className="relative w-full h-[660px] sm:h-[720px] lg:h-[800px] bg-[#12161C] overflow-hidden select-text"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsFocused(true)}
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-          setIsFocused(false);
-        }
-      }}
+      className="relative bg-white px-2.5 sm:px-4 pt-[100px] sm:pt-[118px] lg:pt-[130px] pb-2.5 sm:pb-4"
     >
-      {/* Screen Reader Live Announcement */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
         Slide {activeSlide + 1} of {totalSlides}: {current.title}. {current.description}
       </div>
-      {/* ── Background Slide Image & Cinematic Left Dark Gradient ── */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeSlide}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
-          style={{ willChange: 'opacity' }}
-          className="absolute inset-0 z-0"
-        >
-          {/* Authentic 8webcom 3D Banner Asset */}
-          <ImageWithSkeleton
-            src={current.image}
-            alt={current.title}
-            fill
-            priority={activeSlide === 0}
-            sizes="100vw"
-            className="object-cover object-right lg:object-center transform scale-100"
-            skeletonClassName="bg-gray-900"
-          />
 
-          {/* Deep Agency Gradient Overlay: ensures 100% text legibility without obscuring the 3D art */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#12161C] via-[#12161C]/85 to-transparent w-full lg:w-4/5" />
-          <div className="absolute inset-0 bg-black/20" />
+      <motion.div
+        ref={frameRef}
+        style={{ scale: frameScale }}
+        tabIndex={-1}
+        className="relative h-[calc(100svh-112px)] sm:h-[calc(100svh-134px)] lg:h-[calc(100svh-146px)] min-h-[600px] max-h-[920px] rounded-[20px] sm:rounded-[28px] overflow-hidden bg-[#12161C] outline-none origin-top touch-pan-y"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocus={() => setIsPaused(true)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node)) setIsPaused(false);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowLeft') prevSlide();
+          if (e.key === 'ArrowRight') nextSlide();
+        }}
+        onPointerDown={(e) => {
+          pointerStart.current = e.clientX;
+        }}
+        onPointerUp={(e) => {
+          if (pointerStart.current === null) return;
+          const dx = e.clientX - pointerStart.current;
+          pointerStart.current = null;
+          if (Math.abs(dx) > 60) (dx < 0 ? nextSlide : prevSlide)();
+        }}
+      >
+        {/* ── Background: all loaded slides stay mounted and crossfade ── */}
+        <motion.div className="absolute inset-0" style={{ y: bgY }}>
+          {activeSlides.map((slide, i) => {
+            if (!loaded.has(i)) return null;
+            const isActive = i === activeSlide;
+            return (
+              <div
+                key={slide.id}
+                aria-hidden={!isActive}
+                className={cn(
+                  'absolute inset-0 transition-opacity duration-[1400ms] ease-out-expo',
+                  isActive ? 'opacity-100' : 'opacity-0'
+                )}
+              >
+                <div
+                  className="absolute inset-0"
+                  style={isActive ? { animation: `heroKenBurns ${SLIDE_DURATION + 1.5}s linear both` } : undefined}
+                >
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    fill
+                    priority={i === 0}
+                    fetchPriority={i === 0 ? 'high' : 'low'}
+                    sizes="100vw"
+                    quality={75}
+                    className="object-cover object-right lg:object-center"
+                  />
+                </div>
+              </div>
+            );
+          })}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#12161C] via-[#12161C]/75 to-[#12161C]/5" />
+          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#12161C] via-[#12161C]/50 to-transparent" />
         </motion.div>
-      </AnimatePresence>
 
-      {/* ── Slide Content Container (Padded so text NEVER collides with side arrows) ── */}
-      <div className="relative z-10 h-full w-full max-w-[1440px] mx-auto px-6 sm:px-20 lg:px-28 xl:px-36 flex items-center">
-        <div className="max-w-2xl text-left pt-16 sm:pt-20">
-          
-          {/* Category Tag */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`cat-${activeSlide}`}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="inline-block text-[#0799B3] text-xs sm:text-sm font-bold uppercase tracking-wider mb-4"
-            >
-              {current.category}
-            </motion.div>
-          </AnimatePresence>
+        {/* ── Trust metrics card (desktop) ── */}
+        <motion.dl
+          className="hidden lg:flex absolute top-8 right-8 z-10 flex-col gap-4 rounded-2xl bg-white/[0.07] backdrop-blur-md border border-white/10 px-6 py-5"
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.8, ease: EASE_OUT }}
+        >
+          {TRUST_METRICS.map((m, i) => (
+            <div key={m.label} className={cn('flex items-baseline justify-between gap-8', i > 0 && 'pt-4 border-t border-white/10')}>
+              <dt className="text-gray-400 text-[13px] font-medium order-2">{m.label}</dt>
+              <dd className="text-white text-lg font-bold tracking-tight order-1">{m.value}</dd>
+            </div>
+          ))}
+        </motion.dl>
 
-          {/* Bold, Clean Headline */}
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={`title-${activeSlide}`}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="text-4xl sm:text-5xl lg:text-[62px] font-black text-white tracking-tight leading-[1.08] mb-6"
-            >
-              {current.title}
-            </motion.h1>
-          </AnimatePresence>
+        {/* ── Content ── */}
+        <motion.div
+          className="relative z-10 h-full flex flex-col justify-end px-6 sm:px-10 lg:px-14 pb-6 sm:pb-8"
+          style={{ y: contentY, opacity: contentOpacity }}
+        >
+          {/* Keyed by slide: remount replays the CSS intro (works before hydration) */}
+          <div key={current.id} className="max-w-[760px] mb-10 lg:mb-14">
+            <div className="hero-fade flex items-center gap-3 mb-6" style={{ animationDelay: '0.05s' }}>
+              <span className="h-px w-10 bg-[#0799B3]" aria-hidden="true" />
+              <span className="text-[#0799B3] text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em]">
+                {current.category}
+              </span>
+            </div>
 
-          {/* Clear, Authoritative Description */}
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={`desc-${activeSlide}`}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.45, delay: 0.08, ease: "easeOut" }}
-              className="text-gray-200 text-base sm:text-lg lg:text-[19px] leading-relaxed mb-9 max-w-xl font-normal"
+            <h1 className="flex flex-wrap gap-x-[0.24em] text-[44px] sm:text-6xl lg:text-[84px] xl:text-[96px] font-extrabold text-white tracking-[-0.04em] leading-[1] mb-7">
+              {titleWords.map((word, i) => (
+                <span key={`${word}-${i}`} className="block overflow-hidden pb-[0.08em] -mb-[0.08em]">
+                  <span className="hero-word" style={{ animationDelay: `${0.1 + i * 0.08}s` }}>
+                    {word}
+                  </span>
+                </span>
+              ))}
+            </h1>
+
+            <p
+              className="hero-fade text-gray-300 text-base sm:text-lg lg:text-[19px] leading-[1.7] mb-9 max-w-[580px]"
+              style={{ animationDelay: '0.3s' }}
             >
               {current.description}
-            </motion.p>
-          </AnimatePresence>
+            </p>
 
-          {/* Action Button Row */}
-          <motion.div
-            key={`actions-${activeSlide}`}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.16 }}
-            className="flex flex-wrap items-center gap-4 sm:gap-5 mb-10"
-          >
-            {/* Primary Pill Button */}
-            <Link
-              href={current.ctaHref || "/contacts"}
-              className="inline-flex items-center gap-2 px-8 sm:px-9 py-3.5 sm:py-4 rounded-full bg-[#0799B3] hover:bg-[#06859c] text-white text-[15px] sm:text-base font-bold shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 group"
-            >
-              <span>{current.ctaLabel || "Get Started Now"}</span>
-              <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-
-            {/* Secondary Action */}
-            <Link
-              href="/contacts"
-              className="inline-flex items-center px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-white/10 hover:bg-white/15 text-white text-[15px] sm:text-base font-semibold border border-white/20 hover:border-white/30 backdrop-blur-sm transition-all duration-200 active:scale-95"
-            >
-              Contact Us
-            </Link>
-          </motion.div>
-
-          {/* Authentic Agency Trust Metrics */}
-          <div className="pt-6 border-t border-white/15 flex flex-wrap items-center gap-6 sm:gap-8 text-xs sm:text-sm text-gray-300 font-medium">
-            <div>
-              <span className="text-white font-bold text-sm sm:text-base">10+ Years</span> Experience
-            </div>
-            <div className="w-1 h-1 rounded-full bg-white/30 hidden sm:block" />
-            <div>
-              <span className="text-white font-bold text-sm sm:text-base">1,500+</span> Projects Delivered
-            </div>
-            <div className="w-1 h-1 rounded-full bg-white/30 hidden sm:block" />
-            <div>
-              <span className="text-white font-bold text-sm sm:text-base">2,000+</span> Happy Clients
+            <div className="hero-fade flex flex-wrap items-center gap-3 sm:gap-4" style={{ animationDelay: '0.42s' }}>
+              <CtaLink href={current.ctaHref || '/contacts'} size="lg">
+                {current.ctaLabel || 'Get Started Now'}
+              </CtaLink>
+              <CtaLink href="/contacts" size="lg" variant="outline-light" icon={false}>
+                Contact Us
+              </CtaLink>
             </div>
           </div>
 
-        </div>
-      </div>
-
-      {/* ── Navigation Arrows (Safely in Gutters — NEVER Overlap Text) ── */}
-      {totalSlides > 1 && (
-        <>
-          <button
-            type="button"
-            onClick={prevSlide}
-            className="hidden sm:flex absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/40 hover:bg-[#0799B3] text-white/90 hover:text-white border border-white/20 hover:border-[#0799B3] backdrop-blur-sm items-center justify-center transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2 focus-visible:ring-offset-[#12161C]"
-            aria-label="Previous Slide"
-          >
-            <ChevronLeft className="w-6 h-6" aria-hidden="true" />
-          </button>
-
-          <button
-            type="button"
-            onClick={nextSlide}
-            className="hidden sm:flex absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/40 hover:bg-[#0799B3] text-white/90 hover:text-white border border-white/20 hover:border-[#0799B3] backdrop-blur-sm items-center justify-center transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2 focus-visible:ring-offset-[#12161C]"
-            aria-label="Next Slide"
-          >
-            <ChevronRight className="w-6 h-6" aria-hidden="true" />
-          </button>
-        </>
-      )}
-
-      {/* ── Progress Indicators (Accessible Touch Targets + Filling Bars) ── */}
-      {totalSlides > 1 && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 sm:gap-3" role="tablist" aria-label="Slide indicators">
-          {activeSlides.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              onClick={() => setActiveSlide(index)}
-              className="py-3 px-1 min-h-[40px] flex items-center justify-center cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2 focus-visible:ring-offset-[#12161C] rounded-full"
-              aria-label={`Go to slide ${index + 1}: ${activeSlides[index].title}`}
-              aria-current={index === activeSlide ? "true" : undefined}
-            >
-              <span className="relative block w-12 sm:w-16 h-1.5 rounded-full bg-white/30 overflow-hidden">
-                {index === activeSlide && !isHovered && !isFocused && (
-                  <motion.span
-                    className="absolute inset-y-0 left-0 bg-[#0799B3]"
-                    initial={{ width: '0%' }}
-                    animate={{ width: '100%' }}
-                    transition={{ duration: 6, ease: 'linear' }}
-                  />
-                )}
-                {index === activeSlide && (isHovered || isFocused) && (
-                  <span className="block w-full h-full bg-[#0799B3]" />
-                )}
-                {index !== activeSlide && (
-                  <span className="block w-0 group-hover:w-full h-full bg-white/60 transition-all duration-200" />
-                )}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
-
+          {/* ── Service tabs: every slide visible at a glance, active one drives autoplay ── */}
+          {totalSlides > 1 && (
+            <div className="grid gap-3 sm:gap-6 border-t border-white/10" style={{ gridTemplateColumns: `repeat(${totalSlides}, minmax(0, 1fr))` }} role="tablist" aria-label="Slide indicators">
+              {activeSlides.map((slide, index) => {
+                const isActive = index === activeSlide;
+                return (
+                  <button
+                    key={slide.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-label={`Go to slide ${index + 1}: ${slide.title}`}
+                    onClick={() => goTo(index)}
+                    className="group relative text-left pt-5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded-sm"
+                  >
+                    {/* Progress line */}
+                    <span className="absolute -top-px left-0 right-0 h-[2px] overflow-hidden" aria-hidden="true">
+                      {isActive && (
+                        <span
+                          key={`progress-${activeSlide}`}
+                          className="absolute inset-0 bg-[#0799B3] origin-left"
+                          style={{
+                            animation: `heroProgress ${SLIDE_DURATION}s linear forwards`,
+                            animationPlayState: isPaused ? 'paused' : 'running',
+                          }}
+                          onAnimationEnd={nextSlide}
+                        />
+                      )}
+                      {!isActive && (
+                        <span className="absolute inset-0 bg-white/40 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out-expo" />
+                      )}
+                    </span>
+                    <span className={cn('block text-[11px] sm:text-xs font-semibold tabular-nums mb-1 transition-colors duration-300', isActive ? 'text-[#0799B3]' : 'text-white/40')}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className={cn('block text-[13px] sm:text-base font-semibold tracking-tight truncate transition-colors duration-300', isActive ? 'text-white' : 'text-white/50 group-hover:text-white/80')}>
+                      {slide.title}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

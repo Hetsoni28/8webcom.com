@@ -1,10 +1,12 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Phone, Mail, ArrowRight, MessageSquare } from 'lucide-react';
+import { Phone, Mail, ArrowUpRight } from 'lucide-react';
 import { CONTACT } from '@/lib/constants';
+import { SectionHeader } from '@/components/molecules/SectionHeader';
+import { CtaLink } from '@/components/atoms/CtaLink';
+import { EASE_OUT, VIEWPORT } from '@/lib/animations';
 
 export interface ContactCtaSectionProps {
   subTitle?: string;
@@ -27,71 +29,81 @@ export function ContactCtaSection({
 }: ContactCtaSectionProps) {
   const phoneTel = phone ? phone.replace(/\s+/g, '') : CONTACT.phoneTel;
 
+  const channels = [
+    phone && { href: `tel:${phoneTel}`, label: 'Call us', value: phone, Icon: Phone, accent: '#0799B3' },
+    email && { href: `mailto:${email}`, label: 'Email us', value: email, Icon: Mail, accent: '#F58220' },
+  ].filter(Boolean) as { href: string; label: string; value: string; Icon: typeof Phone; accent: string }[];
+
   return (
-    <section className="relative py-20 lg:py-28 overflow-hidden bg-[#1F2429]" id="contact-cta-sec">
-      {/* Background subtle geometric accents */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-[#0799B3] blur-[120px]" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-[#F58220] blur-[120px]" />
-      </div>
+    <section className="relative py-24 lg:py-32 bg-[#1F2429] overflow-hidden" id="contact-cta-sec">
+      {/* Top rule that draws across on reveal */}
+      <motion.span
+        aria-hidden="true"
+        className="absolute top-0 left-0 h-[2px] w-full bg-gradient-to-r from-[#0799B3] to-[#F58220] origin-left"
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.6, ease: EASE_OUT }}
+      />
 
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 text-center max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          {/* Subtitle */}
-          <span className="text-[#0799B3] text-sm font-bold tracking-widest uppercase block mb-3">
-            {subTitle}
-          </span>
-
-          {/* Heading */}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight mb-5">
-            {heading}
-          </h2>
-
-          {/* Description */}
-          <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-            {description}
-          </p>
-
-          {/* Contact Badges & CTA */}
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-10">
-            {phone && (
-              <a
-                href={`tel:${phoneTel}`}
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm backdrop-blur-sm border border-white/15 transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1F2429]"
-              >
-                <Phone className="w-4 h-4 text-[#0799B3]" aria-hidden="true" />
-                <span>{phone}</span>
-              </a>
-            )}
-
-            {email && (
-              <a
-                href={`mailto:${email}`}
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm backdrop-blur-sm border border-white/15 transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F58220] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1F2429]"
-              >
-                <Mail className="w-4 h-4 text-[#F58220]" aria-hidden="true" />
-                <span>{email}</span>
-              </a>
-            )}
-          </div>
-
-          {/* Primary Action Button */}
-          <div>
-            <Link
-              href={ctaHref}
-              className="inline-flex items-center gap-3 bg-[#0799B3] hover:bg-[#F58220] text-white font-bold text-base px-8 py-4 rounded-full shadow-xl shadow-[#0799B3]/25 hover:shadow-[#F58220]/25 transition-all duration-300 hover:scale-105 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1F2429]"
+      <div className="container-site">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-end">
+          <div className="lg:col-span-7">
+            <SectionHeader
+              eyebrow={subTitle}
+              title={heading}
+              description={description}
+              theme="dark"
+              titleClassName="text-[36px] sm:text-[48px] lg:text-[60px] leading-[1.05]"
+            />
+            <motion.div
+              className="mt-10"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VIEWPORT}
+              transition={{ duration: 0.9, delay: 0.3, ease: EASE_OUT }}
             >
-              <MessageSquare className="w-5 h-5" aria-hidden="true" />
-              <span>{ctaLabel}</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </Link>
+              <CtaLink href={ctaHref} size="lg">
+                {ctaLabel}
+              </CtaLink>
+            </motion.div>
           </div>
-        </motion.div>
+
+          <ul className="lg:col-span-5 flex flex-col">
+            {channels.map(({ href, label, value, Icon, accent }, i) => (
+              <motion.li
+                key={href}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={VIEWPORT}
+                transition={{ duration: 0.9, delay: 0.2 + i * 0.1, ease: EASE_OUT }}
+                className="border-t border-white/10 last:border-b"
+              >
+                <a
+                  href={href}
+                  className="group flex items-center gap-5 py-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-4 focus-visible:ring-offset-[#1F2429] rounded-sm"
+                >
+                  <span
+                    className="w-12 h-12 rounded-full border border-white/15 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:border-transparent"
+                    style={{ color: accent }}
+                  >
+                    <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
+                  </span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-[12px] font-bold uppercase tracking-[0.16em] text-gray-500 mb-1">{label}</span>
+                    <span className="block text-lg sm:text-xl font-semibold text-white truncate transition-colors duration-300 group-hover:text-[#0799B3]">
+                      {value}
+                    </span>
+                  </span>
+                  <ArrowUpRight
+                    className="w-5 h-5 text-white/40 shrink-0 transition-[transform,color] duration-500 ease-out-expo group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1"
+                    aria-hidden="true"
+                  />
+                </a>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

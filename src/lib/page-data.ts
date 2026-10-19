@@ -85,8 +85,8 @@ export const ABOUT_PAGE = {
     { title: "Client First", description: "Your success is our success. We are deeply invested in your growth." },
   ],
   whyUs: [
-    { stat: "10+",   label: "Years of Experience" },
-    { stat: "1000+", label: "Happy Clients" },
+    { stat: "15+",   label: "Years of Experience" },
+    { stat: "2000+", label: "Happy Clients" },
     { stat: "1500+", label: "Projects Delivered" },
     { stat: "10+",   label: "Countries Clients Served" },
   ],

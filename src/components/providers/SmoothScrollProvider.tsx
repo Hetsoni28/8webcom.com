@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { ReactLenis, useLenis } from 'lenis/react';
+import { MotionConfig } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 // ─── Instant Route Scroll Reset ───────────────────────────────────────────────
@@ -26,15 +27,21 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     <ReactLenis
       root
       options={{
-        lerp: 0.1,
+        // Lower lerp = longer, silkier glide. 0.085 feels premium without lag.
+        lerp: 0.085,
         smoothWheel: true,
-        wheelMultiplier: 1.0,
-        touchMultiplier: 1.5,
+        wheelMultiplier: 0.95,
+        // Leave touch devices on native momentum scrolling (fastest + most natural)
+        syncTouch: false,
+        touchMultiplier: 1,
         infinite: false,
+        // Same-page #anchor links glide instead of jumping
+        anchors: { offset: -100 },
       }}
     >
       <ScrollReset />
-      {children}
+      {/* Honour the OS "reduce motion" setting for every Framer animation */}
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </ReactLenis>
   );
 }

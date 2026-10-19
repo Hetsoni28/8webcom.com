@@ -31,6 +31,7 @@ import { TechSlider } from '@/components/organisms/sections/TechSlider';
 import { StatsSection } from '@/components/organisms/sections/StatsSection';
 import { BrandLogos } from '@/components/organisms/sections/BrandLogos';
 import { CrmSolutionsSection } from '@/components/organisms/sections/CrmSolutionsSection';
+import { ServiceMarquee } from '@/components/organisms/sections/ServiceMarquee';
 
 const WorkShowcaseSection = dynamic(
   () => import('@/components/organisms/sections/WorkShowcaseSection').then((m) => m.WorkShowcaseSection),
@@ -158,7 +159,7 @@ export default async function Home() {
           label: st.stat2Label || 'Years Experience',
         },
         {
-          value: st.stat3Value ?? 500,
+          value: st.stat3Value ?? 1500,
           suffix: st.stat3Suffix || '+',
           label: st.stat3Label || 'Delivered Projects',
         },
@@ -174,6 +175,11 @@ export default async function Home() {
     <>
       {/* 1. Hero Showcase Slider */}
       <HeroSlider slides={heroSlides as any} />
+
+      {/* Scroll-velocity service band */}
+      <ServiceMarquee
+        items={(services as { title: string; href: string }[]).map((s) => ({ label: s.title, href: s.href }))}
+      />
 
       {/* 2. Editorial About Section */}
       <AboutSection

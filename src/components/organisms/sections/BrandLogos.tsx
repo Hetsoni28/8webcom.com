@@ -2,8 +2,7 @@
 
 import React from 'react';
 import { ClientLogo as ClientLogoComponent } from '@/components/molecules/ClientLogo';
-import { Reveal } from '@/components/atoms/Reveal';
-import { fadeUp } from '@/lib/animations';
+import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { ClientLogo } from '@/types';
 
 export interface BrandLogosProps {
@@ -17,37 +16,35 @@ export function BrandLogos({
   heading = 'Trusted by Leading Companies',
   logos,
 }: BrandLogosProps) {
-  const scrollLogos = [...logos, ...logos];
+  if (!logos || logos.length === 0) return null;
+
+  // One track containing the list twice; the keyframe moves it by exactly -50%
+  const track = [...logos, ...logos];
 
   return (
-    <section className="py-16 lg:py-20 bg-white border-y border-gray-100 overflow-hidden" id="brand-sec">
-      <div className="container mx-auto px-4 lg:px-8 mb-10 text-center">
-        <span className="text-[#0799B3] text-sm font-bold tracking-widest uppercase block mb-2">
-          {subTitle}
-        </span>
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#1F2429] tracking-tight">
-          {heading}
-        </h2>
+    <section className="py-20 lg:py-24 bg-white border-t border-gray-100 overflow-hidden" id="brand-sec">
+      <div className="container-site mb-12">
+        <SectionHeader
+          eyebrow={subTitle}
+          title={heading}
+          align="center"
+          titleClassName="text-[26px] sm:text-[32px] lg:text-[36px]"
+        />
       </div>
 
-      <Reveal variants={fadeUp} className="w-full">
-        <div className="relative flex overflow-hidden group">
-          <div className="animate-marquee flex whitespace-nowrap group-hover:[animation-play-state:paused] items-center">
-            {scrollLogos.map((logo, index) => (
-              <div key={index} className="mx-6 sm:mx-10 shrink-0">
-                <ClientLogoComponent name={logo.name} src={logo.src} />
-              </div>
-            ))}
-          </div>
-          <div className="animate-marquee flex whitespace-nowrap absolute top-0 group-hover:[animation-play-state:paused] items-center" aria-hidden="true">
-            {scrollLogos.map((logo, index) => (
-              <div key={`second-${index}`} className="mx-6 sm:mx-10 shrink-0">
-                <ClientLogoComponent name={logo.name} src={logo.src} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </Reveal>
+      <div className="relative edge-fade-x group">
+        <ul className="flex w-max items-center animate-marquee group-hover:[animation-play-state:paused]">
+          {track.map((logo, index) => (
+            <li
+              key={`${logo.name}-${index}`}
+              className="shrink-0 px-8 sm:px-12"
+              aria-hidden={index >= logos.length ? 'true' : undefined}
+            >
+              <ClientLogoComponent name={logo.name} src={logo.src} />
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

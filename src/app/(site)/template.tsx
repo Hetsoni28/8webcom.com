@@ -1,19 +1,11 @@
-'use client';
-
 import React from 'react';
-import { motion } from 'framer-motion';
 
+/**
+ * Route enter transition.
+ * Pure CSS (see .page-enter in globals.css) so server-rendered HTML is painted
+ * immediately — no waiting for JavaScript to hydrate before content appears.
+ * Template re-mounts on every navigation, so the animation replays per route.
+ */
 export default function Template({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.28,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className="page-enter">{children}</div>;
 }

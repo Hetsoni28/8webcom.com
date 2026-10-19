@@ -3,7 +3,7 @@ export const SITE = {
   name: "8webcom.com",
   tagline: "Web Development Company in Ahmedabad",
   description:
-    "Leading web development company in Ahmedabad offering SEO, digital marketing, CRM & web portal solutions. 10+ years experience, 2000+ clients.",
+    "Leading web development company in Ahmedabad offering SEO, digital marketing, CRM & web portal solutions. 15+ years experience, 2000+ clients.",
   url: "https://www.8webcom.com",
   logo: "https://www.8webcom.com/admin/upload/general/eNLCZOpr.png",
   favicon: "https://www.8webcom.com/assets/img/favicons/favicon.png",

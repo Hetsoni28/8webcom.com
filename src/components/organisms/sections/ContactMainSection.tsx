@@ -229,7 +229,7 @@ export function ContactMainSection() {
                   <Zap className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-[#1F2429] mb-1 group-hover:text-[#0799B3] transition-colors duration-300">10+ Years & 2000+ Clients</h4>
+                  <h4 className="text-base font-bold text-[#1F2429] mb-1 group-hover:text-[#0799B3] transition-colors duration-300">15+ Years & 2000+ Clients</h4>
                   <p className="text-gray-500 text-sm leading-relaxed font-normal">
                     Trusted by local and international businesses since 2011 for high-performance digital engineering.
                   </p>

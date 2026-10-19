@@ -79,11 +79,90 @@ body {
 }
 
 @theme {
-  --animate-marquee: marquee 25s linear infinite;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Track holds the logo list twice, so -50% is one full seamless loop */
+  --animate-marquee: marquee 40s linear infinite;
   @keyframes marquee {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-100%); }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
   }
+}
+
+/* ─── Layout: one container width for every section ────────── */
+.container-site {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) {
+  .container-site { padding-inline: 2rem; }
+}
+@media (min-width: 1024px) {
+  .container-site { padding-inline: 3rem; }
+}
+
+::selection {
+  background: #0799B3;
+  color: #ffffff;
+}
+
+/* ─── Route enter (CSS only — paints before hydration) ─────── */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.page-enter {
+  animation: pageEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── Hero text intro (CSS only — LCP-safe) ────────────────── */
+@keyframes heroWordUp {
+  from { transform: translate3d(0, 110%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes heroKenBurns {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+.hero-word {
+  display: inline-block;
+  animation: heroWordUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-fade {
+  animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── Outlined display text ────────────────────────────────── */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #1F2429;
+}
+
+/* ─── Hero slide timer (drives autoplay via animationend) ──── */
+@keyframes heroProgress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ─── Soft edge fade for horizontal tracks ─────────────────── */
+.edge-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation-duration: 120s; }
+  .page-enter,
+  .hero-word,
+  .hero-fade { animation: none; }
+  [style*="heroKenBurns"] { animation: none !important; }
 }
 
 /* ─── Pure GPU Keyframes (Zero Main Thread Lag) ────────────── */

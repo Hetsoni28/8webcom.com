@@ -1,68 +1,51 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useLenis } from 'lenis/react';
 import { ChevronUp } from 'lucide-react';
 
 const SIZE = 52;
 const STROKE = 3;
-const RADIUS = (SIZE - STROKE * 2) / 2;       // 23
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;   // ~144.5
+const RADIUS = (SIZE - STROKE * 2) / 2;
 
 export function ScrollToTop() {
+  const lenis = useLenis();
+  const { scrollY, scrollYProgress } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
-  const [scrollPercent, setScrollPercent] = useState(0);
 
-  useEffect(() => {
-    const onScroll = () => {
-      const scrollY = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
-      setScrollPercent(Math.min(pct, 100));
-      setIsVisible(scrollY > 300);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  // Only re-render when crossing the threshold — the ring itself is a motion value
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    const next = y > 300;
+    if (next !== isVisible) setIsVisible(next);
+  });
 
-  const dashOffset = CIRCUMFERENCE - (scrollPercent / 100) * CIRCUMFERENCE;
+  const scrollTop = () => {
+    if (lenis) lenis.scrollTo(0, { duration: 1.4 });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
           key="stt-wrapper"
-          initial={{ opacity: 0, y: 20, scale: 0.7 }}
+          initial={{ opacity: 0, y: 20, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 20, scale: 0.7 }}
-          transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+          exit={{ opacity: 0, y: 20, scale: 0.8 }}
+          transition={{ type: 'spring', stiffness: 380, damping: 28 }}
           className="fixed bottom-8 right-[72px] z-50"
           style={{ width: SIZE, height: SIZE }}
         >
-          {/* SVG circular progress ring — sits behind the button */}
           <svg
             width={SIZE}
             height={SIZE}
             viewBox={`0 0 ${SIZE} ${SIZE}`}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              transform: 'rotate(-90deg)',
-            }}
+            className="absolute inset-0 -rotate-90"
             aria-hidden="true"
           >
-            {/* Track */}
-            <circle
-              cx={SIZE / 2}
-              cy={SIZE / 2}
-              r={RADIUS}
-              fill="none"
-              stroke="rgba(7,153,179,0.20)"
-              strokeWidth={STROKE}
-            />
-            {/* Progress */}
-            <circle
+            <circle cx={SIZE / 2} cy={SIZE / 2} r={RADIUS} fill="none" stroke="rgba(7,153,179,0.20)" strokeWidth={STROKE} />
+            <motion.circle
               cx={SIZE / 2}
               cy={SIZE / 2}
               r={RADIUS}
@@ -70,37 +53,19 @@ export function ScrollToTop() {
               stroke="#0799B3"
               strokeWidth={STROKE}
               strokeLinecap="round"
-              strokeDasharray={CIRCUMFERENCE}
-              strokeDashoffset={dashOffset}
-              style={{ transition: 'stroke-dashoffset 0.12s linear' }}
+              style={{ pathLength: scrollYProgress }}
             />
           </svg>
 
-          {/* Clickable inner teal circle */}
           <motion.button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.88 }}
+            onClick={scrollTop}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.9 }}
             aria-label="Scroll back to top of page"
-            className="focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
-            style={{
-              position: 'absolute',
-              inset: 5,                 // 5px gap for the ring to show
-              borderRadius: '50%',
-              background: '#0799B3',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: 'none',
-              cursor: 'pointer',
-              boxShadow: '0 4px 18px rgba(7,153,179,0.55), 0 1px 4px rgba(0,0,0,0.18)',
-            }}
+            className="absolute inset-[5px] rounded-full bg-[#0799B3] flex items-center justify-center cursor-pointer shadow-[0_4px_18px_rgba(7,153,179,0.55)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
           >
-            <ChevronUp
-              style={{ width: 20, height: 20, color: '#fff', strokeWidth: 3 }}
-              aria-hidden="true"
-            />
+            <ChevronUp className="w-5 h-5 text-white" strokeWidth={3} aria-hidden="true" />
           </motion.button>
         </motion.div>
       )}
