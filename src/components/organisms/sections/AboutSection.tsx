@@ -61,25 +61,35 @@ function RevealImage({
   parallax?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 1], [parallax, -parallax]);
+
+  // On mobile/reduced motion: simple fade-in instead of clip-path (clip-path fails off-screen on mobile)
+  if (reduce) {
+    return (
+      <div ref={ref} className={cn('relative overflow-hidden rounded-2xl bg-gray-100', className)}>
+        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
+      </div>
+    );
+  }
 
   return (
     <motion.div
       ref={ref}
       className={cn('relative overflow-hidden rounded-2xl bg-gray-100', className)}
-      initial={{ clipPath: 'inset(100% 0% 0% 0%)' }}
-      whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 1.3, delay, ease: EASE_OUT }}
+      initial={{ opacity: 0, scale: 1.04 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+      transition={{ duration: 0.9, delay, ease: EASE_OUT }}
     >
       <motion.div className="absolute inset-y-[-14%] inset-x-0" style={{ y }}>
         <motion.div
           className="absolute inset-0"
-          initial={{ scale: 1.2 }}
+          initial={{ scale: 1.08 }}
           whileInView={{ scale: 1 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 1.6, delay, ease: EASE_OUT }}
+          viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+          transition={{ duration: 1.1, delay, ease: EASE_OUT }}
         >
           <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
         </motion.div>
@@ -181,10 +191,33 @@ export function AboutSection({
         </div>
 
         {/* ── Row 2: asymmetric image strip, each layer at its own speed ── */}
+        {/* Mobile (< 640 px): all images full-width stacked                     */}
+        {/* Small (640–768 px): large image full-width, two small split 50/50    */}
+        {/* Medium (768 px +): original asymmetric 6 / 3 / 3 column layout       */}
         <div className="mt-20 lg:mt-28 grid grid-cols-12 gap-3 sm:gap-5 items-end">
-          <RevealImage src={img1} alt={img1Alt} sizes="(max-width: 768px) 100vw, 50vw" className="col-span-12 md:col-span-6 aspect-16/11" parallax={30} />
-          <RevealImage src={img2} alt={img2Alt} sizes="(max-width: 768px) 50vw, 25vw" className="col-span-7 md:col-span-3 aspect-3/4" delay={0.12} parallax={55} />
-          <RevealImage src={img3} alt={img3Alt} sizes="(max-width: 768px) 45vw, 25vw" className="col-span-5 md:col-span-3 aspect-square" delay={0.24} parallax={20} />
+          <RevealImage
+            src={img1}
+            alt={img1Alt}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="col-span-12 md:col-span-6 aspect-video sm:aspect-16/11 min-h-[220px]"
+            parallax={30}
+          />
+          <RevealImage
+            src={img2}
+            alt={img2Alt}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+            className="col-span-12 sm:col-span-6 md:col-span-3 aspect-video sm:aspect-3/4 min-h-[180px]"
+            delay={0.12}
+            parallax={55}
+          />
+          <RevealImage
+            src={img3}
+            alt={img3Alt}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+            className="col-span-12 sm:col-span-6 md:col-span-3 aspect-video sm:aspect-square min-h-[180px]"
+            delay={0.24}
+            parallax={20}
+          />
         </div>
 
         {/* ── Row 3: capabilities ── */}
