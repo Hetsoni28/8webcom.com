@@ -97,7 +97,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         aria-modal="true"
         aria-label="Mobile Navigation Menu"
         className={cn(
-          "fixed top-0 right-0 bottom-0 h-[100dvh] w-[85vw] max-w-sm bg-white z-50 flex flex-col transition-transform duration-300 lg:hidden shadow-2xl",
+          "fixed top-0 right-0 bottom-0 h-dvh w-[85vw] max-w-sm bg-white z-50 flex flex-col transition-transform duration-300 lg:hidden shadow-2xl",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -107,7 +107,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             ref={closeButtonRef}
             onClick={onClose}
             aria-label="Close mobile navigation menu"
-            className="p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3]"
+            className="p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors min-w-11 min-h-11 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3]"
           >
             <X className="w-6 h-6" aria-hidden="true" />
           </button>

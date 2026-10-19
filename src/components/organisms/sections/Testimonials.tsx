@@ -137,7 +137,7 @@ export function Testimonials({
                       {isActive && (
                         <motion.span
                           layoutId="testi-active-bar"
-                          className="absolute left-0 top-3 bottom-3 w-[3px] rounded-full bg-[#0799B3]"
+                          className="absolute left-0 top-3 bottom-3 w-0.75 rounded-full bg-[#0799B3]"
                           transition={{ duration: 0.5, ease: EASE_OUT }}
                         />
                       )}
@@ -177,7 +177,7 @@ export function Testimonials({
               id="active-testimonial-panel"
               role="tabpanel"
               aria-labelledby={`testi-tab-${current.id}`}
-              className="relative h-full min-h-[440px] rounded-2xl p-8 sm:p-12 lg:p-14 bg-[#1F2429] text-white flex flex-col overflow-hidden"
+              className="relative h-full min-h-110 rounded-2xl p-8 sm:p-12 lg:p-14 bg-[#1F2429] text-white flex flex-col overflow-hidden"
             >
               {/* Quote glyph */}
               <svg
@@ -254,7 +254,7 @@ export function Testimonials({
                       >
                         <span
                           className={cn(
-                            'block h-[3px] rounded-full transition-all duration-500 ease-out-expo',
+                            'block h-0.75 rounded-full transition-all duration-500 ease-out-expo',
                             idx === activeIndex ? 'w-7 bg-[#0799B3]' : 'w-3 bg-white/20 hover:bg-white/40'
                           )}
                         />

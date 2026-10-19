@@ -151,7 +151,7 @@ export function VisionMissionSection({ items = ITEMS }: { items?: VisionMissionI
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.6, delay: idx * 0.12 }}
               whileHover={{ y: -6, transition: { duration: 0.25 } }}
-              className="group bg-white rounded-[24px] border border-gray-100 p-8 sm:p-10 flex flex-col items-center text-center shadow-[0_4px_25px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_45px_rgba(7,153,179,0.12)] transition-all duration-400"
+              className="group bg-white rounded-3xl border border-gray-100 p-8 sm:p-10 flex flex-col items-center text-center shadow-[0_4px_25px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_45px_rgba(7,153,179,0.12)] transition-all duration-400"
             >
               {/* Top Vector Icon matching screenshot */}
               <div className="mb-6 transform group-hover:scale-110 transition-transform duration-300">

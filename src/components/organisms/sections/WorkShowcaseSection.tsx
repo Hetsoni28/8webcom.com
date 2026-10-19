@@ -148,7 +148,7 @@ export function WorkShowcaseSection({
                     aria-label={label}
                     className="w-12 h-12 rounded-full border border-gray-200 bg-white text-[#1F2429] flex items-center justify-center cursor-pointer transition-colors duration-300 hover:bg-[#1F2429] hover:border-[#1F2429] hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
                   >
-                    <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
+                    <Icon className="w-4.5 h-4.5" aria-hidden="true" />
                   </button>
                 ))}
               </div>
@@ -181,7 +181,7 @@ export function WorkShowcaseSection({
               <li
                 key={item.id}
                 ref={i === 0 ? cardRef : undefined}
-                className="shrink-0 w-[78vw] sm:w-[360px] lg:w-[392px]"
+                className="shrink-0 w-[78vw] sm:w-90 lg:w-98"
               >
                 <a
                   href={item.url}
@@ -194,17 +194,17 @@ export function WorkShowcaseSection({
                   aria-label={`Visit ${item.title} website (opens in new tab)`}
                   className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-4 rounded-2xl"
                 >
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-[#F1F4F6] border border-gray-200/80">
+                  <div className="relative aspect-4/5 rounded-2xl overflow-hidden bg-[#F1F4F6] border border-gray-200/80">
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
                       draggable={false}
                       sizes="(max-width: 640px) 78vw, 392px"
-                      className="object-cover object-top transition-[object-position,transform] duration-[3500ms] ease-in-out group-hover:object-bottom"
+                      className="object-cover object-top transition-[object-position,transform] duration-3500 ease-in-out group-hover:object-bottom"
                     />
                     <span className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white text-[#1F2429] flex items-center justify-center shadow-md opacity-0 translate-y-2 transition-[opacity,transform] duration-500 ease-out-expo group-hover:opacity-100 group-hover:translate-y-0">
-                      <ArrowUpRight className="w-[18px] h-[18px]" aria-hidden="true" />
+                      <ArrowUpRight className="w-4.5 h-4.5" aria-hidden="true" />
                     </span>
                   </div>
 

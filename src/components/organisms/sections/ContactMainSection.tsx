@@ -154,12 +154,12 @@ export function ContactMainSection() {
       <motion.div 
         animate={{ y: [0, -18, 0], scale: [1, 1.04, 1] }}
         transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
-        className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#0799B3]/5 rounded-full blur-3xl pointer-events-none" 
+        className="absolute top-0 right-0 w-150 h-150 bg-[#0799B3]/5 rounded-full blur-3xl pointer-events-none" 
       />
       <motion.div 
         animate={{ y: [0, 18, 0], scale: [1, 1.04, 1] }}
         transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
-        className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#F58220]/5 rounded-full blur-3xl pointer-events-none" 
+        className="absolute bottom-0 left-0 w-125 h-125 bg-[#F58220]/5 rounded-full blur-3xl pointer-events-none" 
       />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-7xl relative z-10">
@@ -494,7 +494,7 @@ export function ContactMainSection() {
                         whileHover={{ scale: 1.015 }}
                         whileTap={{ scale: 0.985 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        className={`w-full max-w-[304px] h-[78px] px-3.5 py-2.5 rounded-[4px] border shadow-[0_0_4px_rgba(0,0,0,0.06)] flex items-center justify-between select-none cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A73E8] focus-visible:ring-offset-2 ${
+                        className={`w-full max-w-76 h-19.5 px-3.5 py-2.5 rounded-sm border shadow-[0_0_4px_rgba(0,0,0,0.06)] flex items-center justify-between select-none cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A73E8] focus-visible:ring-offset-2 ${
                           isCaptchaExpired
                             ? 'border-[#d93025] bg-[#fff8f7]'
                             : errors.captcha
@@ -516,7 +516,7 @@ export function ContactMainSection() {
                               initial={{ scale: 0, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ type: "spring", stiffness: 450, damping: 20 }}
-                              className="w-7 h-7 rounded-[2px] bg-white border border-[#2e7d32] flex items-center justify-center shrink-0 shadow-sm"
+                              className="w-7 h-7 rounded-xs bg-white border border-[#2e7d32] flex items-center justify-center shrink-0 shadow-sm"
                             >
                               <svg className="w-5 h-5 text-[#2e7d32]" viewBox="0 0 24 24" fill="none">
                                 <motion.path
@@ -533,7 +533,7 @@ export function ContactMainSection() {
                             </motion.div>
                           ) : (
                             <div
-                              className={`w-7 h-7 rounded-[2px] border-2 bg-white flex items-center justify-center transition-colors shrink-0 ${
+                              className={`w-7 h-7 rounded-xs border-2 bg-white flex items-center justify-center transition-colors shrink-0 ${
                                 isCaptchaExpired ? 'border-[#d93025]' : 'border-[#c1c1c1] hover:border-gray-500'
                               }`}
                             />
@@ -619,7 +619,7 @@ export function ContactMainSection() {
                         type="submit"
                         variant="primary"
                         loading={isSubmitting}
-                        className="w-full !rounded-2xl py-4 text-base font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+                        className="w-full rounded-2xl! py-4 text-base font-semibold shadow-md hover:shadow-lg transition-all duration-300"
                         icon={
                           <svg
                             className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

@@ -77,7 +77,7 @@ function StackCard({
         transition={{ duration: 1, ease: EASE_OUT }}
         className="group relative w-full grid grid-cols-1 sm:grid-cols-2 bg-white rounded-2xl border border-gray-200/80 p-3 sm:p-4 gap-3 sm:gap-6 shadow-[0_30px_60px_-36px_rgba(31,36,41,0.35)] overflow-hidden"
       >
-        <div className="relative aspect-[16/11] sm:aspect-auto sm:min-h-[340px] rounded-xl overflow-hidden bg-gray-100">
+        <div className="relative aspect-16/11 sm:aspect-auto sm:min-h-85 rounded-xl overflow-hidden bg-gray-100">
           <ImageWithSkeleton
             src={item.image}
             alt={item.title}
@@ -92,7 +92,7 @@ function StackCard({
             {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
           </span>
 
-          <h3 className="text-2xl lg:text-[28px] font-extrabold text-[#1F2429] tracking-[-0.025em] leading-tight mb-3">
+          <h3 className="text-2xl lg:text-[28px] font-extrabold text-[#1F2429] tracking-tight leading-tight mb-3">
             {item.title}
           </h3>
 

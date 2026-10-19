@@ -38,13 +38,13 @@ export function PageHero({ title, highlight, titleSuffix, subTitle, image }: Pag
             className="object-cover opacity-20"
             skeletonClassName="bg-gray-900"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1F2429] to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-t from-[#1F2429] to-transparent pointer-events-none" />
         </div>
       )}
       
       {/* Decorative Elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#0799B3]/10 to-transparent -z-0" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#F58220]/10 rounded-full blur-3xl -z-0" />
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-linear-to-l from-[#0799B3]/10 to-transparent z-0" />
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#F58220]/10 rounded-full blur-3xl z-0" />
 
       <div className="relative z-10 container mx-auto px-4 lg:px-8 text-center max-w-4xl">
         {subTitle && (

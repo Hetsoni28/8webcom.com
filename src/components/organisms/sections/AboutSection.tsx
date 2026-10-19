@@ -73,7 +73,7 @@ function RevealImage({
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 1.3, delay, ease: EASE_OUT }}
     >
-      <motion.div className="absolute -inset-y-[14%] inset-x-0" style={{ y }}>
+      <motion.div className="absolute inset-y-[-14%] inset-x-0" style={{ y }}>
         <motion.div
           className="absolute inset-0"
           initial={{ scale: 1.2 }}
@@ -131,7 +131,7 @@ export function AboutSection({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           <div className="lg:col-span-5 flex flex-col">
             <Eyebrow label={subTitle} />
-            <h2 className="mt-5 font-extrabold text-[#1F2429] tracking-[-0.04em] leading-[0.95] text-[52px] sm:text-[72px] lg:text-[84px] xl:text-[100px] break-words">
+            <h2 className="mt-5 font-extrabold text-[#1F2429] tracking-[-0.04em] leading-[0.95] text-[52px] sm:text-[72px] lg:text-[84px] xl:text-[100px] wrap-break-word">
               <MaskedWords text={heading} />
             </h2>
 
@@ -145,7 +145,7 @@ export function AboutSection({
               <span className="text-[56px] lg:text-[72px] font-extrabold tracking-[-0.04em] leading-none text-[#F58220]">
                 {experienceYears}
               </span>
-              <span className="text-[13px] font-bold uppercase tracking-[0.18em] text-gray-500 leading-snug max-w-[7rem]">
+              <span className="text-[13px] font-bold uppercase tracking-[0.18em] text-gray-500 leading-snug max-w-28">
                 {experienceText}
               </span>
             </motion.div>
@@ -170,7 +170,7 @@ export function AboutSection({
                 className="group inline-flex items-center gap-3 text-[#1F2429] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded-full"
               >
                 <span className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center text-[#0799B3] transition-colors duration-300 group-hover:bg-[#0799B3] group-hover:border-[#0799B3] group-hover:text-white">
-                  <Phone className="w-[18px] h-[18px]" aria-hidden="true" />
+                  <Phone className="w-4.5 h-4.5" aria-hidden="true" />
                 </span>
                 <span className="font-semibold text-[15px] sm:text-base transition-colors duration-300 group-hover:text-[#0799B3]">
                   {phone}
@@ -182,8 +182,8 @@ export function AboutSection({
 
         {/* ── Row 2: asymmetric image strip, each layer at its own speed ── */}
         <div className="mt-20 lg:mt-28 grid grid-cols-12 gap-3 sm:gap-5 items-end">
-          <RevealImage src={img1} alt={img1Alt} sizes="(max-width: 768px) 100vw, 50vw" className="col-span-12 md:col-span-6 aspect-[16/11]" parallax={30} />
-          <RevealImage src={img2} alt={img2Alt} sizes="(max-width: 768px) 50vw, 25vw" className="col-span-7 md:col-span-3 aspect-[3/4]" delay={0.12} parallax={55} />
+          <RevealImage src={img1} alt={img1Alt} sizes="(max-width: 768px) 100vw, 50vw" className="col-span-12 md:col-span-6 aspect-16/11" parallax={30} />
+          <RevealImage src={img2} alt={img2Alt} sizes="(max-width: 768px) 50vw, 25vw" className="col-span-7 md:col-span-3 aspect-3/4" delay={0.12} parallax={55} />
           <RevealImage src={img3} alt={img3Alt} sizes="(max-width: 768px) 45vw, 25vw" className="col-span-5 md:col-span-3 aspect-square" delay={0.24} parallax={20} />
         </div>
 
@@ -202,7 +202,7 @@ export function AboutSection({
                 {/* Accent rule draws over the hairline on hover */}
                 <span
                   aria-hidden="true"
-                  className="absolute -top-px left-0 h-[2px] w-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out-expo"
+                  className="absolute -top-px left-0 h-0.5 w-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out-expo"
                   style={{ background: ICON_BG[i % ICON_BG.length] }}
                 />
                 <div className="flex items-center justify-between mb-6">

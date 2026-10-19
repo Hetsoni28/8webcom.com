@@ -29,7 +29,7 @@ export function Heading({
   return (
     <Component
       className={cn(
-        "leading-tight break-words",
+        "leading-tight wrap-break-word",
         size !== 'beast' && "font-bold",
         color === "default" ? "text-[#1F2429]" : "text-white",
         sizes[size],

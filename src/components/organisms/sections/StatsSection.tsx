@@ -32,7 +32,7 @@ function StatItem({ stat, index }: { stat: Stat; index: number }) {
       {/* Rule that draws in above each metric */}
       <motion.span
         aria-hidden="true"
-        className="block h-[2px] w-10 mb-8 origin-left"
+        className="block h-0.5 w-10 mb-8 origin-left"
         style={{ backgroundColor: accent }}
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}

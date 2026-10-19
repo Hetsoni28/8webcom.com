@@ -69,7 +69,7 @@ export function ServicesGrid({
                   <span
                     aria-hidden="true"
                     className={cn(
-                      'absolute -top-px left-0 h-[2px] w-full bg-[#0799B3] origin-left transition-transform duration-700 ease-out-expo',
+                      'absolute -top-px left-0 h-0.5 w-full bg-[#0799B3] origin-left transition-transform duration-700 ease-out-expo',
                       isActive ? 'scale-x-100' : 'scale-x-0'
                     )}
                   />
@@ -130,7 +130,7 @@ export function ServicesGrid({
 
           {/* Preview frame */}
           <motion.div
-            className="col-span-5 relative aspect-[4/5] rounded-2xl overflow-hidden bg-[#1F2429]"
+            className="col-span-5 relative aspect-4/5 rounded-2xl overflow-hidden bg-[#1F2429]"
             initial={{ clipPath: 'inset(12% 12% 12% 12% round 16px)', opacity: 0 }}
             whileInView={{ clipPath: 'inset(0% 0% 0% 0% round 16px)', opacity: 1 }}
             viewport={{ once: true, margin: '-80px' }}
@@ -142,7 +142,7 @@ export function ServicesGrid({
                 key={service.id ?? i}
                 aria-hidden={i !== active}
                 className={cn(
-                  'absolute inset-0 transition-[opacity,transform] duration-[900ms] ease-out-expo',
+                  'absolute inset-0 transition-[opacity,transform] duration-900 ease-out-expo',
                   i === active ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.08]'
                 )}
               >
@@ -155,7 +155,7 @@ export function ServicesGrid({
                 />
               </div>
             ))}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/70 to-transparent pointer-events-none" />
             <div className="absolute left-6 right-6 bottom-6 flex items-end justify-between text-white pointer-events-none">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span

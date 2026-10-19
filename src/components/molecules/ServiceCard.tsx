@@ -32,7 +32,7 @@ export function ServiceCard({
         className
       )}
     >
-      <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-gray-100">
+      <div className="relative aspect-16/10 rounded-xl overflow-hidden bg-gray-100">
         <ImageWithSkeleton
           src={image}
           alt={title}

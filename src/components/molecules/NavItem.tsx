@@ -8,17 +8,17 @@ import { NavChild } from '@/types';
 export interface NavItemProps {
   label: string;
   href: string;
-  children?: NavChild[];
+  subLinks?: NavChild[];
   active?: boolean;
   className?: string;
 }
 
-export function NavItem({ label, href, children, active, className }: NavItemProps) {
+export function NavItem({ label, href, subLinks, active, className }: NavItemProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLAnchorElement>(null);
 
-  const hasChildren = Boolean(children && children.length > 0);
+  const hasChildren = Boolean(subLinks && subLinks.length > 0);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!hasChildren) return;
@@ -61,7 +61,7 @@ export function NavItem({ label, href, children, active, className }: NavItemPro
           active ? "text-[#0799B3]" : "text-[#1F2429] hover:text-[#0799B3]"
         )}
       >
-        <span className="relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[#0799B3] after:origin-right after:scale-x-0 after:transition-transform after:duration-500 after:ease-out-expo group-hover:after:origin-left group-hover:after:scale-x-100">
+        <span className="relative after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-full after:bg-[#0799B3] after:origin-right after:scale-x-0 after:transition-transform after:duration-500 after:ease-out-expo group-hover:after:origin-left group-hover:after:scale-x-100">
           {label}
         </span>
         {hasChildren && (
@@ -82,14 +82,14 @@ export function NavItem({ label, href, children, active, className }: NavItemPro
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 6 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-[calc(100%+0.5rem)] -left-4 min-w-[260px] bg-white shadow-[0_24px_48px_-16px_rgba(31,36,41,0.2)] rounded-xl border border-gray-200/70 p-2 flex flex-col z-50 overflow-hidden"
+              className="absolute top-[calc(100%+0.5rem)] -left-4 min-w-65 bg-white shadow-[0_24px_48px_-16px_rgba(31,36,41,0.2)] rounded-xl border border-gray-200/70 p-2 flex flex-col z-50 overflow-hidden"
             >
-              {children!.map((child, idx) => (
+              {subLinks!.map((child, idx) => (
                 <Link 
                   key={idx} 
                   href={child.href}
                   role="menuitem"
-                  className="px-4 py-3 rounded-lg text-[15px] font-medium text-gray-700 hover:text-[#0799B3] hover:bg-[#0799B3]/[0.06] focus-visible:bg-[#0799B3]/10 focus-visible:text-[#0799B3] focus-visible:outline-none transition-colors duration-200 flex items-center justify-between group/sub"
+                  className="px-4 py-3 rounded-lg text-[15px] font-medium text-gray-700 hover:text-[#0799B3] hover:bg-[#0799B3]/6 focus-visible:bg-[#0799B3]/10 focus-visible:text-[#0799B3] focus-visible:outline-none transition-colors duration-200 flex items-center justify-between group/sub"
                 >
                   <span>{child.label}</span>
                   <span className="opacity-0 -translate-x-1 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all text-[#0799B3] text-sm font-bold" aria-hidden="true">→</span>

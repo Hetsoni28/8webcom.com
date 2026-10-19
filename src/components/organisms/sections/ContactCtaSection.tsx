@@ -39,7 +39,7 @@ export function ContactCtaSection({
       {/* Top rule that draws across on reveal */}
       <motion.span
         aria-hidden="true"
-        className="absolute top-0 left-0 h-[2px] w-full bg-gradient-to-r from-[#0799B3] to-[#F58220] origin-left"
+        className="absolute top-0 left-0 h-0.5 w-full bg-linear-to-r from-[#0799B3] to-[#F58220] origin-left"
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
@@ -87,7 +87,7 @@ export function ContactCtaSection({
                     className="w-12 h-12 rounded-full border border-white/15 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:border-transparent"
                     style={{ color: accent }}
                   >
-                    <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
+                    <Icon className="w-4.5 h-4.5" aria-hidden="true" />
                   </span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-[12px] font-bold uppercase tracking-[0.16em] text-gray-500 mb-1">{label}</span>

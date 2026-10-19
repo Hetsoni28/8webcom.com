@@ -13,7 +13,7 @@ export default function Loading() {
 
       {/* Top Animated Loading Bar with Brand Gradient */}
       <div className="fixed top-0 left-0 right-0 z-50 h-1 overflow-hidden bg-gray-100">
-        <div className="h-full w-full bg-gradient-to-r from-[#0799B3] via-[#F58220] to-[#0799B3] animate-shimmer" />
+        <div className="h-full w-full bg-linear-to-r from-[#0799B3] via-[#F58220] to-[#0799B3] animate-shimmer" />
       </div>
 
       {/* Hero Skeleton Section */}

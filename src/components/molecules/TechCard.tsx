@@ -24,7 +24,7 @@ export function TechCard({ name, image, icon, description, className }: TechCard
       )}
     >
       {/* Cover */}
-      <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-gray-200">
+      <div className="relative aspect-16/10 w-full rounded-xl overflow-hidden bg-gray-200">
         <ImageWithSkeleton
           src={image}
           alt={`${name} cover`}

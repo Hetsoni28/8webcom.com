@@ -37,7 +37,7 @@ export function MaskedWords({ text, className }: { text: React.ReactNode; classN
       viewport={VIEWPORT}
     >
       {words.map((word, i) => (
-        <span key={`${word}-${i}`} className="block overflow-hidden pb-[0.08em] -mb-[0.08em]">
+        <span key={`${word}-${i}`} className="block overflow-hidden pb-[0.08em] mb-[-0.08em]">
           <motion.span className="block will-change-transform" variants={maskChild}>
             {word}
           </motion.span>
@@ -132,7 +132,7 @@ export function SectionHeader({
       {eyebrow && <Eyebrow label={eyebrow} align={align} />}
       <Tag
         className={cn(
-          'font-extrabold tracking-[-0.025em] leading-[1.1] text-[32px] sm:text-[40px] lg:text-[48px]',
+          'font-extrabold tracking-tight leading-[1.1] text-[32px] sm:text-[40px] lg:text-[48px]',
           theme === 'dark' ? 'text-white' : 'text-[#1F2429]',
           titleClassName
         )}

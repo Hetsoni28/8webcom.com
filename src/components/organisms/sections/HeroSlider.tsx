@@ -117,7 +117,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
       role="region"
       aria-roledescription="carousel"
       aria-label="Services Hero Carousel"
-      className="relative bg-white px-2.5 sm:px-4 pt-[100px] sm:pt-[118px] lg:pt-[130px] pb-2.5 sm:pb-4"
+      className="relative bg-white px-2.5 sm:px-4 pt-25 sm:pt-29.5 lg:pt-32.5 pb-2.5 sm:pb-4"
     >
       <div className="sr-only" aria-live="polite" aria-atomic="true">
         Slide {activeSlide + 1} of {totalSlides}: {current.title}. {current.description}
@@ -127,7 +127,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
         ref={frameRef}
         style={{ scale: frameScale }}
         tabIndex={-1}
-        className="relative h-[calc(100svh-112px)] sm:h-[calc(100svh-134px)] lg:h-[calc(100svh-146px)] min-h-[600px] max-h-[920px] rounded-[20px] sm:rounded-[28px] overflow-hidden bg-[#12161C] outline-none origin-top touch-pan-y"
+        className="relative h-[calc(100svh-112px)] sm:h-[calc(100svh-134px)] lg:h-[calc(100svh-146px)] min-h-150 max-h-230 rounded-[20px] sm:rounded-[28px] overflow-hidden bg-[#12161C] outline-none origin-top touch-pan-y"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onFocus={() => setIsPaused(true)}
@@ -158,7 +158,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                 key={slide.id}
                 aria-hidden={!isActive}
                 className={cn(
-                  'absolute inset-0 transition-opacity duration-[1400ms] ease-out-expo',
+                  'absolute inset-0 transition-opacity duration-1400 ease-out-expo',
                   isActive ? 'opacity-100' : 'opacity-0'
                 )}
               >
@@ -180,8 +180,8 @@ export function HeroSlider({ slides }: HeroSliderProps) {
               </div>
             );
           })}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#12161C] via-[#12161C]/75 to-[#12161C]/5" />
-          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#12161C] via-[#12161C]/50 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-[#12161C] via-[#12161C]/75 to-[#12161C]/5" />
+          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-[#12161C] via-[#12161C]/50 to-transparent" />
         </motion.div>
 
         {/* ── Trust metrics card (desktop) ── */}
@@ -205,7 +205,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
           style={{ y: contentY, opacity: contentOpacity }}
         >
           {/* Keyed by slide: remount replays the CSS intro (works before hydration) */}
-          <div key={current.id} className="max-w-[760px] mb-10 lg:mb-14">
+          <div key={current.id} className="max-w-190 mb-10 lg:mb-14">
             <div className="hero-fade flex items-center gap-3 mb-6" style={{ animationDelay: '0.05s' }}>
               <span className="h-px w-10 bg-[#0799B3]" aria-hidden="true" />
               <span className="text-[#0799B3] text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em]">
@@ -213,9 +213,9 @@ export function HeroSlider({ slides }: HeroSliderProps) {
               </span>
             </div>
 
-            <h1 className="flex flex-wrap gap-x-[0.24em] text-[44px] sm:text-6xl lg:text-[84px] xl:text-[96px] font-extrabold text-white tracking-[-0.04em] leading-[1] mb-7">
+            <h1 className="flex flex-wrap gap-x-[0.24em] text-[44px] sm:text-6xl lg:text-[84px] xl:text-[96px] font-extrabold text-white tracking-[-0.04em] leading-none mb-7">
               {titleWords.map((word, i) => (
-                <span key={`${word}-${i}`} className="block overflow-hidden pb-[0.08em] -mb-[0.08em]">
+                <span key={`${word}-${i}`} className="block overflow-hidden pb-[0.08em] mb-[-0.08em]">
                   <span className="hero-word" style={{ animationDelay: `${0.1 + i * 0.08}s` }}>
                     {word}
                   </span>
@@ -224,7 +224,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
             </h1>
 
             <p
-              className="hero-fade text-gray-300 text-base sm:text-lg lg:text-[19px] leading-[1.7] mb-9 max-w-[580px]"
+              className="hero-fade text-gray-300 text-base sm:text-lg lg:text-[19px] leading-[1.7] mb-9 max-w-145"
               style={{ animationDelay: '0.3s' }}
             >
               {current.description}
@@ -256,7 +256,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                     className="group relative text-left pt-5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded-sm"
                   >
                     {/* Progress line */}
-                    <span className="absolute -top-px left-0 right-0 h-[2px] overflow-hidden" aria-hidden="true">
+                    <span className="absolute -top-px left-0 right-0 h-0.5 overflow-hidden" aria-hidden="true">
                       {isActive && (
                         <span
                           key={`progress-${activeSlide}`}

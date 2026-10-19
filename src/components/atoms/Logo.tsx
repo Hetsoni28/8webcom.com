@@ -29,7 +29,7 @@ export function Logo({
       width={width} 
       height={height}
       priority={priority}
-      className={cn("w-auto h-14 sm:h-16 lg:h-[66px] object-contain block", className)}
+      className={cn("w-auto h-14 sm:h-16 lg:h-16.5 object-contain block", className)}
     />
   );
 

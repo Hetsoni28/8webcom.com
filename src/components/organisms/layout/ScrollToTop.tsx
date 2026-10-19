@@ -34,7 +34,7 @@ export function ScrollToTop() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.8 }}
           transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-          className="fixed bottom-8 right-[72px] z-50"
+          className="fixed bottom-8 right-18 z-50"
           style={{ width: SIZE, height: SIZE }}
         >
           <svg
@@ -63,7 +63,7 @@ export function ScrollToTop() {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Scroll back to top of page"
-            className="absolute inset-[5px] rounded-full bg-[#0799B3] flex items-center justify-center cursor-pointer shadow-[0_4px_18px_rgba(7,153,179,0.55)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
+            className="absolute inset-1.25 rounded-full bg-[#0799B3] flex items-center justify-center cursor-pointer shadow-[0_4px_18px_rgba(7,153,179,0.55)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
           >
             <ChevronUp className="w-5 h-5 text-white" strokeWidth={3} aria-hidden="true" />
           </motion.button>

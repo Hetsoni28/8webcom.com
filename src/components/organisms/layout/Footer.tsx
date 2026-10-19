@@ -86,7 +86,7 @@ export function Footer() {
   return (
     <footer className="relative bg-[#0B131D] text-white" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 900px' }}>
       {/* Brand gradient hairline */}
-      <span aria-hidden="true" className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#0799B3]/60 to-transparent" />
+      <span aria-hidden="true" className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-[#0799B3]/60 to-transparent" />
 
       {/* ── Top: brand + stats ── */}
       <div className="container-site pt-20 pb-14 border-b border-white/10">
@@ -110,7 +110,7 @@ export function Footer() {
           <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-10 gap-y-8">
             {STATS.map(({ value, label }) => (
               <div key={label} className="flex flex-col-reverse">
-                <dt className="text-gray-400 text-[13px] mt-1.5 leading-snug max-w-[9rem]">{label}</dt>
+                <dt className="text-gray-400 text-[13px] mt-1.5 leading-snug max-w-36">{label}</dt>
                 <dd className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-none">{value}</dd>
               </div>
             ))}

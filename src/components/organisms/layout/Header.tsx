@@ -66,7 +66,7 @@ export function Header() {
             : "py-5 sm:py-6 lg:py-7 bg-white border-gray-100"
         )}
       >
-        <div className="w-full max-w-[1480px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
+        <div className="w-full max-w-370 mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
           
           {/* Prominent Company Logo */}
           <div className="shrink-0 flex items-center">
@@ -77,7 +77,7 @@ export function Header() {
               priority
               className={cn(
                 "w-auto transition-[height] duration-500 ease-out-expo",
-                scrolled ? "h-12 sm:h-14 lg:h-[58px]" : "h-14 sm:h-16 lg:h-[68px]"
+                scrolled ? "h-12 sm:h-14 lg:h-14.5" : "h-14 sm:h-16 lg:h-17"
               )}
             />
           </div>
@@ -89,7 +89,7 @@ export function Header() {
                 key={link.label}
                 label={link.label}
                 href={link.href}
-                children={link.children}
+                subLinks={link.children}
               />
             ))}
           </nav>
@@ -120,7 +120,7 @@ export function Header() {
                   setSideMenuOpen(true);
                 }
               }}
-              className="p-3 text-[#1F2429] hover:text-[#0799B3] hover:bg-gray-100 rounded-2xl transition-all cursor-pointer flex items-center justify-center shrink-0 min-w-[48px] min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
+              className="p-3 text-[#1F2429] hover:text-[#0799B3] hover:bg-gray-100 rounded-2xl transition-all cursor-pointer flex items-center justify-center shrink-0 min-w-12 min-h-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
               aria-label="Toggle navigation menu"
               aria-haspopup="dialog"
               aria-expanded={mobileMenuOpen || sideMenuOpen}
