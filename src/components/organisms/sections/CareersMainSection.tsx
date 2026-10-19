@@ -10,6 +10,9 @@ import {
 } from 'lucide-react';
 import { Heading } from '@/components/atoms/Heading';
 import { Button } from '@/components/atoms/Button';
+import { CONTACT } from '@/lib/constants';
+
+const SUBMIT_FALLBACK = `Sorry, something went wrong. Please call us on ${CONTACT.phone} or email ${CONTACT.email}.`;
 
 const POSITIONS = [
   "Web Development",
@@ -158,17 +161,44 @@ export function CareersMainSection({ positions }: CareersMainSectionProps = {}) 
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) return;
 
+    // Read the honeypot before any await (currentTarget is cleared afterwards)
+    const honeypot = String(new FormData(e.currentTarget).get('website') ?? '');
+
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const body = new FormData();
+      body.append('name', formData.name);
+      body.append('mobile', formData.mobile);
+      body.append('email', formData.email);
+      body.append('position', formData.position);
+      if (resumeFile) body.append('resume', resumeFile);
+      body.append('website', honeypot);
+      // No Content-Type header: the browser sets the multipart boundary itself
+      const request: RequestInit = { method: 'POST', body };
+      const res = await fetch('/api/careers', request);
+      const result = await res.json().catch(() => ({}));
+
+      if (!res.ok || !result.ok) {
+        const fieldErrors: Record<string, string> = result.errors ?? {};
+        setErrors({
+          ...fieldErrors,
+          submit: result.error ?? (Object.keys(fieldErrors).length ? 'Please correct the highlighted fields.' : SUBMIT_FALLBACK),
+        });
+        return;
+      }
+
       setIsSubmitted(true);
       if (expiryTimerRef.current) clearTimeout(expiryTimerRef.current);
       if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-    }, 1000);
+    } catch {
+      setErrors({ submit: SUBMIT_FALLBACK });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -489,7 +519,7 @@ export function CareersMainSection({ positions }: CareersMainSectionProps = {}) 
 
                           <div className="flex flex-col">
                             <span className="text-[14px] text-[#282727] font-normal">
-                              I'm not a robot
+                              I&apos;m not a robot
                             </span>
                             {isCaptchaChecked && captchaSecondsLeft !== null && (
                               <span className="text-[10px] text-emerald-600 font-medium">
@@ -534,27 +564,24 @@ export function CareersMainSection({ positions }: CareersMainSectionProps = {}) 
                           <span>{errors.captcha}</span>
                         </motion.div>
                       ) : null}
-
-                      {/* Developer testing button to test expiration immediately */}
-                      {isCaptchaChecked && (
-                        <div className="pt-1 pl-1">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (expiryTimerRef.current) clearTimeout(expiryTimerRef.current);
-                              if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-                              setIsCaptchaChecked(false);
-                              setIsCaptchaExpired(true);
-                              setCaptchaSecondsLeft(null);
-                            }}
-                            className="text-[11px] text-gray-400 hover:text-[#d93025] underline transition-colors"
-                          >
-                            ⚡ Test Expiration Now
-                          </button>
-                        </div>
-                      )}
                     </div>
+
+                    {/* Honeypot: hidden from people, filled in by spam bots */}
+                    <input
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="absolute -left-[9999px] w-px h-px opacity-0"
+                    />
+
+                    {errors.submit && (
+                      <div role="alert" className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-600">
+                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+                        <span>{errors.submit}</span>
+                      </div>
+                    )}
 
                     {/* Submit Button (Exact match to screenshot) */}
                     <div className="pt-2">
