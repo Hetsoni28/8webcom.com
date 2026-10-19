@@ -44,7 +44,8 @@ function ScrollHighlightText({ text, className }: { text: string; className?: st
   );
 }
 
-// ─── Image with curtain reveal + parallax ─────────────────────────────────────
+// ─── Image with fade-in reveal + optional parallax ────────────────────────────
+// Uses opacity/scale (not clip-path) — works reliably on all mobile browsers.
 function RevealImage({
   src,
   alt,
@@ -63,9 +64,10 @@ function RevealImage({
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], [parallax, -parallax]);
+  // Reduce parallax strength on mobile (parallax effect can feel jarring on small screens)
+  const y = useTransform(scrollYProgress, [0, 1], [parallax * 0.5, -parallax * 0.5]);
 
-  // On mobile/reduced motion: simple fade-in instead of clip-path (clip-path fails off-screen on mobile)
+  // Reduced-motion or SSR: render immediately, no animation
   if (reduce) {
     return (
       <div ref={ref} className={cn('relative overflow-hidden rounded-2xl bg-gray-100', className)}>
@@ -80,16 +82,17 @@ function RevealImage({
       className={cn('relative overflow-hidden rounded-2xl bg-gray-100', className)}
       initial={{ opacity: 0, scale: 1.04 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: '0px 0px -40px 0px' }}
-      transition={{ duration: 0.9, delay, ease: EASE_OUT }}
+      // margin: fire as soon as the element enters the viewport bottom edge
+      viewport={{ once: true, margin: '0px 0px -20px 0px' }}
+      transition={{ duration: 0.85, delay, ease: EASE_OUT }}
     >
-      <motion.div className="absolute inset-y-[-14%] inset-x-0" style={{ y }}>
+      <motion.div className="absolute inset-y-[-12%] inset-x-0" style={{ y }}>
         <motion.div
           className="absolute inset-0"
           initial={{ scale: 1.08 }}
           whileInView={{ scale: 1 }}
-          viewport={{ once: true, margin: '0px 0px -40px 0px' }}
-          transition={{ duration: 1.1, delay, ease: EASE_OUT }}
+          viewport={{ once: true, margin: '0px 0px -20px 0px' }}
+          transition={{ duration: 1.05, delay, ease: EASE_OUT }}
         >
           <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
         </motion.div>
@@ -135,54 +138,73 @@ export function AboutSection({
   const img3Alt = images[2]?.alt ?? 'About 8webcom - Business Growth';
 
   return (
-    <section className="relative bg-white py-24 lg:py-36" id="about-sec" aria-label="About 8webcom.com">
+    <section
+      className="relative bg-white py-16 sm:py-20 lg:py-28 xl:py-36"
+      id="about-sec"
+      aria-label="About 8webcom.com"
+    >
       <div className="container-site">
-        {/* ── Row 1: heading + scroll-highlighted statement ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+
+        {/* ══════════════════════════════════════════════════════════════════
+            Row 1 — Heading column (left) + Description column (right)
+            xs:   single column, stacked
+            sm:   single column, wider text
+            lg:   two columns side-by-side (5 / 7 grid)
+        ══════════════════════════════════════════════════════════════════ */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16">
+
+          {/* ── Left: eyebrow + giant heading + years counter ── */}
           <div className="lg:col-span-5 flex flex-col">
             <Eyebrow label={subTitle} />
-            <h2 className="mt-5 font-extrabold text-[#1F2429] tracking-[-0.04em] leading-[0.95] text-[52px] sm:text-[72px] lg:text-[84px] xl:text-[100px] wrap-break-word">
+
+            {/* Fluid heading: 40 px on xs → 72 px sm → 84 px lg → 100 px xl */}
+            <h2 className="mt-4 sm:mt-5 font-extrabold text-[#1F2429] tracking-[-0.04em] leading-[0.95] text-[40px] xs:text-[48px] sm:text-[64px] md:text-[72px] lg:text-[84px] xl:text-[100px] break-words">
               <MaskedWords text={heading} />
             </h2>
 
+            {/* Years counter — shrinks slightly on xs */}
             <motion.div
-              className="mt-10 flex items-center gap-5"
+              className="mt-8 sm:mt-10 flex items-center gap-4 sm:gap-5"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VIEWPORT}
               transition={{ duration: 0.9, delay: 0.2, ease: EASE_OUT }}
             >
-              <span className="text-[56px] lg:text-[72px] font-extrabold tracking-[-0.04em] leading-none text-[#F58220]">
+              <span className="text-[48px] sm:text-[56px] lg:text-[72px] font-extrabold tracking-[-0.04em] leading-none text-[#F58220]">
                 {experienceYears}
               </span>
-              <span className="text-[13px] font-bold uppercase tracking-[0.18em] text-gray-500 leading-snug max-w-28">
+              <span className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.18em] text-gray-500 leading-snug max-w-[7rem]">
                 {experienceText}
               </span>
             </motion.div>
           </div>
 
+          {/* ── Right: scroll-highlight body + CTA row ── */}
           <div className="lg:col-span-7 lg:pt-12">
             <ScrollHighlightText
               text={description || FALLBACK_DESCRIPTION}
-              className="text-[22px] sm:text-[27px] lg:text-[32px] font-semibold leading-[1.42] tracking-[-0.02em] text-[#1F2429]"
+              className="text-[17px] xs:text-[19px] sm:text-[22px] md:text-[26px] lg:text-[30px] xl:text-[32px] font-semibold leading-[1.45] tracking-[-0.02em] text-[#1F2429]"
             />
 
+            {/* CTA + phone — stack vertically on xs, row on sm+ */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VIEWPORT}
               transition={{ duration: 0.9, ease: EASE_OUT }}
-              className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5"
+              className="mt-8 sm:mt-10 flex flex-col xs:flex-row flex-wrap items-start xs:items-center gap-4 xs:gap-x-8 xs:gap-y-5"
             >
               <CtaLink href={ctaHref}>{ctaLabel}</CtaLink>
+
               <a
                 href={`tel:${phone.replace(/\s+/g, '')}`}
                 className="group inline-flex items-center gap-3 text-[#1F2429] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded-full"
+                aria-label={`Call us at ${phone}`}
               >
-                <span className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center text-[#0799B3] transition-colors duration-300 group-hover:bg-[#0799B3] group-hover:border-[#0799B3] group-hover:text-white">
-                  <Phone className="w-4.5 h-4.5" aria-hidden="true" />
+                <span className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-gray-200 flex items-center justify-center text-[#0799B3] transition-colors duration-300 group-hover:bg-[#0799B3] group-hover:border-[#0799B3] group-hover:text-white shrink-0">
+                  <Phone className="w-4 h-4 sm:w-4.5 sm:h-4.5" aria-hidden="true" />
                 </span>
-                <span className="font-semibold text-[15px] sm:text-base transition-colors duration-300 group-hover:text-[#0799B3]">
+                <span className="font-semibold text-[14px] sm:text-[15px] md:text-base transition-colors duration-300 group-hover:text-[#0799B3]">
                   {phone}
                 </span>
               </a>
@@ -190,39 +212,62 @@ export function AboutSection({
           </div>
         </div>
 
-        {/* ── Row 2: asymmetric image strip, each layer at its own speed ── */}
-        {/* Mobile (< 640 px): all images full-width stacked                     */}
-        {/* Small (640–768 px): large image full-width, two small split 50/50    */}
-        {/* Medium (768 px +): original asymmetric 6 / 3 / 3 column layout       */}
-        <div className="mt-20 lg:mt-28 grid grid-cols-12 gap-3 sm:gap-5 items-end">
+        {/* ══════════════════════════════════════════════════════════════════
+            Row 2 — Image strip
+            xs  (< 480 px):  all 3 images full-width, stacked
+            sm  (480–767px): img1 full-width; img2 + img3 side-by-side 50/50
+            md  (768–1023px): img1 full-width; img2 + img3 side-by-side 50/50
+            lg  (1024 px +):  asymmetric 6 / 3 / 3 column layout
+        ══════════════════════════════════════════════════════════════════ */}
+        <div className="mt-14 sm:mt-20 lg:mt-28 grid grid-cols-12 gap-3 sm:gap-4 lg:gap-5 items-end">
+
+          {/* Image 1 — large hero image */}
           <RevealImage
             src={img1}
             alt={img1Alt}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="col-span-12 md:col-span-6 aspect-video sm:aspect-16/11 min-h-[220px]"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className={cn(
+              'col-span-12 lg:col-span-6',
+              'h-[240px] xs:h-[280px] sm:h-[320px] md:h-[360px] lg:h-auto lg:aspect-[16/11]',
+            )}
             parallax={30}
           />
+
+          {/* Image 2 — tall portrait */}
           <RevealImage
             src={img2}
             alt={img2Alt}
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-            className="col-span-12 sm:col-span-6 md:col-span-3 aspect-video sm:aspect-3/4 min-h-[180px]"
+            sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className={cn(
+              'col-span-12 sm:col-span-6 lg:col-span-3',
+              'h-[200px] xs:h-[240px] sm:h-[280px] md:h-[320px] lg:h-auto lg:aspect-[3/4]',
+            )}
             delay={0.12}
-            parallax={55}
+            parallax={45}
           />
+
+          {/* Image 3 — square */}
           <RevealImage
             src={img3}
             alt={img3Alt}
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-            className="col-span-12 sm:col-span-6 md:col-span-3 aspect-video sm:aspect-square min-h-[180px]"
+            sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className={cn(
+              'col-span-12 sm:col-span-6 lg:col-span-3',
+              'h-[200px] xs:h-[240px] sm:h-[280px] md:h-[280px] lg:h-auto lg:aspect-square',
+            )}
             delay={0.24}
             parallax={20}
           />
         </div>
 
-        {/* ── Row 3: capabilities ── */}
+        {/* ══════════════════════════════════════════════════════════════════
+            Row 3 — Capabilities / feature cards
+            xs:  1 column
+            sm:  2 columns
+            lg:  3 columns
+        ══════════════════════════════════════════════════════════════════ */}
         {features.length > 0 && (
-          <ul className="mt-16 lg:mt-20 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-12">
+          <ul className="mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6 lg:gap-12">
             {features.map((f, i) => (
               <motion.li
                 key={f.title}
@@ -230,7 +275,7 @@ export function AboutSection({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={VIEWPORT}
                 transition={{ duration: 0.9, delay: i * 0.1, ease: EASE_OUT }}
-                className="group relative pt-8 border-t border-gray-200"
+                className="group relative pt-7 sm:pt-8 border-t border-gray-200"
               >
                 {/* Accent rule draws over the hairline on hover */}
                 <span
@@ -238,17 +283,19 @@ export function AboutSection({
                   className="absolute -top-px left-0 h-0.5 w-full origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out-expo"
                   style={{ background: ICON_BG[i % ICON_BG.length] }}
                 />
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-5 sm:mb-6">
                   <span
-                    className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-500 ease-out-expo group-hover:-translate-y-1"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-transform duration-500 ease-out-expo group-hover:-translate-y-1"
                     style={{ background: ICON_BG[i % ICON_BG.length] }}
                   >
-                    <Image src={f.icon} alt="" width={24} height={24} className="w-6 h-6" aria-hidden="true" />
+                    <Image src={f.icon} alt="" width={24} height={24} className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                   </span>
                   <span className="text-sm font-semibold tabular-nums text-gray-400">{String(i + 1).padStart(2, '0')}</span>
                 </div>
-                <h3 className="text-lg lg:text-xl font-bold text-[#1F2429] tracking-tight leading-snug mb-2.5">{f.title}</h3>
-                <p className="text-gray-600 text-[15px] leading-relaxed">{f.description}</p>
+                <h3 className="text-base sm:text-lg lg:text-xl font-bold text-[#1F2429] tracking-tight leading-snug mb-2 sm:mb-2.5">
+                  {f.title}
+                </h3>
+                <p className="text-gray-600 text-[14px] sm:text-[15px] leading-relaxed">{f.description}</p>
               </motion.li>
             ))}
           </ul>
