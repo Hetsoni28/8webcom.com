@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { CONTACT } from '@/lib/constants';
+import { trackPointer } from '@/lib/utils';
 import { MapPin, Phone, Mail, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { staggerContainer } from '@/lib/animations';
 
@@ -50,17 +51,7 @@ interface InfoCardProps {
 }
 
 function InfoCard({ card }: InfoCardProps) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
   const Icon = card.icon;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
 
   return (
     <motion.a
@@ -73,7 +64,7 @@ function InfoCard({ card }: InfoCardProps) {
           opacity: 1, 
           y: 0, 
           scale: 1,
-          transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+          transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
         },
       }}
       whileHover={{ 
@@ -81,25 +72,15 @@ function InfoCard({ card }: InfoCardProps) {
         scale: 1.02,
         transition: { type: "spring", stiffness: 350, damping: 25 } 
       }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseMove={trackPointer}
       className="group relative bg-white p-7 lg:p-8 rounded-3xl border border-gray-100/90 shadow-sm hover:shadow-2xl hover:border-[#0799B3]/40 transition-all duration-500 flex flex-col justify-between overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
     >
       {/* Interactive mouse spotlight glow */}
-      {isHovered && (
-        <div
-          className="pointer-events-none absolute -inset-px transition-opacity duration-300 opacity-100"
-          style={{
-            background: `radial-gradient(300px circle at ${mousePosition.x}px ${mousePosition.y}px, ${card.accent}15, transparent 80%)`,
-          }}
-        />
-      )}
-
-      {/* Corner ambient glow */}
-      <div 
-        className="absolute -top-12 -right-12 w-28 h-28 rounded-full blur-2xl pointer-events-none transition-transform duration-700 group-hover:scale-150 opacity-25"
-        style={{ backgroundColor: card.accent }}
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(300px circle at var(--mx) var(--my), ${card.accent}15, transparent 80%)`,
+        }}
       />
 
       <div className="relative z-10">
@@ -110,7 +91,6 @@ function InfoCard({ card }: InfoCardProps) {
           style={{ 
             backgroundColor: `${card.accent}15`, 
             color: card.accent,
-            boxShadow: isHovered ? `0 8px 20px ${card.accent}30` : undefined
           }}
         >
           <Icon className="w-7 h-7" aria-hidden="true" />
@@ -120,7 +100,7 @@ function InfoCard({ card }: InfoCardProps) {
           {card.subtitle}
         </span>
         
-        <h3 className="text-xl font-black text-[#1F2429] mb-3 group-hover:text-[#0799B3] transition-colors duration-300">
+        <h3 className="text-xl font-extrabold text-[#1F2429] mb-3 group-hover:text-[#0799B3] transition-colors duration-300">
           {card.title}
         </h3>
 
@@ -141,24 +121,8 @@ export function ContactInfoCards() {
   return (
     <section className="py-16 lg:py-20 bg-gray-50/70 relative overflow-hidden">
       {/* Subtle floating ambient background light */}
-      <motion.div 
-        animate={{ 
-          y: [0, -20, 0],
-          scale: [1, 1.05, 1],
-        }}
-        transition={{ repeat: Infinity, duration: 9, ease: "easeInOut" }}
-        className="absolute top-0 right-10 w-96 h-96 bg-[#0799B3]/5 rounded-full blur-3xl pointer-events-none" 
-      />
-      <motion.div 
-        animate={{ 
-          y: [0, 20, 0],
-          scale: [1, 1.05, 1],
-        }}
-        transition={{ repeat: Infinity, duration: 11, ease: "easeInOut" }}
-        className="absolute bottom-0 left-10 w-96 h-96 bg-[#F58220]/5 rounded-full blur-3xl pointer-events-none" 
-      />
 
-      <div className="container mx-auto px-4 lg:px-8 max-w-7xl relative z-10">
+      <div className="container-site relative z-10">
         <motion.div
           variants={staggerContainer}
           initial="hidden"

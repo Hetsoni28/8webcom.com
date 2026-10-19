@@ -150,31 +150,27 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
       />
 
       {/* Overview Section */}
-      <section className="py-24 lg:py-40 relative overflow-hidden">
-        {/* Abstract Background Elements */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#F58220]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4 -z-10" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#0799B3]/5 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/4 -z-10" />
-
-        <div className="container mx-auto px-4 lg:px-8">
+      <section className="py-24 lg:py-32">
+        <div className="container-site">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             
             <Reveal variants={fadeLeft}>
-              <div className="relative h-[600px] rounded-[3rem] overflow-hidden shadow-2xl group border border-gray-100">
+              <div className="relative aspect-4/5 lg:aspect-auto lg:h-150 rounded-2xl overflow-hidden group bg-gray-100">
                 <Image
                   src={service.image}
                   alt={service.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover transform group-hover:scale-110 transition-transform duration-[1.5s] ease-out"
+                  className="object-cover transition-transform duration-1200 ease-out-expo group-hover:scale-[1.04]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120]/90 via-[#0B1120]/40 to-transparent mix-blend-multiply" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#12161C]/90 via-[#12161C]/30 to-transparent" />
                 
                 {/* Floating Glass Box */}
-                <div className="absolute bottom-10 left-10 right-10 bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl transform group-hover:-translate-y-4 transition-transform duration-700">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0799B3] to-[#F58220] flex items-center justify-center mb-6 shadow-xl shadow-[#0799B3]/30">
-                    <Zap className="w-8 h-8 text-white" />
+                <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-8 bg-white/10 backdrop-blur-md border border-white/15 p-6 sm:p-7 rounded-2xl transition-transform duration-700 ease-out-expo group-hover:-translate-y-1">
+                  <div className="w-12 h-12 rounded-xl bg-[#0799B3] flex items-center justify-center mb-5">
+                    <Zap className="w-6 h-6 text-white" aria-hidden="true" />
                   </div>
-                  <h3 className="text-3xl font-black text-white leading-tight mb-2">Empowering Businesses</h3>
+                  <h3 className="text-2xl font-bold text-white tracking-tight leading-tight mb-1.5">Empowering Businesses</h3>
                   <p className="text-white/80 font-medium">Through next-generation digital solutions.</p>
                 </div>
               </div>
@@ -227,13 +223,13 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
       <ServiceProcess />
 
       {/* Why Choose Us Section for this Service */}
-      <section className="py-24 lg:py-40 bg-[#0B1120] text-white relative overflow-hidden">
+      <section className="py-24 lg:py-32 bg-[#1F2429] text-white relative overflow-hidden">
         {/* Animated Background Mesh */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
         </div>
 
-        <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="container-site relative z-10">
           <Reveal variants={fadeUp} className="mb-24">
             <SectionTitle 
               heading={
@@ -253,29 +249,26 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
 
           <Reveal variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             <Reveal variants={staggerItem} margin="0px">
-              <div className="group bg-white/[0.02] backdrop-blur-md border border-white/10 p-12 rounded-[2.5rem] hover:bg-white/[0.05] hover:border-[#0799B3]/50 transition-all duration-500 h-full relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#0799B3]/20 blur-3xl rounded-full group-hover:bg-[#0799B3]/40 transition-colors duration-500" />
+              <div className="group bg-white/[0.03] border border-white/10 p-8 lg:p-10 rounded-2xl hover:bg-white/[0.06] hover:border-[#0799B3]/50 transition-all duration-500 h-full relative overflow-hidden">
                 <Shield className="w-14 h-14 text-[#0799B3] mb-8 transform group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-500" />
-                <h4 className="text-3xl font-black mb-4">Highly Secure</h4>
-                <p className="text-gray-400 text-lg leading-relaxed font-medium">Security is ingrained in our development lifecycle. We ensure your data and operations remain protected against modern threats.</p>
+                <h4 className="text-2xl font-bold tracking-tight mb-3">Highly Secure</h4>
+                <p className="text-gray-400 text-[15px] leading-relaxed">Security is ingrained in our development lifecycle. We ensure your data and operations remain protected against modern threats.</p>
               </div>
             </Reveal>
 
             <Reveal variants={staggerItem} margin="0px">
-              <div className="group bg-white/[0.02] backdrop-blur-md border border-white/10 p-12 rounded-[2.5rem] hover:bg-white/[0.05] hover:border-[#F58220]/50 transition-all duration-500 h-full relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#F58220]/20 blur-3xl rounded-full group-hover:bg-[#F58220]/40 transition-colors duration-500" />
+              <div className="group bg-white/[0.03] border border-white/10 p-8 lg:p-10 rounded-2xl hover:bg-white/[0.06] hover:border-[#F58220]/50 transition-all duration-500 h-full relative overflow-hidden">
                 <Zap className="w-14 h-14 text-[#F58220] mb-8 transform group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500" />
-                <h4 className="text-3xl font-black mb-4">Lightning Fast</h4>
-                <p className="text-gray-400 text-lg leading-relaxed font-medium">Performance is a feature. We optimize every byte and query to ensure your digital presence is blazing fast across all devices.</p>
+                <h4 className="text-2xl font-bold tracking-tight mb-3">Lightning Fast</h4>
+                <p className="text-gray-400 text-[15px] leading-relaxed">Performance is a feature. We optimize every byte and query to ensure your digital presence is blazing fast across all devices.</p>
               </div>
             </Reveal>
 
             <Reveal variants={staggerItem} margin="0px">
-              <div className="group bg-white/[0.02] backdrop-blur-md border border-white/10 p-12 rounded-[2.5rem] hover:bg-white/[0.05] hover:border-[#0799B3]/50 transition-all duration-500 h-full relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#0799B3]/20 blur-3xl rounded-full group-hover:bg-[#0799B3]/40 transition-colors duration-500" />
+              <div className="group bg-white/[0.03] border border-white/10 p-8 lg:p-10 rounded-2xl hover:bg-white/[0.06] hover:border-[#0799B3]/50 transition-all duration-500 h-full relative overflow-hidden">
                 <TrendingUp className="w-14 h-14 text-[#0799B3] mb-8 transform group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-500" />
-                <h4 className="text-3xl font-black mb-4">Scalable Growth</h4>
-                <p className="text-gray-400 text-lg leading-relaxed font-medium">Our solutions are built to grow with you. We use modern architecture patterns that effortlessly scale as your business expands.</p>
+                <h4 className="text-2xl font-bold tracking-tight mb-3">Scalable Growth</h4>
+                <p className="text-gray-400 text-[15px] leading-relaxed">Our solutions are built to grow with you. We use modern architecture patterns that effortlessly scale as your business expands.</p>
               </div>
             </Reveal>
           </Reveal>

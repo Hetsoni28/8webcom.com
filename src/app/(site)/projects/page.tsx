@@ -3,7 +3,8 @@ import { PageHero } from "@/components/organisms/sections/PageHero";
 import { ContactCtaSection } from "@/components/organisms/sections/ContactCtaSection";
 import { ProjectsGrid } from "@/components/organisms/sections/ProjectsGrid";
 import { Testimonials } from "@/components/organisms/sections/Testimonials";
-import { PROJECTS, TESTIMONIALS } from "@/lib/data";
+import { CASE_STUDIES, TESTIMONIALS } from "@/lib/data";
+import { Project } from "@/types";
 import { sanityFetch } from "@/sanity/fetch";
 import { projectsQuery, allTestimonialsQuery } from "@/sanity/queries";
 
@@ -41,8 +42,19 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
+  // Fallback = real client websites (same source as the homepage showcase)
+  const realProjects: Project[] = CASE_STUDIES.map((c) => ({
+    id: String(c.id),
+    title: c.title,
+    category: c.category,
+    description: '',
+    image: c.image,
+    url: c.url,
+    tags: [],
+  }));
+
   const [projects, testimonials] = await Promise.all([
-    sanityFetch({ query: projectsQuery, fallback: PROJECTS, tags: ['project'] }),
+    sanityFetch({ query: projectsQuery, fallback: realProjects, tags: ['project'] }),
     sanityFetch({ query: allTestimonialsQuery, fallback: TESTIMONIALS, tags: ['testimonial'] }),
   ]);
 

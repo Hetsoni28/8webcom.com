@@ -8,12 +8,12 @@ import { MapPin, Navigation } from 'lucide-react';
 export function ContactMapSection() {
   return (
     <section className="pb-24 lg:pb-32 bg-white relative">
-      <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
+      <div className="container-site">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="relative rounded-3xl overflow-hidden border border-gray-200/80 shadow-xl bg-gray-100 h-[450px] lg:h-[500px]"
         >
           {/* Responsive Google Maps Embed centered on Sun Gravitas Satellite Ahmedabad */}

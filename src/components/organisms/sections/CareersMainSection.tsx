@@ -203,7 +203,7 @@ export function CareersMainSection({ positions }: CareersMainSectionProps = {}) 
 
   return (
     <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
+      <div className="container-site">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
           {/* ── Left Content Column (Exact match to live screenshot) ── */}

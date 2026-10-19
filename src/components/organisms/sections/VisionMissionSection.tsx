@@ -141,7 +141,7 @@ function CardIcon({ type }: { type: 'vision' | 'mission' | 'quality' }) {
 export function VisionMissionSection({ items = ITEMS }: { items?: VisionMissionItem[] }) {
   return (
     <section className="py-20 lg:py-28 bg-[#FBFBFC] relative overflow-hidden" id="vision-mission-sec">
-      <div className="container mx-auto px-4 lg:px-8">
+      <div className="container-site">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {items.map((item, idx) => (
             <motion.div

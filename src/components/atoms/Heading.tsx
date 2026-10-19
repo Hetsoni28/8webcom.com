@@ -1,4 +1,4 @@
-import { ElementType, ReactNode } from "react";
+import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface HeadingProps {
@@ -9,6 +9,8 @@ interface HeadingProps {
   children: ReactNode;
 }
 
+// One type scale for the whole site (matches homepage SectionHeader):
+// extrabold, tight tracking, ~1.1 line-height on large sizes.
 export function Heading({
   as: Component = "h2",
   size = "lg",
@@ -17,20 +19,19 @@ export function Heading({
   children,
 }: HeadingProps) {
   const sizes = {
-    xs: "text-lg md:text-xl",
-    sm: "text-xl md:text-2xl",
-    md: "text-2xl md:text-3xl",
-    lg: "text-3xl md:text-4xl lg:text-5xl",
-    xl: "text-4xl md:text-5xl lg:text-6xl",
-    "2xl": "text-5xl md:text-6xl lg:text-7xl",
-    beast: "text-4xl md:text-5xl xl:text-6xl font-black tracking-tighter",
+    xs: "text-lg md:text-xl font-bold tracking-tight",
+    sm: "text-xl md:text-2xl font-bold tracking-tight",
+    md: "text-2xl md:text-3xl font-bold tracking-tight",
+    lg: "text-[30px] sm:text-[36px] lg:text-[42px] font-extrabold tracking-[-0.025em] leading-[1.12]",
+    xl: "text-[32px] sm:text-[40px] lg:text-[48px] font-extrabold tracking-[-0.025em] leading-[1.1]",
+    "2xl": "text-[40px] sm:text-[52px] lg:text-[64px] font-extrabold tracking-[-0.035em] leading-[1.04]",
+    beast: "text-[32px] sm:text-[40px] lg:text-[48px] font-extrabold tracking-[-0.025em] leading-[1.1]",
   };
 
   return (
     <Component
       className={cn(
-        "leading-tight wrap-break-word",
-        size !== 'beast' && "font-bold",
+        "wrap-break-word",
         color === "default" ? "text-[#1F2429]" : "text-white",
         sizes[size],
         className
@@ -40,4 +41,3 @@ export function Heading({
     </Component>
   );
 }
-

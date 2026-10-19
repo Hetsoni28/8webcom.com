@@ -241,64 +241,6 @@ export const CLIENT_LOGOS = [
 
 // â”€â”€â”€ Contact CTA Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-export const PROJECTS = [
-  {
-    id: "p1",
-    title: "E-Commerce Replatforming",
-    category: "Web Development",
-    client: "RetailHub India",
-    description: "A complete overhaul of a legacy e-commerce platform using Next.js and Shopify, resulting in a 200% increase in mobile conversions and sub-second page loads.",
-    image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    tags: ["Next.js", "Shopify", "Tailwind CSS"],
-  },
-  {
-    id: "p2",
-    title: "Enterprise CRM Implementation",
-    category: "CRM Solutions",
-    client: "FinServe Corp",
-    description: "Custom built CRM solution tailored for the Indian financial sector, automating lead tracking, KYC processes, and customer engagement workflows.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    tags: ["React", "Node.js", "PostgreSQL"],
-  },
-  {
-    id: "p3",
-    title: "B2B Vendor Portal",
-    category: "Web Portal",
-    client: "Global Logistics",
-    description: "A secure, scalable web portal connecting over 500+ international vendors with real-time inventory syncing, invoicing, and shipment tracking.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    tags: ["Vue.js", "Laravel", "AWS"],
-  },
-  {
-    id: "p4",
-    title: "360° Digital Campaign",
-    category: "Digital Marketing",
-    client: "Urban Lifestyle",
-    description: "End-to-end digital marketing campaign combining SEO, performance marketing, and social media, driving 5M+ impressions and a 3x ROAS in Q4.",
-    image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    tags: ["SEO", "Google Ads", "Meta Ads"],
-  },
-  {
-    id: "p5",
-    title: "Healthcare Patient Portal",
-    category: "Web Portal",
-    client: "MediCare Plus",
-    description: "A HIPAA-compliant patient portal for booking appointments, viewing test results, and conducting secure tele-consultations.",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    tags: ["React", "Express", "MongoDB"],
-  },
-  {
-    id: "p6",
-    title: "Real Estate Property Aggregator",
-    category: "Web Development",
-    client: "Metro Homes",
-    description: "A high-performance real estate platform featuring advanced map-based search, 3D virtual tours, and automated property matching algorithms.",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    tags: ["Next.js", "Prisma", "Mapbox"],
-  }
-]; 
- 
-
 
 // ─── CRM Solutions Cards ──────────────────────────────────────
 export const CRM_CARDS = [

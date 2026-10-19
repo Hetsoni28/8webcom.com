@@ -18,7 +18,7 @@ export default function Loading() {
 
       {/* Hero Skeleton Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-gray-50/60 overflow-hidden border-b border-gray-100">
-        <div className="container mx-auto px-4 lg:px-8 max-w-6xl">
+        <div className="container-site">
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-6">
             {/* Pill Badge Skeleton */}
             <Skeleton
@@ -67,7 +67,7 @@ export default function Loading() {
 
       {/* Content Grid Skeletons */}
       <section className="py-20 lg:py-24">
-        <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
+        <div className="container-site">
           {/* Section Header Skeleton */}
           <div className="mb-14 max-w-md space-y-3">
             <Skeleton variant="rounded" width={120} height={24} className="rounded-full bg-gray-200" />

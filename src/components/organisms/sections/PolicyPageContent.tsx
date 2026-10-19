@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import { trackPointer } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Heading } from '@/components/atoms/Heading';
 import { Badge } from '@/components/atoms/Badge';
@@ -46,17 +47,6 @@ const POLICY_TABS = [
 ];
 
 function SectionCard({ section, index }: { section: PolicySection; index: number }) {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
-
   const formattedNum = String(index + 1).padStart(2, '0');
 
   return (
@@ -65,29 +55,26 @@ function SectionCard({ section, index }: { section: PolicySection; index: number
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      // Each card reveals on its own scroll entry, so keep the stagger tiny
+      transition={{ duration: 0.8, delay: Math.min(index, 2) * 0.06, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -4, transition: { type: 'spring', stiffness: 350, damping: 25 } }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseMove={trackPointer}
       className="group relative bg-white p-7 sm:p-9 lg:p-10 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#0799B3]/35 transition-all duration-500 overflow-hidden"
     >
       {/* Interactive mouse spotlight glow */}
-      {isHovered && (
-        <div
-          className="pointer-events-none absolute -inset-px transition-opacity duration-300 opacity-100"
-          style={{
-            background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(7, 153, 179, 0.08), transparent 80%)`,
-          }}
-        />
-      )}
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: 'radial-gradient(350px circle at var(--mx) var(--my), rgba(7, 153, 179, 0.08), transparent 80%)',
+        }}
+      />
 
       {/* Ambient background decoration */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#0799B3]/5 to-transparent rounded-bl-3xl pointer-events-none" />
 
       <div className="relative z-10">
         <div className="flex items-center gap-3 mb-4">
-          <span className="h-9 px-3 rounded-xl bg-[#0799B3]/10 text-[#0799B3] text-xs font-black flex items-center justify-center shrink-0 border border-[#0799B3]/20 shadow-xs">
+          <span className="h-9 px-3 rounded-xl bg-[#0799B3]/10 text-[#0799B3] text-xs font-extrabold flex items-center justify-center shrink-0 border border-[#0799B3]/20 shadow-xs">
             {index + 1}.)
           </span>
           <Heading as="h3" size="md" className="group-hover:text-[#0799B3] transition-colors duration-300">
@@ -114,18 +101,8 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
   return (
     <section className="py-16 lg:py-24 bg-gray-50/60 relative overflow-hidden">
       {/* Floating ambient background glows */}
-      <motion.div 
-        animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
-        transition={{ repeat: Infinity, duration: 11, ease: 'easeInOut' }}
-        className="absolute top-10 right-10 w-[500px] h-[500px] bg-[#0799B3]/5 rounded-full blur-3xl pointer-events-none" 
-      />
-      <motion.div 
-        animate={{ y: [0, 20, 0], scale: [1, 1.05, 1] }}
-        transition={{ repeat: Infinity, duration: 13, ease: 'easeInOut' }}
-        className="absolute bottom-10 left-10 w-[500px] h-[500px] bg-[#F58220]/5 rounded-full blur-3xl pointer-events-none" 
-      />
 
-      <div className="container mx-auto px-4 lg:px-8 max-w-7xl relative z-10">
+      <div className="container-site relative z-10">
 
         {/* ── Policy Switcher Navigation Bar ── */}
         <motion.div
@@ -180,7 +157,7 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
             >
               <div>
                 <Badge variant="primary" label={badgeLabel} className="mb-3" />
-                <h2 className="text-xl sm:text-2xl font-black text-[#1F2429] mb-2 leading-tight">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#1F2429] mb-2 leading-tight">
                   {policy.heading}
                 </h2>
                 <div className="flex items-center gap-2 text-xs font-medium text-gray-400 mt-2">

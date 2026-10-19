@@ -54,13 +54,13 @@ export function SectionTitle({
 
   if (noAnimate) {
     return (
-      <div className={cn("flex flex-col gap-3", alignments[align], className)}>
+      <div className={cn("flex flex-col gap-5", alignments[align], className)}>
         {subTitle && <Badge label={subTitle} />}
         <Heading as="h2" size={size} color={theme === "dark" ? "white" : "default"}>
           {renderHeading()}
         </Heading>
         {description && (
-          <Text color={theme === "dark" ? "white" : "muted"} className="max-w-2xl mt-2">{description}</Text>
+          <Text color={theme === "dark" ? "white" : "muted"} className={cn("max-w-2xl text-base sm:text-[17px] leading-[1.75]", theme === "dark" ? "text-gray-400" : "text-gray-600")}>{description}</Text>
         )}
       </div>
     );
@@ -72,7 +72,7 @@ export function SectionTitle({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-60px' }}
-      className={cn("flex flex-col gap-3", alignments[align], className)}
+      className={cn("flex flex-col gap-5", alignments[align], className)}
     >
       {subTitle && (
         <motion.div variants={staggerItem}>
@@ -86,7 +86,7 @@ export function SectionTitle({
       </motion.div>
       {description && (
         <motion.div variants={staggerItem}>
-          <Text color={theme === "dark" ? "white" : "muted"} className="max-w-2xl mt-2">{description}</Text>
+          <Text color={theme === "dark" ? "white" : "muted"} className={cn("max-w-2xl text-base sm:text-[17px] leading-[1.75]", theme === "dark" ? "text-gray-400" : "text-gray-600")}>{description}</Text>
         </motion.div>
       )}
     </motion.div>

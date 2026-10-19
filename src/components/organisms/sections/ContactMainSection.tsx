@@ -6,6 +6,7 @@ import { Heading } from '@/components/atoms/Heading';
 import { Button } from '@/components/atoms/Button';
 import { Badge } from '@/components/atoms/Badge';
 import { CONTACT, CONTACT_FORM_SERVICES, SOCIAL } from '@/lib/constants';
+import { trackPointer } from '@/lib/utils';
 
 const SUBMIT_FALLBACK = `Sorry, something went wrong. Please call us on ${CONTACT.phone} or email ${CONTACT.email}.`;
 import { 
@@ -33,9 +34,7 @@ export function ContactMainSection() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const [formMousePos, setFormMousePos] = useState({ x: 0, y: 0 });
-  const [isFormHovered, setIsFormHovered] = useState(false);
+
 
   const expiryTimerRef = useRef<NodeJS.Timeout | null>(null);
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -175,19 +174,9 @@ export function ContactMainSection() {
 
   return (
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
-      {/* Decorative ambient background glows with smooth floating animations */}
-      <motion.div 
-        animate={{ y: [0, -18, 0], scale: [1, 1.04, 1] }}
-        transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
-        className="absolute top-0 right-0 w-150 h-150 bg-[#0799B3]/5 rounded-full blur-3xl pointer-events-none" 
-      />
-      <motion.div 
-        animate={{ y: [0, 18, 0], scale: [1, 1.04, 1] }}
-        transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
-        className="absolute bottom-0 left-0 w-125 h-125 bg-[#F58220]/5 rounded-full blur-3xl pointer-events-none" 
-      />
+      {/* Decorative ambient background glows with smooth floating animations */}
 
-      <div className="container mx-auto px-4 lg:px-8 max-w-7xl relative z-10">
+      <div className="container-site relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* ── Left Content Column (Beast Typography & Trust Highlights) ── */}
@@ -195,7 +184,7 @@ export function ContactMainSection() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 space-y-10 pt-2"
           >
             <div>
@@ -291,27 +280,20 @@ export function ContactMainSection() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6"
           >
-            <div 
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                setFormMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-              }}
-              onMouseEnter={() => setIsFormHovered(true)}
-              onMouseLeave={() => setIsFormHovered(false)}
-              className="relative bg-[#f0f7f9] p-6 sm:p-8 lg:p-10 rounded-3xl border border-[#e2eef2] shadow-sm overflow-hidden"
+            <div
+              onMouseMove={trackPointer}
+              className="group/spot relative bg-[#f0f7f9] p-6 sm:p-8 lg:p-10 rounded-3xl border border-[#e2eef2] shadow-sm overflow-hidden"
             >
-              {/* Interactive mouse spotlight glow */}
-              {isFormHovered && (
-                <div
-                  className="pointer-events-none absolute -inset-px transition-opacity duration-300 opacity-100 z-0"
-                  style={{
-                    background: `radial-gradient(400px circle at ${formMousePos.x}px ${formMousePos.y}px, rgba(7, 153, 179, 0.08), transparent 80%)`,
-                  }}
-                />
-              )}
+              {/* Mouse spotlight: CSS variables only, so typing never re-renders on mouse move */}
+              <div
+                className="pointer-events-none absolute -inset-px opacity-0 group-hover/spot:opacity-100 transition-opacity duration-300 z-0"
+                style={{
+                  background: 'radial-gradient(400px circle at var(--mx) var(--my), rgba(7, 153, 179, 0.08), transparent 80%)',
+                }}
+              />
               <AnimatePresence mode="wait">
                 {isSubmitted ? (
                   <motion.div

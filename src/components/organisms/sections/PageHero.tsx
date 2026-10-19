@@ -1,7 +1,5 @@
 import React from 'react';
-import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
-import { Heading } from '@/components/atoms/Heading';
-import { Badge } from '@/components/atoms/Badge';
+import Image from 'next/image';
 
 export interface PageHeroProps {
   title: React.ReactNode;
@@ -11,50 +9,56 @@ export interface PageHeroProps {
   image?: string;
 }
 
+/**
+ * Inner-page hero — same framed panel language as the homepage hero.
+ * Server Component; the intro uses the CSS-only .hero-fade animation so the
+ * H1 paints immediately (no waiting on hydration).
+ */
 export function PageHero({ title, highlight, titleSuffix, subTitle, image }: PageHeroProps) {
-  const renderTitle = () => (
-    <>
-      {title}
-      {highlight && (
-        <>
-          {" "}
-          <span className="text-[#0799B3]">{highlight}</span>
-        </>
-      )}
-      {titleSuffix && ` ${titleSuffix}`}
-    </>
-  );
-
   return (
-    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-[#1F2429] overflow-hidden">
-      {image && (
-        <div className="absolute inset-0 z-0">
-          <ImageWithSkeleton 
-            src={image}
-            alt={typeof title === 'string' ? title : "Hero Image"}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-20"
-            skeletonClassName="bg-gray-900"
-          />
-          <div className="absolute inset-0 bg-linear-to-t from-[#1F2429] to-transparent pointer-events-none" />
-        </div>
-      )}
-      
-      {/* Decorative Elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-linear-to-l from-[#0799B3]/10 to-transparent z-0" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#F58220]/10 rounded-full blur-3xl z-0" />
-
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 text-center max-w-4xl">
-        {subTitle && (
-          <Badge variant="primary" label={subTitle} className="mb-6" />
+    <section className="bg-white px-2.5 sm:px-4 pt-[100px] sm:pt-[118px] lg:pt-[130px]">
+      <div className="relative min-h-[340px] sm:min-h-[400px] lg:min-h-[460px] rounded-[20px] sm:rounded-[28px] overflow-hidden bg-[#12161C] flex items-end">
+        {image && (
+          <div className="absolute inset-0" aria-hidden="true">
+            <Image
+              src={image}
+              alt=""
+              fill
+              priority
+              fetchPriority="high"
+              sizes="100vw"
+              className="object-cover opacity-40"
+            />
+          </div>
         )}
-        <Heading as="h1" size="beast" color="white">
-          {renderTitle()}
-        </Heading>
+        {/* Legibility gradients */}
+        <div className="absolute inset-0 bg-linear-to-r from-[#12161C] via-[#12161C]/80 to-[#12161C]/20" aria-hidden="true" />
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-[#12161C] to-transparent" aria-hidden="true" />
+
+        <div className="relative z-10 w-full px-6 sm:px-10 lg:px-14 pt-16 pb-10 sm:pb-14 lg:pb-16">
+          {subTitle && (
+            <div className="hero-fade flex items-center gap-3 mb-6" style={{ animationDelay: '0.05s' }}>
+              <span className="h-px w-10 bg-[#0799B3]" aria-hidden="true" />
+              <span className="text-[#0799B3] text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em]">
+                {subTitle}
+              </span>
+            </div>
+          )}
+          <h1
+            className="hero-fade max-w-4xl text-[40px] sm:text-[56px] lg:text-[72px] font-extrabold text-white tracking-[-0.04em] leading-[1.02] wrap-break-word"
+            style={{ animationDelay: '0.15s' }}
+          >
+            {title}
+            {highlight && (
+              <>
+                {' '}
+                <span className="text-[#0799B3]">{highlight}</span>
+              </>
+            )}
+            {titleSuffix && ` ${titleSuffix}`}
+          </h1>
+        </div>
       </div>
     </section>
   );
 }
-
