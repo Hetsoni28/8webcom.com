@@ -3,6 +3,7 @@ export const HERO_SLIDES = [
   {
     id: 1,
     title: "Web Designing",
+    category: "Custom Web Solutions",
     description:
       "Innovative design is not just a job for us, it is a passion. Our designer sees a project through to the end, no matter what.",
     image: "https://www.8webcom.com/admin/upload/slider/SpdOZhUD.webp",
@@ -12,6 +13,7 @@ export const HERO_SLIDES = [
   {
     id: 2,
     title: "Digital Marketing",
+    category: "Data-Driven ROI",
     description:
       "No longer is the success of our businesses completely reliant on word-of-mouth and persuasive print advertising.",
     image: "https://www.8webcom.com/admin/upload/slider/fQUwhTia.webp",
@@ -21,6 +23,7 @@ export const HERO_SLIDES = [
   {
     id: 3,
     title: "CRM Solutions",
+    category: "Enterprise Automation",
     description:
       "No longer is the success of our businesses completely reliant on word-of-mouth and persuasive print advertising.",
     image: "https://www.8webcom.com/admin/upload/slider/50r7Jsdf.webp",

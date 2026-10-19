@@ -9,11 +9,15 @@ import { EASE_OUT } from '@/lib/animations';
 import { CtaLink } from '@/components/atoms/CtaLink';
 
 export interface HeroSliderProps {
-  slides?: HeroSlide[];
+  slides: HeroSlide[];
+  /** Page H1 shown at the top of the hero (Sanity: Homepage → Hero → H1) */
+  h1: string;
+  /** Trust numbers card (Sanity: Homepage → Hero → Trust numbers) */
+  trustMetrics: { value: string; label: string }[];
 }
 
 interface SlideItem {
-  id: number;
+  id: string | number;
   category: string;
   title: string;
   description: string;
@@ -22,58 +26,19 @@ interface SlideItem {
   ctaHref: string;
 }
 
-const AUTHENTIC_SLIDES: SlideItem[] = [
-  {
-    id: 1,
-    category: "Custom Web Solutions",
-    title: "Web Designing",
-    description:
-      "Innovative design is not just a job for us, it is a passion. Our designers and engineers build high-performance web portals and business applications tailored for scalable growth.",
-    image: "https://www.8webcom.com/admin/upload/slider/SpdOZhUD.webp",
-    ctaLabel: "Get Started Now",
-    ctaHref: "/services/web-development",
-  },
-  {
-    id: 2,
-    category: "Data-Driven ROI",
-    title: "Digital Marketing",
-    description:
-      "No longer is the success of our businesses completely reliant on word-of-mouth. We engineer search engine strategies, targeted campaigns, and conversion funnels that drive real revenue.",
-    image: "https://www.8webcom.com/admin/upload/slider/fQUwhTia.webp",
-    ctaLabel: "Get Started Now",
-    ctaHref: "/services/digital-marketing",
-  },
-  {
-    id: 3,
-    category: "Enterprise Automation",
-    title: "CRM Solutions",
-    description:
-      "Centralize customer relationships, automate complex sales pipelines, and eliminate manual bottlenecks with custom enterprise CRM software and seamless business portals.",
-    image: "https://www.8webcom.com/admin/upload/slider/50r7Jsdf.webp",
-    ctaLabel: "Get Started Now",
-    ctaHref: "/services/crm-solutions",
-  },
-];
-
 const SLIDE_DURATION = 7; // seconds
 
-const TRUST_METRICS = [
-  { value: '15+ Years', label: 'Experience' },
-  { value: '1,500+', label: 'Projects Delivered' },
-  { value: '2,000+', label: 'Happy Clients' },
-];
-
-export function HeroSlider({ slides }: HeroSliderProps) {
-  const activeSlides: SlideItem[] = slides && slides.length > 0 ? slides.map((s, i) => ({
-    ...s,
-    id: s.id || i + 1,
-    title: s.title || AUTHENTIC_SLIDES[i]?.title || "Web Solutions",
-    category: s.category || AUTHENTIC_SLIDES[i]?.category || "Digital Solutions",
-    description: s.description || AUTHENTIC_SLIDES[i]?.description || "",
-    image: s.image || AUTHENTIC_SLIDES[i]?.image || AUTHENTIC_SLIDES[0].image,
-    ctaLabel: s.ctaLabel || AUTHENTIC_SLIDES[i]?.ctaLabel || "Get Started Now",
-    ctaHref: s.ctaHref || AUTHENTIC_SLIDES[i]?.ctaHref || "/services",
-  })) : AUTHENTIC_SLIDES;
+export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
+  // Content comes from Sanity (Hero Slides); only guard against blank fields
+  const activeSlides: SlideItem[] = slides.map((s, i) => ({
+    id: s.id ?? i + 1,
+    title: s.title || "Web Solutions",
+    category: s.category || "",
+    description: s.description || "",
+    image: s.image,
+    ctaLabel: s.ctaLabel || "Get Started Now",
+    ctaHref: s.ctaHref || "/contacts",
+  }));
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -188,7 +153,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
         <div className="absolute top-6 left-6 sm:top-8 sm:left-10 lg:left-14 right-6 lg:right-auto z-10 hero-fade" style={{ animationDelay: '0.2s' }}>
           <h1 className="flex items-center gap-2.5 text-white/80 text-[11px] sm:text-[13px] font-semibold uppercase tracking-[0.16em] leading-snug">
             <span className="w-1.5 h-1.5 rounded-full bg-[#F58220] shrink-0" aria-hidden="true" />
-            Web Development &amp; Digital Marketing Company in Ahmedabad
+            {h1}
           </h1>
         </div>
 
@@ -199,7 +164,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8, ease: EASE_OUT }}
         >
-          {TRUST_METRICS.map((m, i) => (
+          {trustMetrics.map((m, i) => (
             <div key={m.label} className={cn('flex items-baseline justify-between gap-8', i > 0 && 'pt-4 border-t border-white/10')}>
               <dt className="text-gray-400 text-[13px] font-medium order-2">{m.label}</dt>
               <dd className="text-white text-lg font-bold tracking-tight order-1">{m.value}</dd>

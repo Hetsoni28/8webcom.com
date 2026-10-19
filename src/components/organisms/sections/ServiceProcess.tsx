@@ -4,38 +4,22 @@ import { motion } from 'framer-motion';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
 
-const PROCESS_STEPS = [
-  {
-    num: '01',
-    title: 'Discovery & Strategy',
-    description: 'We dive deep into your business goals, target audience, and competitive landscape to craft a bulletproof digital strategy.',
-  },
-  {
-    num: '02',
-    title: 'UI/UX Design',
-    description: 'Our world-class designers create stunning, user-centric interfaces that captivate your audience and drive massive conversions.',
-  },
-  {
-    num: '03',
-    title: 'Agile Development',
-    description: 'Using the latest tech stacks, our engineers build blazing fast, highly secure, and scalable solutions tailored to your needs.',
-  },
-  {
-    num: '04',
-    title: 'Testing & Deployment',
-    description: 'Rigorous QA testing ensures a flawless launch, followed by continuous monitoring and optimization for maximum ROI.',
-  },
-];
+export interface ServiceProcessProps {
+  subTitle?: string;
+  heading?: string;
+  description?: string;
+  steps: { title: string; description?: string }[];
+}
 
 /** "Our Proven Process" — 4-step timeline; the rule draws across as it enters view. */
-export function ServiceProcess() {
+export function ServiceProcess({ subTitle, heading = '', description, steps }: ServiceProcessProps) {
   return (
     <section className="py-24 lg:py-32 bg-[#F6F8F9]" id="process-sec">
       <div className="container-site">
         <SectionHeader
-          eyebrow="How We Work"
-          title="Our Proven Process"
-          description="A transparent, results-driven methodology designed to guarantee your success."
+          eyebrow={subTitle}
+          title={heading}
+          description={description}
           className="mb-14 lg:mb-20"
         />
 
@@ -52,9 +36,9 @@ export function ServiceProcess() {
           </div>
 
           <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
-            {PROCESS_STEPS.map((step, i) => (
+            {steps.map((step, i) => (
               <motion.li
-                key={step.num}
+                key={`${step.title}-${i}`}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={VIEWPORT}
@@ -62,7 +46,7 @@ export function ServiceProcess() {
                 className="relative"
               >
                 <span className="relative z-10 inline-flex items-center justify-center w-12 h-12 rounded-full bg-white border border-gray-200 text-[#0799B3] text-sm font-bold tabular-nums shadow-[0_8px_20px_-10px_rgba(7,153,179,0.5)]">
-                  {step.num}
+                  {String(i + 1).padStart(2, '0')}
                 </span>
                 <h3 className="mt-7 text-xl lg:text-[22px] font-bold text-[#1F2429] tracking-tight leading-snug">
                   {step.title}

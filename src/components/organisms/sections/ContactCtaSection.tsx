@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, ArrowUpRight } from 'lucide-react';
-import { CONTACT } from '@/lib/constants';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { CtaLink } from '@/components/atoms/CtaLink';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
@@ -22,16 +22,20 @@ export function ContactCtaSection({
   subTitle = 'Need Expert Help?',
   heading = "Have a Project in Mind? Let's Talk!",
   description = 'Give us a call or drop by anytime, we endeavour to answer all enquiries within 24 hours on business days.',
-  phone = CONTACT.phone,
-  email = CONTACT.email,
+  phone,
+  email,
   ctaLabel = 'Get in Touch with Us',
   ctaHref = '/contacts',
 }: ContactCtaSectionProps) {
-  const phoneTel = phone ? phone.replace(/\s+/g, '') : CONTACT.phoneTel;
+  // Phone & email default to Sanity → Site Settings → Contact details
+  const { contact } = useSiteSettings();
+  const phoneShown = phone || contact.phone;
+  const emailShown = email || contact.email;
+  const phoneTel = phoneShown.replace(/[^\d+]/g, '');
 
   const channels = [
-    phone && { href: `tel:${phoneTel}`, label: 'Call us', value: phone, Icon: Phone, accent: '#0799B3' },
-    email && { href: `mailto:${email}`, label: 'Email us', value: email, Icon: Mail, accent: '#F58220' },
+    phoneShown && { href: `tel:${phoneTel}`, label: 'Call us', value: phoneShown, Icon: Phone, accent: '#0799B3' },
+    emailShown && { href: `mailto:${emailShown}`, label: 'Email us', value: emailShown, Icon: Mail, accent: '#F58220' },
   ].filter(Boolean) as { href: string; label: string; value: string; Icon: typeof Phone; accent: string }[];
 
   return (

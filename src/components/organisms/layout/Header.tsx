@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/atoms/Logo';
 import { NavItem } from '@/components/molecules/NavItem';
-import { NAV_LINKS } from '@/lib/constants';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 
 const MobileMenu = dynamic(
   () => import('./MobileMenu').then((mod) => mod.MobileMenu),
@@ -20,6 +20,7 @@ const SideMenu = dynamic(
 );
 
 export function Header() {
+  const { header } = useSiteSettings();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -84,7 +85,7 @@ export function Header() {
 
           {/* Desktop Nav with Generous Spacing */}
           <nav className="hidden lg:flex items-center gap-7 xl:gap-10" aria-label="Main Navigation">
-            {NAV_LINKS.map((link) => (
+            {header.navLinks.map((link) => (
               <NavItem 
                 key={link.label}
                 label={link.label}
@@ -99,10 +100,10 @@ export function Header() {
             
             {/* Get In Touch Pill Button */}
             <Link
-              href="/contacts"
+              href={header.ctaHref}
               className="group hidden xs-390:inline-flex items-center gap-3 bg-[#0799B3] hover:bg-[#068aa1] text-white font-semibold text-[15px] h-12 pl-6 pr-2 rounded-full transition-colors duration-300 shadow-[0_8px_24px_-8px_rgba(7,153,179,0.55)] active:scale-[0.97] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
             >
-              <span>Get In Touch</span>
+              <span>{header.ctaLabel}</span>
               <span aria-hidden="true" className="relative w-8 h-8 rounded-full bg-white/15 inline-flex items-center justify-center overflow-hidden">
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-500 ease-out-expo group-hover:translate-x-5 group-hover:-translate-y-5" />
                 <ArrowUpRight className="w-4 h-4 absolute -translate-x-5 translate-y-5 transition-transform duration-500 ease-out-expo group-hover:translate-x-0 group-hover:translate-y-0" />

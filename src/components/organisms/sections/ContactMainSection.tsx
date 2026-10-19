@@ -5,10 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heading } from '@/components/atoms/Heading';
 import { Button } from '@/components/atoms/Button';
 import { Badge } from '@/components/atoms/Badge';
-import { CONTACT, CONTACT_FORM_SERVICES, SOCIAL } from '@/lib/constants';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { trackPointer } from '@/lib/utils';
 
-const SUBMIT_FALLBACK = `Sorry, something went wrong. Please call us on ${CONTACT.phone} or email ${CONTACT.email}.`;
 import { 
   CheckCircle2, 
   ChevronDown, 
@@ -18,7 +17,25 @@ import {
   Zap
 } from 'lucide-react';
 
-export function ContactMainSection() {
+// Same three icons/colours as before, cycled for any number of trust points
+const HIGHLIGHT_STYLE = [
+  { Icon: Clock, accent: '#0799B3' },
+  { Icon: Shield, accent: '#F58220' },
+  { Icon: Zap, accent: '#0799B3' },
+];
+
+export interface ContactIntro {
+  subTitle?: string;
+  heading: string;
+  highlight?: string;
+  description: string;
+  highlights: { title: string; description?: string }[];
+  channelsTitle: string;
+}
+
+export function ContactMainSection({ intro, formServices }: { intro: ContactIntro; formServices: string[] }) {
+  const { contact, socialLinks } = useSiteSettings();
+  const SUBMIT_FALLBACK = `Sorry, something went wrong. Please call us on ${contact.phone} or email ${contact.email}.`;
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
@@ -34,7 +51,7 @@ export function ContactMainSection() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
+
 
   const expiryTimerRef = useRef<NodeJS.Timeout | null>(null);
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -174,7 +191,7 @@ export function ContactMainSection() {
 
   return (
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
-      {/* Decorative ambient background glows with smooth floating animations */}
+      {/* Decorative ambient background glows with smooth floating animations */}
 
       <div className="container-site relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -188,79 +205,56 @@ export function ContactMainSection() {
             className="lg:col-span-6 space-y-10 pt-2"
           >
             <div>
-              <Badge variant="primary" label="GET IN TOUCH" className="mb-4" />
-              
-              <Heading as="h2" size="beast" className="mb-6 leading-[1.1]">
-                Let&apos;s Build Something <br className="hidden sm:inline" />
-                <span className="text-[#0799B3]">Great Together</span>
+              {intro.subTitle && <Badge variant="primary" label={intro.subTitle} className="mb-4" />}
+
+              <Heading as="h2" size="beast" className="mb-6">
+                {intro.heading}
+                {intro.highlight && (
+                  <>
+                    {' '}
+                    <br className="hidden sm:inline" />
+                    <span className="text-[#0799B3]">{intro.highlight}</span>
+                  </>
+                )}
               </Heading>
 
-              <p className="text-gray-500 text-base md:text-lg leading-relaxed font-light">
-                Have an ambitious web project, need a tailored enterprise portal, or looking to scale your business with performance marketing? Reach out to our expert team in Ahmedabad for a direct consultation.
-              </p>
+              <p className="text-gray-600 text-base md:text-lg leading-relaxed">{intro.description}</p>
             </div>
 
-            {/* Value Highlights with Smooth Hover & Spring Physics */}
+            {/* Trust points (Sanity → Contact Page → Form section) */}
             <div className="space-y-5 pt-2">
-              <motion.div 
-                whileHover={{ y: -4, scale: 1.012 }}
-                transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                className="flex items-start gap-4 p-5 rounded-2xl bg-gray-50/80 border border-gray-100 hover:border-[#0799B3]/40 hover:bg-white hover:shadow-lg transition-all duration-300 group cursor-default"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#0799B3]/10 flex items-center justify-center text-[#0799B3] shrink-0 mt-0.5 group-hover:scale-110 group-hover:bg-[#0799B3] group-hover:text-white transition-all duration-300 shadow-sm">
-                  <Clock className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-[#1F2429] mb-1 group-hover:text-[#0799B3] transition-colors duration-300">Guaranteed Fast Response</h4>
-                  <p className="text-gray-500 text-sm leading-relaxed font-normal">
-                    We review all client inquiries within 24 business hours with dedicated technical consultation.
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ y: -4, scale: 1.012 }}
-                transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                className="flex items-start gap-4 p-5 rounded-2xl bg-gray-50/80 border border-gray-100 hover:border-[#F58220]/40 hover:bg-white hover:shadow-lg transition-all duration-300 group cursor-default"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#F58220]/10 flex items-center justify-center text-[#F58220] shrink-0 mt-0.5 group-hover:scale-110 group-hover:bg-[#F58220] group-hover:text-white transition-all duration-300 shadow-sm">
-                  <Shield className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-[#1F2429] mb-1 group-hover:text-[#F58220] transition-colors duration-300">Confidential & Secure</h4>
-                  <p className="text-gray-500 text-sm leading-relaxed font-normal">
-                    All project briefs, client requirements, and NDAs are handled with strict enterprise confidentiality.
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ y: -4, scale: 1.012 }}
-                transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                className="flex items-start gap-4 p-5 rounded-2xl bg-gray-50/80 border border-gray-100 hover:border-[#0799B3]/40 hover:bg-white hover:shadow-lg transition-all duration-300 group cursor-default"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#0799B3]/10 flex items-center justify-center text-[#0799B3] shrink-0 mt-0.5 group-hover:scale-110 group-hover:bg-[#0799B3] group-hover:text-white transition-all duration-300 shadow-sm">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-[#1F2429] mb-1 group-hover:text-[#0799B3] transition-colors duration-300">15+ Years & 2000+ Clients</h4>
-                  <p className="text-gray-500 text-sm leading-relaxed font-normal">
-                    Trusted by local and international businesses since 2011 for high-performance digital engineering.
-                  </p>
-                </div>
-              </motion.div>
+              {intro.highlights.map((item, i) => {
+                const { Icon, accent } = HIGHLIGHT_STYLE[i % HIGHLIGHT_STYLE.length];
+                return (
+                  <motion.div
+                    key={`${item.title}-${i}`}
+                    whileHover={{ y: -4, scale: 1.012 }}
+                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                    className="flex items-start gap-4 p-5 rounded-2xl bg-gray-50/80 border border-gray-100 hover:bg-white hover:shadow-lg transition-all duration-300 group cursor-default"
+                    style={{ ["--accent" as string]: accent }}
+                  >
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300 shadow-sm text-(--accent) bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] group-hover:scale-110 group-hover:bg-(--accent) group-hover:text-white">
+                      <Icon className="w-6 h-6" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h4 className="text-base font-bold text-[#1F2429] mb-1 transition-colors duration-300 group-hover:text-(--accent)">{item.title}</h4>
+                      <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
 
-            {/* Social Connection Row */}
+            {/* Social links (Sanity → Site Settings → Social media) */}
             <div className="pt-2">
               <span className="text-xs font-bold uppercase tracking-wider text-gray-400 block mb-4">
-                Connect on Official Channels
+                {intro.channelsTitle}
               </span>
               <div className="flex flex-wrap gap-2.5">
-                {SOCIAL.slice(0, 5).map((item) => (
+                {socialLinks.slice(0, 5).map((item) => (
                   <motion.a
-                    key={item.name}
-                    href={item.href}
+                    key={item.platform}
+                    href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ y: -3, scale: 1.06 }}
@@ -268,7 +262,7 @@ export function ContactMainSection() {
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
                     className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-[#0799B3] hover:text-white text-xs font-bold text-gray-600 shadow-sm hover:shadow-md transition-colors duration-300"
                   >
-                    {item.name}
+                    {item.platform}
                   </motion.a>
                 ))}
               </div>
@@ -441,7 +435,7 @@ export function ContactMainSection() {
                         }`}
                       >
                         <option value="" disabled>Select Service *</option>
-                        {CONTACT_FORM_SERVICES.map((srv) => (
+                        {formServices.map((srv) => (
                           <option key={srv} value={srv}>{srv}</option>
                         ))}
                       </select>

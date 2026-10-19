@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CONTACT } from '@/lib/constants';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { MapPin, Navigation } from 'lucide-react';
 
-export function ContactMapSection() {
+// Map + address: Sanity → Site Settings → Contact details. Card title: Contact Page.
+export function ContactMapSection({ title }: { title: string }) {
+  const { contact } = useSiteSettings();
   return (
     <section className="pb-24 lg:pb-32 bg-white relative">
       <div className="container-site">
@@ -19,7 +21,7 @@ export function ContactMapSection() {
           {/* Responsive Google Maps Embed centered on Sun Gravitas Satellite Ahmedabad */}
           <iframe
             title="8webcom Office Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.0622288075776!2d72.52853607593688!3d23.010899916382196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f509e5b0cb%3A0xe54d6fa7c207908b!2sSun%20Gravitas!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+            src={contact.mapEmbedUrl}
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -48,12 +50,12 @@ export function ContactMapSection() {
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <h4 className="text-sm font-bold text-[#1F2429] mb-1">8webcom Corporate HQ</h4>
+              <h4 className="text-sm font-bold text-[#1F2429] mb-1">{title}</h4>
               <p className="text-gray-500 text-xs leading-relaxed font-medium">
-                {CONTACT.address}
+                {contact.address}
               </p>
               <a
-                href="https://maps.google.com/?q=Sun+Gravitas+Satellite+Ahmedabad"
+                href={contact.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-1.5 text-xs font-bold text-[#0799B3] hover:underline mt-2"

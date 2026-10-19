@@ -11,12 +11,15 @@ import { Project } from '@/types';
 
 interface ProjectsGridProps {
   projects: Project[];
+  subTitle?: string;
+  heading?: string;
+  description?: string;
 }
 
 // Category filters only help when there are a handful of groups
 const MAX_FILTERS = 6;
 
-export function ProjectsGrid({ projects }: ProjectsGridProps) {
+export function ProjectsGrid({ projects, subTitle, heading = '', description }: ProjectsGridProps) {
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
   const categories = Array.from(new Set(projects.map((p) => p.category).filter(Boolean)));
@@ -28,9 +31,9 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
     <section className="py-24 lg:py-32 bg-white" id="projects-sec">
       <div className="container-site">
         <SectionHeader
-          eyebrow="Our Portfolio"
-          title="Showcasing Our Best Work"
-          description="Explore our recent projects and see how we've helped businesses transform their digital presence and achieve their goals."
+          eyebrow={subTitle}
+          title={heading}
+          description={description}
           className="mb-12 lg:mb-14"
         />
 

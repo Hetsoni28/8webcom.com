@@ -1,33 +1,19 @@
 import { Metadata } from 'next';
-import { sanityFetch } from '@/sanity/fetch';
+import dynamic from 'next/dynamic';
 import {
-  heroSlidesQuery,
-  servicesQuery,
-  testimonialsQuery,
-  caseStudiesQuery,
-  crmCardsQuery,
-  techPlatformsQuery,
-  clientLogosQuery,
-  homepageSettingsQuery,
-  aboutSettingsQuery,
-} from '@/sanity/queries';
-import {
-  HERO_SLIDES,
-  ABOUT,
-  SERVICES,
-  TECH_PLATFORMS,
-  CRM_CARDS,
-  CASE_STUDIES,
-  STATS,
-  TESTIMONIALS,
-  CLIENT_LOGOS,
-  HOME_FAQS,
-} from '@/lib/data';
+  getHomeContent,
+  getSiteSettings,
+  getHeroSlides,
+  getServices,
+  getTechPlatforms,
+  getCrmCards,
+  getCaseStudies,
+  getFeaturedTestimonials,
+  getClientLogos,
+  buildMetadata,
+} from '@/sanity/content';
 import { JsonLd } from '@/components/atoms/JsonLd';
 import { faqSchema, webPageSchema } from '@/lib/schemas';
-import { SEO } from '@/lib/seo';
-import dynamic from 'next/dynamic';
-import { Stat } from '@/types';
 import { HeroSlider } from '@/components/organisms/sections/HeroSlider';
 import { AboutSection } from '@/components/organisms/sections/AboutSection';
 import { ServicesGrid } from '@/components/organisms/sections/ServicesGrid';
@@ -41,39 +27,23 @@ const WorkShowcaseSection = dynamic(
   () => import('@/components/organisms/sections/WorkShowcaseSection').then((m) => m.WorkShowcaseSection),
   { ssr: true }
 );
-
 const Testimonials = dynamic(
   () => import('@/components/organisms/sections/Testimonials').then((m) => m.Testimonials),
   { ssr: true }
 );
-
 const FaqSection = dynamic(
   () => import('@/components/organisms/sections/FaqSection').then((m) => m.FaqSection),
   { ssr: true }
 );
-
 const ContactCtaSection = dynamic(
   () => import('@/components/organisms/sections/ContactCtaSection').then((m) => m.ContactCtaSection),
   { ssr: true }
 );
 
 export async function generateMetadata(): Promise<Metadata> {
-  const hpSettings = await sanityFetch<{ seo?: { metaTitle?: string; metaDescription?: string; keywords?: string[] } } | null>({
-    query: `*[_type == "homepageSettings"][0]{ seo }`,
-    fallback: null,
-    tags: ['homepageSettings', 'seo'],
-  });
-
-  const title = hpSettings?.seo?.metaTitle ||
-    'Web Development Company in Ahmedabad | 8webcom.com';
-  const description = hpSettings?.seo?.metaDescription ||
-    'Custom web development, web portals, digital marketing & CRM solutions in Ahmedabad. 15+ years experience, 1,500+ projects, 2,000+ clients across India & worldwide. Get a free quote.';
-  const OG_IMAGE = 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png';
-
-  return {
-    title,
-    description,
-    keywords: hpSettings?.seo?.keywords ?? [
+  const { seo } = await getHomeContent();
+  return buildMetadata(seo, '/', {
+    keywords: [
       'web development company in Ahmedabad',
       'website design company Ahmedabad',
       'digital marketing company Ahmedabad',
@@ -81,198 +51,93 @@ export async function generateMetadata(): Promise<Metadata> {
       'web portal development company',
       '8webcom',
     ],
-    alternates: {
-      canonical: 'https://www.8webcom.com',
-      languages: { 'en-IN': 'https://www.8webcom.com' },
-    },
-    openGraph: {
-      title,
-      description,
-      url: 'https://www.8webcom.com',
-      type: 'website',
-      siteName: '8webcom.com',
-      locale: 'en_IN',
-      images: [
-        {
-          url: OG_IMAGE,
-          width: 1200,
-          height: 630,
-          alt: '8webcom.com — Web Development Company in Ahmedabad, India',
-          type: 'image/png',
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      site: '@coo8webcom',
-      creator: '@coo8webcom',
-      title,
-      description,
-      images: [
-        {
-          url: OG_IMAGE,
-          alt: '8webcom.com — Web Development Company in Ahmedabad, India',
-        },
-      ],
-    },
-  };
+  });
 }
 
+// Every word, image and link on this page is editable in Sanity:
+// Homepage (texts), Site Settings (stats), and the list collections.
 export default async function Home() {
-  // Fetch all content from Sanity CMS concurrently; falls back to local data seamlessly
-  const [
-    heroSlides,
-    services,
-    testimonials,
-    caseStudies,
-    crmCards,
-    techPlatforms,
-    clientLogos,
-    hpSettings,
-    aboutSettings,
-  ] = await Promise.all([
-    sanityFetch({ query: heroSlidesQuery, fallback: HERO_SLIDES, tags: ['heroSlide'] }),
-    sanityFetch({ query: servicesQuery, fallback: SERVICES, tags: ['service'] }),
-    sanityFetch({ query: testimonialsQuery, fallback: TESTIMONIALS, tags: ['testimonial'] }),
-    sanityFetch({ query: caseStudiesQuery, fallback: CASE_STUDIES, tags: ['caseStudy'] }),
-    sanityFetch({ query: crmCardsQuery, fallback: CRM_CARDS, tags: ['crmCard'] }),
-    sanityFetch({ query: techPlatformsQuery, fallback: TECH_PLATFORMS, tags: ['techPlatform'] }),
-    sanityFetch({ query: clientLogosQuery, fallback: CLIENT_LOGOS, tags: ['clientLogo'] }),
-    sanityFetch({ query: homepageSettingsQuery, fallback: null, tags: ['homepageSettings'] }),
-    sanityFetch({ query: aboutSettingsQuery, fallback: null, tags: ['aboutSettings'] }),
-  ]);
+  const [home, site, heroSlides, services, techPlatforms, crmCards, caseStudies, testimonials, clientLogos] =
+    await Promise.all([
+      getHomeContent(),
+      getSiteSettings(),
+      getHeroSlides(),
+      getServices(),
+      getTechPlatforms(),
+      getCrmCards(),
+      getCaseStudies(),
+      getFeaturedTestimonials(),
+      getClientLogos(),
+    ]);
 
-  // Section overrides from Sanity CMS
-  const abt = (hpSettings as any)?.sectionAbout;
-  const abtFromSettings = (aboutSettings as any);
-  const svc = (hpSettings as any)?.sectionServices;
-  const tch = (hpSettings as any)?.sectionTech;
-  const crm = (hpSettings as any)?.sectionCrm;
-  const cs = (hpSettings as any)?.sectionCaseStudies;
-  const st = (hpSettings as any)?.sectionStats;
-  const tst = (hpSettings as any)?.sectionTestimonials;
-  const cli = (hpSettings as any)?.sectionClients;
-  const cta = (hpSettings as any)?.contactCta;
-
-  // Dynamic Animated Stats (Sanity priority with authentic fallback)
-  const dynamicStats: Stat[] = st?.stat1Value
-    ? [
-        {
-          value: st.stat1Value,
-          suffix: st.stat1Suffix || '+',
-          label: st.stat1Label || 'Happy Clients',
-        },
-        {
-          value: st.stat2Value ?? 15,
-          suffix: st.stat2Suffix || '+',
-          label: st.stat2Label || 'Years Experience',
-        },
-        {
-          value: st.stat3Value ?? 1500,
-          suffix: st.stat3Suffix || '+',
-          label: st.stat3Label || 'Delivered Projects',
-        },
-        {
-          value: st.stat4Value ?? 99,
-          suffix: st.stat4Suffix || '%',
-          label: st.stat4Label || 'Client Satisfaction',
-        },
-      ]
-    : STATS;
+  const { about, faq, contactCta } = home;
 
   return (
     <>
-      {/* 1. Hero Showcase Slider */}
-      <HeroSlider slides={heroSlides as any} />
+      <HeroSlider slides={heroSlides} h1={home.hero.h1} trustMetrics={home.hero.trustMetrics} />
 
-      {/* Scroll-velocity service band */}
-      <ServiceMarquee
-        items={(services as { title: string; href: string }[]).map((s) => ({ label: s.title, href: s.href }))}
-      />
+      <ServiceMarquee items={services.map((s) => ({ label: s.title, href: s.href }))} />
 
-      {/* 2. Editorial About Section */}
       <AboutSection
-        heading={abt?.heading || abtFromSettings?.heading || ABOUT.heading}
-        subTitle={abt?.subTitle || abtFromSettings?.subTitle || ABOUT.subTitle}
-        description={abt?.description || abtFromSettings?.description || ABOUT.description}
-        experienceYears={abt?.experienceYears || "15+"}
-        experienceText={abt?.experienceText || "Years of Excel"}
-        images={abtFromSettings?.images && abtFromSettings.images.length > 0 ? abtFromSettings.images : ABOUT.images}
-        features={abtFromSettings?.features && abtFromSettings.features.length > 0 ? abtFromSettings.features : ABOUT.features}
-        ctaLabel={abt?.ctaLabel || abtFromSettings?.ctaLabel || ABOUT.ctaLabel}
-        ctaHref={abt?.ctaHref || abtFromSettings?.ctaHref || ABOUT.ctaHref}
-        phone={abt?.phone || "+91 97277 00459"}
+        heading={about.heading}
+        subTitle={about.subTitle}
+        description={about.description}
+        experienceYears={about.experienceYears}
+        experienceText={about.experienceText}
+        images={about.images}
+        features={about.features}
+        ctaLabel={about.ctaLabel}
+        ctaHref={about.ctaHref}
+        phone={site.contact.phone}
       />
 
-      {/* 3. Core Services Grid */}
       <ServicesGrid
-        heading={svc?.heading ?? "High-Impact Services for Growing Businesses"}
-        subTitle={svc?.subTitle ?? "Our Services"}
-        description={svc?.description ?? "We offer a comprehensive range of digital services to help your business grow and succeed in the modern digital landscape."}
-        services={services as any}
+        heading={home.servicesSection.heading ?? ''}
+        subTitle={home.servicesSection.subTitle ?? ''}
+        description={home.servicesSection.description}
+        services={services}
       />
 
-      {/* 4. Tech / Platforms Showcase Slider */}
-      <TechSlider
-        heading={tch?.heading ?? "Superfast, well designed, well researched, website with CMS"}
-        subTitle={tch?.subTitle ?? "What We Offer"}
-        platforms={techPlatforms as any}
-      />
+      <TechSlider heading={home.techSection.heading} subTitle={home.techSection.subTitle} platforms={techPlatforms} />
 
-      {/* 5. Custom Enterprise CRM Solutions */}
       <CrmSolutionsSection
-        heading={crm?.heading ?? "Grow your business with smart CRM solutions"}
-        subTitle={crm?.subTitle ?? "CRM Solutions"}
-        description={crm?.description ?? "Tailored CRM platforms and automated workflows built specifically for your business processes."}
-        cards={crmCards as any}
+        heading={home.crmSection.heading}
+        subTitle={home.crmSection.subTitle}
+        description={home.crmSection.description}
+        cards={crmCards}
       />
 
-      {/* 6. Case Studies / Work Showcase */}
       <WorkShowcaseSection
-        heading={cs?.heading ?? "Let’s See Our Work Showcase"}
-        subTitle={cs?.subTitle ?? "Case Studies"}
-        items={caseStudies as any}
+        heading={home.caseStudiesSection.heading}
+        subTitle={home.caseStudiesSection.subTitle}
+        items={caseStudies}
       />
 
-      {/* 7. Animated Numbers / Proof Points */}
-      <StatsSection stats={dynamicStats} />
+      <StatsSection stats={site.stats} />
 
-      {/* 8. Verified Testimonials */}
       <Testimonials
-        heading={tst?.heading ?? "Real Feedback from Real Clients"}
-        subTitle={tst?.subTitle ?? "Client Feedback"}
-        testimonials={testimonials as any}
+        heading={home.testimonialsSection.heading}
+        subTitle={home.testimonialsSection.subTitle}
+        description={home.testimonialsSection.description}
+        testimonials={testimonials}
       />
 
-      {/* 9. Trusted Client Brands Marquee */}
-      <BrandLogos
-        heading={cli?.heading ?? "Trusted by Leading Companies"}
-        subTitle={cli?.subTitle ?? "Clients Logo"}
-        logos={clientLogos as any}
-      />
+      <BrandLogos heading={home.clientsSection.heading} subTitle={home.clientsSection.subTitle} logos={clientLogos} />
 
-      {/* FAQ — visible answers + FAQPage structured data */}
-      <FaqSection items={HOME_FAQS} />
+      <FaqSection subTitle={faq.subTitle} heading={faq.heading} description={faq.description} items={faq.items} />
       <JsonLd
         schema={[
-          webPageSchema({
-            name: SEO.pages.home.title,
-            description: SEO.pages.home.description,
-            url: '/',
-          }),
-          faqSchema(HOME_FAQS),
+          webPageSchema({ name: home.seo.metaTitle ?? '8webcom.com', description: home.seo.metaDescription ?? '', url: '/' }),
+          faqSchema(faq.items),
         ]}
       />
 
-      {/* 10. High-Converting Contact CTA */}
       <ContactCtaSection
-        heading={cta?.heading ?? "Have a Project in Mind? Let's Talk!"}
-        subTitle={cta?.subTitle ?? "Need Expert Help?"}
-        description={cta?.description ?? "Give us a call or drop by anytime, we endeavour to answer all enquiries within 24 hours on business days."}
-        phone={cta?.phone}
-        email={cta?.email}
-        ctaLabel={cta?.ctaLabel ?? "Get in Touch with Us"}
-        ctaHref={cta?.ctaHref ?? "/contacts"}
+        heading={contactCta.heading}
+        subTitle={contactCta.subTitle}
+        description={contactCta.description}
+        ctaLabel={contactCta.ctaLabel}
+        ctaHref={contactCta.ctaHref}
       />
     </>
   );

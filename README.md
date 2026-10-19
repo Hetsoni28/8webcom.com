@@ -76,3 +76,26 @@ npm run build
 ## 📄 License & Rights
 
 Copyright &copy; 2026 8webcom.com. All rights reserved.
+
+---
+
+## ✏️ Editing Content (Sanity CMS)
+
+All text, images, buttons, links and SEO on every page are edited in **Sanity Studio** at `/studio` — no code changes needed.
+
+| In Studio | Controls |
+|---|---|
+| **Site Settings** | Header menu & button, footer links, phone / email / address / WhatsApp / map, social links, company numbers |
+| **Homepage** | Hero H1 & trust numbers, all section headings, About block, FAQ, bottom contact band, SEO |
+| **About / Services Pages / Projects / Careers / Contact Page** | Each page's banner, texts, cards, form options and SEO |
+| **Services** | Each service: card, page headline, intro, features, technologies, SEO |
+| **Hero Slides, What We Offer, CRM Cards, Work Showcase, Projects page items, Testimonials, Client Logos** | Add / remove / reorder list items (`Display order`) |
+| **Policy Pages** | Disclaimer, Refund & Cancellation, Privacy |
+
+- Changes appear on the live site within ~60 seconds, or **instantly** with the webhook below.
+- Empty fields automatically fall back to the built-in default text, so a missing value never breaks a page.
+- Homepage testimonials show only items with **Featured** ticked.
+
+**Instant updates:** set `SANITY_REVALIDATE_SECRET` on the host, then in sanity.io/manage → API → Webhooks create a webhook to `https://www.8webcom.com/api/revalidate` (trigger: create/update/delete, same secret).
+
+**First-time import:** `npm run seed:sanity` copies the built-in content and images into an empty dataset (`--dry-run` to preview; it refuses to overwrite existing content unless `--force`).

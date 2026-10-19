@@ -6,24 +6,24 @@ import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import { CtaLink } from '@/components/atoms/CtaLink';
 import { CheckCircle2 } from 'lucide-react';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
-import { SERVICE_DETAIL } from '@/lib/page-data';
 import { cn } from '@/lib/utils';
 import { Service } from '@/types';
 
 interface ServiceShowcaseProps {
   service: Service;
   index: number;
+  /** First features of the service (Sanity → Services → Features) */
+  highlights: string[];
+  /** Button text (Sanity → Services Pages) */
+  buttonLabel: string;
 }
 
-export function ServiceShowcase({ service, index }: ServiceShowcaseProps) {
+export function ServiceShowcase({ service, index, highlights, buttonLabel }: ServiceShowcaseProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
 
   const isReversed = index % 2 === 1;
-  const slug = service.href?.replace('/services/', '') as keyof typeof SERVICE_DETAIL;
-  // Real per-service highlights (first three features) instead of generic bullets
-  const highlights = (SERVICE_DETAIL[slug]?.features ?? []).slice(0, 3).map((f) => f.title);
 
   return (
     <div ref={ref} className={cn('py-20 lg:py-28', index % 2 === 1 && 'bg-[#F6F8F9]')}>
@@ -76,7 +76,7 @@ export function ServiceShowcase({ service, index }: ServiceShowcaseProps) {
             )}
 
             <CtaLink href={service.href} aria-label={`Explore ${service.title}`}>
-              Explore Service
+              {buttonLabel}
             </CtaLink>
           </motion.div>
         </div>

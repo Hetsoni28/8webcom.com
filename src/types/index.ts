@@ -21,7 +21,7 @@ export interface SocialLink {
 // ─── Hero ─────────────────────────────────────────────────────
 
 export interface HeroSlide {
-  id: number;
+  id: string | number;
   title: string;
   badge?: string;
   category?: string;
@@ -83,14 +83,14 @@ export interface TechPlatform {
 
 export interface Stat {
   value: number;
-  suffix: string;
+  suffix?: string;
   label: string;
 }
 
 // ─── Testimonials ─────────────────────────────────────────────
 
 export interface Testimonial {
-  id: number;
+  id: string | number;
   name: string;
   company: string;
   rating: number;

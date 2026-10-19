@@ -3,89 +3,38 @@ import { PageHero } from "@/components/organisms/sections/PageHero";
 import { AboutSection } from "@/components/organisms/sections/AboutSection";
 import { VisionMissionSection } from "@/components/organisms/sections/VisionMissionSection";
 import { ContactCtaSection } from "@/components/organisms/sections/ContactCtaSection";
-import { JsonLd } from "@/components/atoms/JsonLd";
-import { breadcrumbSchema, webPageSchema, aboutPageSchema } from "@/lib/schemas";
-import { ABOUT, STATS } from "@/lib/data";
-import { ABOUT_PAGE } from "@/lib/page-data";
 import { StatsSection } from "@/components/organisms/sections/StatsSection";
 import { ValuesSection } from "@/components/organisms/sections/ValuesSection";
-import { sanityFetch } from "@/sanity/fetch";
-import { aboutSettingsQuery } from "@/sanity/queries";
+import { JsonLd } from "@/components/atoms/JsonLd";
+import { breadcrumbSchema, webPageSchema, aboutPageSchema } from "@/lib/schemas";
+import { buildMetadata, getAboutContent, getHomeContent, getSiteSettings } from "@/sanity/content";
 
-export const metadata: Metadata = {
-  title: 'About Us — Web Development Agency Since 2011 | 8webcom.com',
-  description:
-    '8webcom.com is a web development & digital marketing agency in Ahmedabad, India, founded in 2011. We deliver custom websites, web portals, SEO & CRM solutions for businesses across India and globally.',
-  keywords: [
-    'web development agency Ahmedabad',
-    'IT company Ahmedabad since 2011',
-    'digital marketing agency India',
-    'website design company Ahmedabad',
-    '8webcom about',
-  ],
-  alternates: {
-    canonical: 'https://www.8webcom.com/about-us',
-    languages: { 'en-IN': 'https://www.8webcom.com/about-us' },
-  },
-  openGraph: {
-    title: 'About Us — Web Development Agency Since 2011 | 8webcom.com',
-    description:
-      '8webcom.com — a web development and digital marketing agency in Ahmedabad, India. Serving clients across India and globally since 2011.',
-    url: 'https://www.8webcom.com/about-us',
-    type: 'website',
-    siteName: '8webcom.com',
-    images: [{ url: 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png', width: 1200, height: 630, alt: 'About 8webcom.com' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@coo8webcom',
-    title: 'About Us — Web Development Agency Since 2011 | 8webcom.com',
-    description: '8webcom.com — a web development and digital marketing agency in Ahmedabad, India, since 2011.',
-    images: ['https://www.8webcom.com/admin/upload/general/eNLCZOpr.png'],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getAboutContent();
+  return buildMetadata(seo, "/about-us", {
+    keywords: [
+      "web development agency Ahmedabad",
+      "IT company Ahmedabad since 2011",
+      "digital marketing agency India",
+      "website design company Ahmedabad",
+      "8webcom about",
+    ],
+  });
+}
 
+// All content editable in Sanity → About Page (+ Site Settings for stats,
+// Homepage → Contact band for the bottom section).
 export default async function AboutUsPage() {
-  // Fetch About content from Sanity; fall back to local data when CMS not connected
-  const aboutData = await sanityFetch({
-    query: aboutSettingsQuery,
-    fallback: null,
-    tags: ['aboutSettings'],
-  }) as any;
-
-  // Map Sanity images to the shape AboutSection expects
-  const images = aboutData?.images
-    ? aboutData.images.map((img: any) => ({ src: img.src ?? img, alt: img.alt ?? '' }))
-    : ABOUT.images;
-
-  // Map Sanity features to the shape AboutSection expects
-  const features = aboutData?.features
-    ? aboutData.features.map((f: any) => ({ icon: f.icon ?? '', title: f.title, description: f.description }))
-    : ABOUT.features;
-
-  const about = {
-    heading: aboutData?.heading ?? ABOUT.heading,
-    subTitle: aboutData?.subTitle ?? ABOUT.subTitle,
-    // About-page story differs from the homepage blurb (avoids duplicate content)
-    description: aboutData?.description ?? ABOUT_PAGE.story,
-    // The homepage CTA points here ("Read More" → /about-us); on this page send visitors onward
-    ctaLabel: 'Contact Us',
-    ctaHref: '/contacts',
-    images,
-    features,
-  };
+  const [about, site, home] = await Promise.all([getAboutContent(), getSiteSettings(), getHomeContent()]);
+  const { hero, story, values, seo } = about;
+  const cta = home.contactCta;
 
   return (
     <>
       <JsonLd
         schema={[
           aboutPageSchema(),
-          webPageSchema({
-            name: "About Us — 8webcom.com",
-            description:
-              "Learn about 8webcom.com — web development and digital marketing agency in Ahmedabad since 2011.",
-            url: "/about-us",
-          }),
+          webPageSchema({ name: seo.metaTitle ?? "About Us — 8webcom.com", description: seo.metaDescription ?? "", url: "/about-us" }),
           breadcrumbSchema([
             { name: "Home", href: "/" },
             { name: "About Us", href: "/about-us" },
@@ -93,35 +42,34 @@ export default async function AboutUsPage() {
         ]}
       />
 
-      <PageHero
-        title="About"
-        highlight="8webcom"
-        subTitle="Our Story"
-        image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
-      />
+      <PageHero title={hero.title} highlight={hero.highlight} subTitle={hero.eyebrow} image={hero.image} />
 
-      {/* Authentic 8webcom About Section */}
       <AboutSection
-        heading={about.heading}
-        subTitle={about.subTitle}
-        description={about.description}
-        images={about.images}
-        features={about.features}
-        ctaLabel={about.ctaLabel}
-        ctaHref={about.ctaHref}
+        heading={story.heading}
+        subTitle={story.subTitle}
+        description={story.text}
+        experienceYears={story.experienceYears}
+        experienceText={story.experienceText}
+        images={story.images}
+        features={story.features}
+        ctaLabel={story.ctaLabel}
+        ctaHref={story.ctaHref}
+        phone={site.contact.phone}
       />
 
-      {/* Company milestones */}
-      <StatsSection stats={STATS} />
+      <StatsSection stats={site.stats} />
 
-      {/* Our Vision, Our Mission, Quality Policy Section */}
-      <VisionMissionSection />
+      <VisionMissionSection items={about.visionMission.map((v, i) => ({ ...v, id: `${v.icon}-${i}` }))} />
 
-      {/* Core values */}
-      <ValuesSection values={ABOUT_PAGE.values} />
+      <ValuesSection subTitle={values.subTitle} heading={values.heading} values={values.items} />
 
-      {/* Direct Contact CTA */}
-      <ContactCtaSection />
+      <ContactCtaSection
+        heading={cta.heading}
+        subTitle={cta.subTitle}
+        description={cta.description}
+        ctaLabel={cta.ctaLabel}
+        ctaHref={cta.ctaHref}
+      />
     </>
   );
 }

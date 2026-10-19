@@ -3,17 +3,25 @@
 import React, { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { SocialLink } from '@/components/molecules/SocialLink';
-import { 
-  WhatsAppIcon, 
-  InstagramIcon, 
-  FacebookIcon, 
-  LinkedInIcon, 
-  XIcon 
-} from '@/components/atoms/SocialIcons';
-import { CONTACT } from '@/lib/constants';
+import { getSocialIcon } from '@/components/atoms/SocialIcons';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
+
+// Brand background per platform; which platforms show is set in Sanity
+// (Site Settings → Social media → "Show in floating side bar").
+const BRAND_BG: Record<string, string> = {
+  WhatsApp: 'bg-[#25D366]!',
+  Instagram: 'bg-linear-to-tr! from-[#f09433] via-[#dc2743] to-[#bc1888]',
+  Facebook: 'bg-[#1877F2]!',
+  LinkedIn: 'bg-[#0A66C2]!',
+  X: 'bg-black!',
+  YouTube: 'bg-[#CD201F]!',
+  Pinterest: 'bg-[#E60023]!',
+};
 
 export function FloatingSocial() {
+  const { socialLinks } = useSiteSettings();
   const [isVisible, setIsVisible] = useState(false);
+  const items = socialLinks.filter((s) => s.showInSidebar !== false);
 
   useEffect(() => {
     // setState with the same boolean is a no-op render, so this only
@@ -24,19 +32,30 @@ export function FloatingSocial() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  if (items.length === 0) return null;
+
   return (
-    <aside 
+    <aside
       aria-label="Quick social contacts"
       className={cn(
-        "fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col transition-all duration-300",
-        isVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+        'fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col transition-all duration-300',
+        isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       )}
     >
-      <SocialLink platform="WhatsApp" href={CONTACT.whatsapp} icon={WhatsAppIcon} variant="floating" className="bg-[#25D366]! border-white! rounded-none! rounded-l-md! w-12! h-12! border-b-0 hover:opacity-90!" />
-      <SocialLink platform="Instagram" href="https://www.instagram.com/8webcom/" icon={InstagramIcon} variant="floating" className="bg-linear-to-tr! from-[#f09433] via-[#dc2743] to-[#bc1888] border-white! rounded-none! rounded-l-md! w-12! h-12! border-b-0 hover:opacity-90!" />
-      <SocialLink platform="Facebook" href="https://www.facebook.com/8webcom" icon={FacebookIcon} variant="floating" className="bg-[#1877F2]! border-white! rounded-none! rounded-l-md! w-12! h-12! border-b-0 hover:opacity-90!" />
-      <SocialLink platform="LinkedIn" href="https://www.linkedin.com/company/8webcom" icon={LinkedInIcon} variant="floating" className="bg-[#0A66C2]! border-white! rounded-none! rounded-l-md! w-12! h-12! border-b-0 hover:opacity-90!" />
-      <SocialLink platform="X" href="https://x.com/coo8webcom" icon={XIcon} variant="floating" className="bg-black! border-white! rounded-none! rounded-l-md! w-12! h-12! hover:opacity-90!" />
+      {items.map((s, i) => (
+        <SocialLink
+          key={s.platform}
+          platform={s.platform}
+          href={s.url}
+          icon={getSocialIcon(s.platform)}
+          variant="floating"
+          className={cn(
+            BRAND_BG[s.platform] ?? 'bg-[#0799B3]!',
+            'border-white! rounded-none! rounded-l-md! w-12! h-12! hover:opacity-90!',
+            i < items.length - 1 && 'border-b-0'
+          )}
+        />
+      ))}
     </aside>
   );
 }

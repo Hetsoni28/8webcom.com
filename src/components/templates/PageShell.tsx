@@ -2,12 +2,14 @@ import React from 'react';
 import { Header } from '@/components/organisms/layout/Header';
 import { Footer } from '@/components/organisms/layout/Footer';
 import { ClientWidgets } from '@/components/organisms/layout/ClientWidgets';
+import type { ResolvedSiteSettings } from '@/sanity/content';
 
 export interface PageShellProps {
+  settings: ResolvedSiteSettings;
   children: React.ReactNode;
 }
 
-export function PageShell({ children }: PageShellProps) {
+export function PageShell({ settings, children }: PageShellProps) {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Accessible Skip to Content Link (WCAG 2.4.1) */}
@@ -22,7 +24,7 @@ export function PageShell({ children }: PageShellProps) {
       <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
         {children}
       </main>
-      <Footer />
+      <Footer settings={settings} />
       {/* Client-only floating widgets — ssr: false lives inside ClientWidgets */}
       <ClientWidgets />
     </div>

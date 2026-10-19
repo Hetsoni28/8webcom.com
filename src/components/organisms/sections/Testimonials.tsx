@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { Testimonial } from '@/types';
 
 export interface TestimonialsProps {
+  description?: string;
   heading?: string;
   subTitle?: string;
   testimonials?: Testimonial[];
@@ -25,6 +26,7 @@ export function Testimonials({
   heading = 'Loved by Founders. Trusted by Industry Leaders.',
   subTitle = 'Client Feedback',
   testimonials = [],
+  description = 'Real feedback from verified businesses, founders, and healthcare leaders across India and worldwide.',
 }: TestimonialsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -79,7 +81,7 @@ export function Testimonials({
         <SectionHeader
           eyebrow={subTitle}
           title={heading}
-          description="Real feedback from verified businesses, founders, and healthcare leaders across India and worldwide."
+          description={description}
           align="center"
           className="mb-14 lg:mb-16"
         />

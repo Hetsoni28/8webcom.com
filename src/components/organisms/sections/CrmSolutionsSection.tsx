@@ -9,7 +9,7 @@ import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
 
 export interface CrmCardItem {
-  id: number;
+  id: string | number;
   title: string;
   description: string;
   image: string;

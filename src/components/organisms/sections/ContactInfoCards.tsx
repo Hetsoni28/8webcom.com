@@ -2,52 +2,28 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CONTACT } from '@/lib/constants';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { trackPointer } from '@/lib/utils';
 import { MapPin, Phone, Mail, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { staggerContainer } from '@/lib/animations';
 
-const CONTACT_CARDS = [
-  {
-    icon: MapPin,
-    title: "Visit Our Office",
-    subtitle: "Ahmedabad, India",
-    value: CONTACT.addressShort,
-    href: "https://maps.google.com/?q=Sun+Gravitas+Satellite+Ahmedabad",
-    action: "View on Map",
-    accent: "#0799B3",
-  },
-  {
-    icon: Phone,
-    title: "Call Our Team",
-    subtitle: "Mon - Sat (9:30 AM - 7:00 PM)",
-    value: CONTACT.phone,
-    href: `tel:${CONTACT.phoneTel}`,
-    action: "Call Directly",
-    accent: "#F58220",
-  },
-  {
-    icon: Mail,
-    title: "Email Inquiries",
-    subtitle: "24/7 Response Time",
-    value: CONTACT.email,
-    href: `mailto:${CONTACT.email}`,
-    action: "Send an Email",
-    accent: "#0799B3",
-  },
-  {
-    icon: MessageCircle,
-    title: "WhatsApp Chat",
-    subtitle: "Instant Consultation",
-    value: "+91 97277 00459",
-    href: CONTACT.whatsapp,
-    action: "Chat on WhatsApp",
-    accent: "#25D366",
-  },
-];
+type CardLabels = { title: string; subtitle: string; action: string };
+export interface ContactCardLabels {
+  address: CardLabels;
+  phone: CardLabels;
+  email: CardLabels;
+  whatsapp: CardLabels;
+}
+
+interface ContactCard extends CardLabels {
+  icon: typeof MapPin;
+  value: string;
+  href: string;
+  accent: string;
+}
 
 interface InfoCardProps {
-  card: typeof CONTACT_CARDS[0];
+  card: ContactCard;
 }
 
 function InfoCard({ card }: InfoCardProps) {
@@ -117,7 +93,16 @@ function InfoCard({ card }: InfoCardProps) {
   );
 }
 
-export function ContactInfoCards() {
+// Values: Sanity → Site Settings → Contact details. Labels: Sanity → Contact Page → Contact cards.
+export function ContactInfoCards({ labels }: { labels: ContactCardLabels }) {
+  const { contact } = useSiteSettings();
+  const cards: ContactCard[] = [
+    { ...labels.address, icon: MapPin, value: contact.addressShort, href: contact.mapsUrl, accent: "#0799B3" },
+    { ...labels.phone, icon: Phone, value: contact.phone, href: `tel:${contact.phoneTel}`, accent: "#F58220" },
+    { ...labels.email, icon: Mail, value: contact.email, href: `mailto:${contact.email}`, accent: "#0799B3" },
+    { ...labels.whatsapp, icon: MessageCircle, value: contact.phone, href: contact.whatsappUrl, accent: "#25D366" },
+  ];
+
   return (
     <section className="py-16 lg:py-20 bg-gray-50/70 relative overflow-hidden">
       {/* Subtle floating ambient background light */}
@@ -130,7 +115,7 @@ export function ContactInfoCards() {
           viewport={{ once: true, margin: "-80px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {CONTACT_CARDS.map((card) => (
+          {cards.map((card) => (
             <InfoCard key={card.title} card={card} />
           ))}
         </motion.div>

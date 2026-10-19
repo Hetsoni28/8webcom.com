@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import { SEO } from '@/lib/seo';
-import { CONTACT, SOCIAL } from '@/lib/constants';
+import { getSiteSettings, type ResolvedSiteSettings } from '@/sanity/content';
 import './globals.css';
 
 // No `weight` list: Montserrat is a variable font, so one file covers 100–900
@@ -15,7 +15,9 @@ const montserrat = Montserrat({
 });
 
 // ─── Root Metadata ────────────────────────────────────────────
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const { contact } = await getSiteSettings();
+  return {
   metadataBase: new URL(SEO.siteUrl),
 
   title: {
@@ -102,9 +104,9 @@ export const metadata: Metadata = {
     'geo.placename': 'Ahmedabad',
     'geo.position': '23.011063;72.531111',
     'ICBM': '23.011063, 72.531111',
-    'contact': CONTACT.email,
-    'og:email': CONTACT.email,
-    'og:phone_number': CONTACT.phone,
+    'contact': contact.email,
+    'og:email': contact.email,
+    'og:phone_number': contact.phone,
     'business:contact_data:street_address': '503, Sun Gravitas, Near Shyamal Cross Rd, Satellite',
     'business:contact_data:locality': 'Ahmedabad',
     'business:contact_data:region': 'Gujarat',
@@ -112,6 +114,7 @@ export const metadata: Metadata = {
     'business:contact_data:country_name': 'India',
   },
 };
+}
 
 // ─── JSON-LD Structured Data ──────────────────────────────────
 // One connected @graph: the business is described ONCE (ProfessionalService is a
@@ -134,7 +137,9 @@ const SERVICE_OFFERS = [
   { name: 'CRM Solutions', path: '/services/crm-solutions' },
 ];
 
-const siteGraph = {
+// Built from Sanity → Site Settings so contact changes reach Google too
+function buildSiteGraph({ contact, socialLinks }: ResolvedSiteSettings) {
+  return {
   '@context': 'https://schema.org',
   '@graph': [
     {
@@ -158,8 +163,8 @@ const siteGraph = {
       slogan: 'Web Development Company in Ahmedabad',
       foundingDate: '2011',
       numberOfEmployees: { '@type': 'QuantitativeValue', minValue: 10, maxValue: 50 },
-      telephone: CONTACT.phoneTel,
-      email: CONTACT.email,
+      telephone: contact.phoneTel,
+      email: contact.email,
       priceRange: '₹₹',
       currenciesAccepted: 'INR',
       paymentAccepted: 'Cash, Bank Transfer, UPI, NEFT',
@@ -183,15 +188,15 @@ const siteGraph = {
       contactPoint: [
         {
           '@type': 'ContactPoint',
-          telephone: CONTACT.phoneTel,
-          email: CONTACT.email,
+          telephone: contact.phoneTel,
+          email: contact.email,
           contactType: 'customer service',
           areaServed: 'IN',
           availableLanguage: ['English', 'Hindi', 'Gujarati'],
         },
         {
           '@type': 'ContactPoint',
-          telephone: CONTACT.phoneTel,
+          telephone: contact.phoneTel,
           contactType: 'sales',
           areaServed: ['IN', 'US', 'GB', 'AU', 'AE'],
           availableLanguage: 'English',
@@ -235,7 +240,7 @@ const siteGraph = {
           },
         })),
       },
-      sameAs: SOCIAL.map((s) => s.href.split('?')[0]),
+      sameAs: socialLinks.map((s) => s.url.split('?')[0]),
     },
     {
       '@type': 'WebSite',
@@ -249,12 +254,14 @@ const siteGraph = {
     },
   ],
 };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
   return (
     <html lang="en-IN">
       <head>
@@ -266,7 +273,7 @@ export default function RootLayout({
         {/* JSON-LD Structured Data (single connected graph) */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSiteGraph(settings)) }}
         />
       </head>
       <body

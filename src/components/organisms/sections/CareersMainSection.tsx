@@ -10,28 +10,25 @@ import {
 } from 'lucide-react';
 import { Heading } from '@/components/atoms/Heading';
 import { Button } from '@/components/atoms/Button';
-import { CONTACT } from '@/lib/constants';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 
-const SUBMIT_FALLBACK = `Sorry, something went wrong. Please call us on ${CONTACT.phone} or email ${CONTACT.email}.`;
-
-const POSITIONS = [
-  "Web Development",
-  "Full Stack Developer",
-  "WordPress Developer",
-  "Web Portal Developer",
-  "Digital Marketing Executive",
-  "SEO Specialist",
-  "UI/UX Designer",
-  "CRM Solutions Specialist",
-  "Other"
-];
-
-interface CareersMainSectionProps {
-  positions?: string[];
+export interface CareerBlock {
+  heading: string;
+  highlight?: string;
+  text: string;
 }
 
-export function CareersMainSection({ positions }: CareersMainSectionProps = {}) {
-  const activePositions = positions && positions.length > 0 ? positions : POSITIONS;
+interface CareersMainSectionProps {
+  /** Left-column text blocks (Sanity → Careers Page → Text blocks) */
+  blocks: CareerBlock[];
+  /** Form dropdown options (Sanity → Careers Page → Positions) */
+  positions: string[];
+}
+
+export function CareersMainSection({ blocks, positions }: CareersMainSectionProps) {
+  const { contact } = useSiteSettings();
+  const SUBMIT_FALLBACK = `Sorry, something went wrong. Please call us on ${contact.phone} or email ${contact.email}.`;
+  const activePositions = positions;
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
@@ -213,26 +210,21 @@ export function CareersMainSection({ positions }: CareersMainSectionProps = {}) 
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="lg:col-span-7 space-y-10 pt-2"
           >
-            {/* Block 1 */}
-            <div>
-              <Heading as="h2" size="beast" className="mb-6 leading-[1.1]">
-                Build Your Future with <br className="hidden sm:inline" />
-                <span className="text-[#0799B3]">8webcom.com</span>
-              </Heading>
-              <p className="text-gray-500 text-base md:text-lg leading-relaxed font-light">
-                The driving force behind the success of 8webcom.com is its team of like-minded, young, and experienced professionals, bound together by a culture of excellence. Wherever they are, whatever they do, a 8webcom.com team member stands for the commitment to make a difference, and through his work, be a source of pride to his country, his company, his family, and above all, to himself.
-              </p>
-            </div>
-
-            {/* Block 2 */}
-            <div>
-              <Heading as="h3" size="xl" className="mb-6">
-                A Career, <span className="text-[#0799B3]">Not Just a Job</span>
-              </Heading>
-              <p className="text-gray-500 text-base md:text-lg leading-relaxed font-light">
-                Career at 8webcom.com is driven by professional approach offering each individual a challenging career rather than a job. We ensure development of our members through training & exposure, engagement & involvement, installing our value system in them and fostering the culture of accountability, quality, and winning.
-              </p>
-            </div>
+            {blocks.map((block, i) => (
+              <div key={`${block.heading}-${i}`}>
+                <Heading as={i === 0 ? 'h2' : 'h3'} size={i === 0 ? 'beast' : 'xl'} className="mb-6">
+                  {block.heading}
+                  {block.highlight && (
+                    <>
+                      {' '}
+                      {i === 0 && <br className="hidden sm:inline" />}
+                      <span className="text-[#0799B3]">{block.highlight}</span>
+                    </>
+                  )}
+                </Heading>
+                <p className="text-gray-600 text-base md:text-lg leading-relaxed whitespace-pre-line">{block.text}</p>
+              </div>
+            ))}
           </motion.div>
 
           {/* ── Right Form Column (Exact match to live screenshot) ── */}

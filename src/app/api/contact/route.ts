@@ -1,4 +1,4 @@
-import { CONTACT_FORM_SERVICES } from '@/lib/constants';
+import { getContactContent } from '@/sanity/content';
 import { isMailConfigured, sendMail } from '@/lib/server/mailer';
 import {
   clean,
@@ -35,7 +35,9 @@ export async function POST(request: Request) {
   };
 
   const errors = validateContactBasics(data);
-  if (!data.service || !(CONTACT_FORM_SERVICES as readonly string[]).includes(data.service)) {
+  // Allowed options are the dropdown list edited in Sanity → Contact Page
+  const { formServices } = await getContactContent();
+  if (!data.service || !formServices.includes(data.service)) {
     errors.service = 'Please select a service you need.';
   }
   if (!data.message) errors.message = 'Please write a brief description of your project.';

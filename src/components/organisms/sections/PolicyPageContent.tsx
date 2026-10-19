@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { Heading } from '@/components/atoms/Heading';
 import { Badge } from '@/components/atoms/Badge';
 import { Button } from '@/components/atoms/Button';
-import { CONTACT } from '@/lib/constants';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { 
   ShieldCheck, 
   Clock, 
@@ -92,6 +92,7 @@ function SectionCard({ section, index }: { section: PolicySection; index: number
 }
 
 export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPageContentProps) {
+  const { contact } = useSiteSettings();
   const handlePrint = () => {
     if (typeof window !== 'undefined') {
       window.print();
@@ -225,18 +226,18 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
               </div>
               <div className="pt-2 space-y-2 text-xs">
                 <a
-                  href={`mailto:${CONTACT.email}`}
+                  href={`mailto:${contact.email}`}
                   className="flex items-center gap-2 text-gray-300 hover:text-[#0799B3] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded px-1"
                 >
                   <Mail className="w-3.5 h-3.5 text-[#0799B3]" aria-hidden="true" />
-                  <span>{CONTACT.email}</span>
+                  <span>{contact.email}</span>
                 </a>
                 <a
-                  href={`tel:${CONTACT.phoneTel}`}
+                  href={`tel:${contact.phoneTel}`}
                   className="flex items-center gap-2 text-gray-300 hover:text-[#0799B3] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded px-1"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#F58220]" aria-hidden="true" />
-                  <span>{CONTACT.phone}</span>
+                  <span>{contact.phone}</span>
                 </a>
               </div>
               <div className="pt-2">
@@ -297,7 +298,7 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
                   8webcom.com &bull; Sun Gravitas, Satellite, Ahmedabad
                 </p>
                 <p className="mt-0.5">
-                  For privacy queries or cancellation notices, please write to {CONTACT.email}.
+                  For privacy queries or cancellation notices, please write to {contact.email}.
                 </p>
               </div>
               <Link

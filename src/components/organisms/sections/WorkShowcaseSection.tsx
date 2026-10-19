@@ -8,7 +8,7 @@ import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
 
 export interface CaseStudyItem {
-  id: number;
+  id: string | number;
   title: string;
   category: string;
   image: string;

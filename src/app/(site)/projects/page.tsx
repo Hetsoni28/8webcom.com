@@ -3,78 +3,67 @@ import { PageHero } from "@/components/organisms/sections/PageHero";
 import { ContactCtaSection } from "@/components/organisms/sections/ContactCtaSection";
 import { ProjectsGrid } from "@/components/organisms/sections/ProjectsGrid";
 import { Testimonials } from "@/components/organisms/sections/Testimonials";
-import { CASE_STUDIES, TESTIMONIALS } from "@/lib/data";
-import { Project } from "@/types";
-import { sanityFetch } from "@/sanity/fetch";
-import { projectsQuery, allTestimonialsQuery } from "@/sanity/queries";
+import { JsonLd } from "@/components/atoms/JsonLd";
+import { breadcrumbSchema, webPageSchema } from "@/lib/schemas";
+import { buildMetadata, getAllTestimonials, getHomeContent, getProjects, getProjectsPageContent } from "@/sanity/content";
 
-export const metadata: Metadata = {
-  title: 'Our Projects Portfolio — Web & Digital Work | 8webcom.com',
-  description:
-    'Browse projects by 8webcom.com — custom websites, web portals, e-commerce stores and digital marketing campaigns for clients across multiple industries in India.',
-  keywords: [
-    'web development portfolio India',
-    '8webcom projects',
-    'website design portfolio Ahmedabad',
-    'web portal case studies',
-    'digital marketing portfolio',
-  ],
-  alternates: {
-    canonical: 'https://www.8webcom.com/projects',
-    languages: { 'en-IN': 'https://www.8webcom.com/projects' },
-  },
-  openGraph: {
-    title: 'Our Projects Portfolio — Web & Digital Work | 8webcom.com',
-    description:
-      'Browse projects by 8webcom.com — web design, portals, e-commerce and digital marketing for clients across industries.',
-    url: 'https://www.8webcom.com/projects',
-    type: 'website',
-    siteName: '8webcom.com',
-    images: [{ url: 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png', width: 1200, height: 630, alt: 'Projects — 8webcom.com' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@coo8webcom',
-    title: 'Our Projects Portfolio — Web & Digital Work | 8webcom.com',
-    description: 'Browse web development and digital marketing projects by 8webcom.com.',
-    images: ['https://www.8webcom.com/admin/upload/general/eNLCZOpr.png'],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getProjectsPageContent();
+  return buildMetadata(seo, "/projects", {
+    keywords: [
+      "web development portfolio Ahmedabad",
+      "website design projects India",
+      "8webcom projects",
+      "web portal case studies",
+    ],
+  });
+}
 
+// Content: Sanity → Projects Page, Projects page items (falls back to Work
+// Showcase), Testimonials, Homepage → Contact band.
 export default async function ProjectsPage() {
-  // Fallback = real client websites (same source as the homepage showcase)
-  const realProjects: Project[] = CASE_STUDIES.map((c) => ({
-    id: String(c.id),
-    title: c.title,
-    category: c.category,
-    description: '',
-    image: c.image,
-    url: c.url,
-    tags: [],
-  }));
-
-  const [projects, testimonials] = await Promise.all([
-    sanityFetch({ query: projectsQuery, fallback: realProjects, tags: ['project'] }),
-    sanityFetch({ query: allTestimonialsQuery, fallback: TESTIMONIALS, tags: ['testimonial'] }),
+  const [page, home, projects, testimonials] = await Promise.all([
+    getProjectsPageContent(),
+    getHomeContent(),
+    getProjects(),
+    getAllTestimonials(),
   ]);
+  const cta = home.contactCta;
 
   return (
     <div className="bg-white selection:bg-[#0799B3] selection:text-white">
-      <PageHero
-        title="Our"
-        highlight="Projects"
-        image="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+      <JsonLd
+        schema={[
+          webPageSchema({ name: page.seo.metaTitle ?? "Our Projects — 8webcom.com", description: page.seo.metaDescription ?? "", url: "/projects" }),
+          breadcrumbSchema([
+            { name: "Home", href: "/" },
+            { name: "Our Projects", href: "/projects" },
+          ]),
+        ]}
       />
-      
-      <ProjectsGrid projects={projects as any} />
+      <PageHero title={page.hero.title} highlight={page.hero.highlight} subTitle={page.hero.eyebrow} image={page.hero.image} />
 
-      <Testimonials 
-        heading="Real Feedback from Real Clients"
-        subTitle="Client Feedback"
-        testimonials={testimonials as any}
+      <ProjectsGrid
+        projects={projects}
+        subTitle={page.section.subTitle}
+        heading={page.section.heading}
+        description={page.section.description}
       />
-      
-      <ContactCtaSection />
+
+      <Testimonials
+        heading={page.testimonialsSection.heading}
+        subTitle={page.testimonialsSection.subTitle}
+        description={page.testimonialsSection.description || home.testimonialsSection.description}
+        testimonials={testimonials}
+      />
+
+      <ContactCtaSection
+        heading={cta.heading}
+        subTitle={cta.subTitle}
+        description={cta.description}
+        ctaLabel={cta.ctaLabel}
+        ctaHref={cta.ctaHref}
+      />
     </div>
   );
 }

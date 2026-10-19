@@ -7,153 +7,80 @@ import { ServiceProcess } from "@/components/organisms/sections/ServiceProcess";
 import { SectionTitle } from "@/components/molecules/SectionTitle";
 import { Reveal } from "@/components/atoms/Reveal";
 import { fadeUp, fadeLeft, fadeRight, staggerContainer, staggerItem } from "@/lib/animations";
-import { SERVICES } from "@/lib/data";
-import { SERVICE_DETAIL } from "@/lib/page-data";
 import { CheckCircle2, Zap, Shield, TrendingUp } from "lucide-react";
 import { JsonLd } from "@/components/atoms/JsonLd";
 import { breadcrumbSchema, webPageSchema, serviceSchema, SERVICE_SCHEMAS } from "@/lib/schemas";
-import { sanityFetch } from "@/sanity/fetch";
-import { serviceBySlugQuery } from "@/sanity/queries";
+import {
+  buildMetadata,
+  getHomeContent,
+  getServiceDetail,
+  getServiceSlugs,
+  getServicesPageContent,
+} from "@/sanity/content";
+
+const WHY_ICONS = {
+  shield: { Icon: Shield, color: "text-[#0799B3]", border: "hover:border-[#0799B3]/50" },
+  zap: { Icon: Zap, color: "text-[#F58220]", border: "hover:border-[#F58220]/50" },
+  trending: { Icon: TrendingUp, color: "text-[#0799B3]", border: "hover:border-[#0799B3]/50" },
+} as const;
 
 export async function generateStaticParams() {
-  const sanityServices = await sanityFetch<Array<{ slug: string }>>({
-    query: `*[_type == "service" && defined(slug.current)]{ "slug": slug.current }`,
-    fallback: [],
-  });
-
-  const slugs = new Set<string>();
-  SERVICES.forEach((s) => slugs.add(s.href.replace("/services/", "")));
-  sanityServices.forEach((s) => {
-    if (s.slug) slugs.add(s.slug);
-  });
-
-  return Array.from(slugs).map((slug) => ({ slug }));
+  return (await getServiceSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  
-  const fallback = SERVICES.find((s) => s.href === `/services/${slug}`);
-  const sanityData = await sanityFetch<any>({
-    query: serviceBySlugQuery,
-    params: { slug },
-    fallback: null,
-    tags: ['service', `service-${slug}`],
-  });
+  const service = await getServiceDetail(slug);
+  if (!service) return { title: "Service Not Found | 8webcom.com" };
 
-  const schemaDef = SERVICE_SCHEMAS[slug];
-  const title = sanityData?.seoTitle || schemaDef?.name || sanityData?.title || fallback?.title;
-  const description = sanityData?.seoDescription || schemaDef?.description || sanityData?.description || fallback?.description;
-
-  if (!title) return { title: 'Service Not Found | 8webcom.com' };
-
-  const canonicalUrl = `https://www.8webcom.com/services/${slug}`;
-  const OG_IMAGE = 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png';
-
-  return {
-    title: `${title} | 8webcom.com`,
-    description: description || 'Professional digital services by 8webcom.com, Ahmedabad, India.',
-    keywords: schemaDef?.keywords ?? [
-      `${slug.replace(/-/g, ' ')} Ahmedabad`,
-      '8webcom services',
-      'digital services India',
-    ],
-    alternates: {
-      canonical: canonicalUrl,
-      languages: { 'en-IN': canonicalUrl },
-    },
-    openGraph: {
-      title: `${title} | 8webcom.com`,
-      description: description || 'Professional digital services by 8webcom.com, Ahmedabad, India.',
-      url: canonicalUrl,
-      type: 'website',
-      siteName: '8webcom.com',
-      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${title} — 8webcom.com` }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      site: '@coo8webcom',
-      creator: '@coo8webcom',
-      title: `${title} | 8webcom.com`,
-      description: description || 'Professional digital services by 8webcom.com, Ahmedabad, India.',
-      images: [{ url: OG_IMAGE, alt: `${title} — 8webcom.com` }],
-    },
+  const seo = {
+    metaTitle: service.seo.metaTitle || `${service.title} | 8webcom.com`,
+    metaDescription: service.seo.metaDescription || service.description,
+    ogImage: service.seo.ogImage,
   };
+  return buildMetadata(seo, `/services/${slug}`, {
+    keywords: service.keywords.length ? service.keywords : [`${service.title} Ahmedabad`, "8webcom services"],
+  });
 }
 
-type ServiceFeature = { title: string; description?: string };
-
-// Normalise Sanity features (strings or {title, description}) to one shape
-function toFeatures(raw: unknown): ServiceFeature[] {
-  if (!Array.isArray(raw)) return [];
-  return raw
-    .map((f) => (typeof f === "string" ? { title: f } : f as ServiceFeature))
-    .filter((f) => f && f.title);
-}
-
+// Content: Sanity → Services (this service) + Services Pages (shared sections)
+// + Homepage → Contact band.
 export default async function ServiceInnerPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  
-  const fallback = SERVICES.find((s) => s.href === `/services/${slug}`);
-  const sanityData = await sanityFetch<any>({
-    query: serviceBySlugQuery,
-    params: { slug },
-    fallback: null,
-    tags: ['service', `service-${slug}`],
-  });
+  const [service, page, home] = await Promise.all([getServiceDetail(slug), getServicesPageContent(), getHomeContent()]);
+  if (!service) notFound();
 
-  if (!sanityData && !fallback) {
-    notFound();
-  }
-
-  // Unique per-service copy (intro, features, technologies) — avoids the
-  // duplicate/thin content all four pages previously shared.
-  const detail = SERVICE_DETAIL[slug as keyof typeof SERVICE_DETAIL];
-  const sanityFeatures = toFeatures(sanityData?.features);
-
-  const service = {
-    title: sanityData?.title ?? fallback?.title ?? "",
-    intro: detail?.intro ?? sanityData?.description ?? fallback?.description ?? "",
-    image: sanityData?.image || fallback?.image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2000&q=80",
-    features: sanityFeatures.length > 0 ? sanityFeatures : [...(detail?.features ?? [])] as ServiceFeature[],
-    technologies: [...(detail?.technologies ?? [])] as string[],
-  };
-
-  const schemaDef = SERVICE_SCHEMAS[slug];
+  const { detail, process, whyChoose } = page;
+  const cta = home.contactCta;
+  const headline = service.headline || `${service.title} Services`;
+  const description = service.seo.metaDescription || service.description;
 
   return (
     <div className="bg-white">
-      {schemaDef && (
-        <JsonLd schema={[
+      <JsonLd
+        schema={[
           serviceSchema({
-            name: schemaDef.name,
-            description: schemaDef.description,
+            name: headline,
+            description,
             url: `/services/${slug}`,
-            serviceType: schemaDef.serviceType,
+            serviceType: SERVICE_SCHEMAS[slug]?.serviceType ?? service.title,
+            keywords: service.keywords,
           }),
-          webPageSchema({
-            name: `${schemaDef.name} — 8webcom.com`,
-            description: schemaDef.description,
-            url: `/services/${slug}`,
-          }),
+          webPageSchema({ name: `${headline} — 8webcom.com`, description, url: `/services/${slug}` }),
           breadcrumbSchema([
             { name: "Home", href: "/" },
             { name: "Services", href: "/services" },
-            { name: schemaDef.name, href: `/services/${slug}` },
+            { name: service.title, href: `/services/${slug}` },
           ]),
-        ]} />
-      )}
-      <PageHero
-        title={service.title}
-        subTitle="Our Expertise"
-        image={service.image}
+        ]}
       />
 
-      {/* Overview Section */}
+      <PageHero title={service.title} subTitle={detail.heroEyebrow} image={service.image} />
+
+      {/* Overview */}
       <section className="py-24 lg:py-32">
         <div className="container-site">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            
             <Reveal variants={fadeLeft}>
               <div className="relative aspect-4/5 lg:aspect-auto lg:h-150 rounded-2xl overflow-hidden group bg-gray-100">
                 <Image
@@ -164,22 +91,23 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
                   className="object-cover transition-transform duration-1200 ease-out-expo group-hover:scale-[1.04]"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-[#12161C]/90 via-[#12161C]/30 to-transparent" />
-                
-                {/* Floating Glass Box */}
-                <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-8 bg-white/10 backdrop-blur-md border border-white/15 p-6 sm:p-7 rounded-2xl transition-transform duration-700 ease-out-expo group-hover:-translate-y-1">
-                  <div className="w-12 h-12 rounded-xl bg-[#0799B3] flex items-center justify-center mb-5">
-                    <Zap className="w-6 h-6 text-white" aria-hidden="true" />
+
+                {(detail.imageCardTitle || detail.imageCardText) && (
+                  <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-8 bg-white/10 backdrop-blur-md border border-white/15 p-6 sm:p-7 rounded-2xl transition-transform duration-700 ease-out-expo group-hover:-translate-y-1">
+                    <div className="w-12 h-12 rounded-xl bg-[#0799B3] flex items-center justify-center mb-5">
+                      <Zap className="w-6 h-6 text-white" aria-hidden="true" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white tracking-tight leading-tight mb-1.5">{detail.imageCardTitle}</h3>
+                    <p className="text-white/80 font-medium">{detail.imageCardText}</p>
                   </div>
-                  <h3 className="text-2xl font-bold text-white tracking-tight leading-tight mb-1.5">Empowering Businesses</h3>
-                  <p className="text-white/80 font-medium">Through next-generation digital solutions.</p>
-                </div>
+                )}
               </div>
             </Reveal>
 
             <Reveal variants={fadeRight}>
               <SectionTitle
-                subTitle="Service Overview"
-                heading={schemaDef?.name ?? `${service.title} Services`}
+                subTitle={detail.overviewEyebrow}
+                heading={headline}
                 description={service.intro}
                 size="lg"
                 noAnimate
@@ -192,9 +120,7 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
                     <CheckCircle2 className="w-6 h-6 text-[#F58220] shrink-0 mt-0.5" aria-hidden="true" />
                     <div>
                       <h3 className="text-[#1F2429] font-bold leading-snug">{feat.title}</h3>
-                      {feat.description && (
-                        <p className="text-gray-600 text-sm leading-relaxed mt-1">{feat.description}</p>
-                      )}
+                      {feat.description && <p className="text-gray-600 text-sm leading-relaxed mt-1">{feat.description}</p>}
                     </div>
                   </li>
                 ))}
@@ -202,9 +128,7 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
 
               {service.technologies.length > 0 && (
                 <div className="mt-10">
-                  <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-gray-500 mb-4">
-                    Technologies We Use
-                  </h3>
+                  <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-gray-500 mb-4">{detail.technologiesLabel}</h3>
                   <ul className="flex flex-wrap gap-2">
                     {service.technologies.map((tech) => (
                       <li key={tech} className="text-sm font-semibold text-[#1F2429] bg-white border border-gray-200 rounded-full px-3.5 py-1.5">
@@ -215,31 +139,25 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
                 </div>
               )}
             </Reveal>
-
           </div>
         </div>
       </section>
 
-      <ServiceProcess />
+      <ServiceProcess subTitle={process.subTitle} heading={process.heading} description={process.description} steps={process.steps} />
 
-      {/* Why Choose Us Section for this Service */}
+      {/* Why choose */}
       <section className="py-24 lg:py-32 bg-[#1F2429] text-white relative overflow-hidden">
-        {/* Animated Background Mesh */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
+        <div className="absolute inset-0 opacity-20" aria-hidden="true">
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] bg-size-[32px_32px] mask-[radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
         </div>
 
         <div className="container-site relative z-10">
-          <Reveal variants={fadeUp} className="mb-24">
-            <SectionTitle 
-              heading={
-                <>
-                  Why Choose Our <br />
-                </>
-              }
+          <Reveal variants={fadeUp} className="mb-16 lg:mb-20">
+            <SectionTitle
+              heading={whyChoose.headingPrefix}
               highlight={service.title}
-              headingSuffix="Services?"
-              description="We combine technical excellence with industry best practices to deliver solutions that outperform the competition."
+              headingSuffix={whyChoose.headingSuffix}
+              description={whyChoose.description}
               align="center"
               size="beast"
               theme="dark"
@@ -247,35 +165,30 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
             />
           </Reveal>
 
-          <Reveal variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            <Reveal variants={staggerItem} margin="0px">
-              <div className="group bg-white/[0.03] border border-white/10 p-8 lg:p-10 rounded-2xl hover:bg-white/[0.06] hover:border-[#0799B3]/50 transition-all duration-500 h-full relative overflow-hidden">
-                <Shield className="w-14 h-14 text-[#0799B3] mb-8 transform group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-500" />
-                <h4 className="text-2xl font-bold tracking-tight mb-3">Highly Secure</h4>
-                <p className="text-gray-400 text-[15px] leading-relaxed">Security is ingrained in our development lifecycle. We ensure your data and operations remain protected against modern threats.</p>
-              </div>
-            </Reveal>
-
-            <Reveal variants={staggerItem} margin="0px">
-              <div className="group bg-white/[0.03] border border-white/10 p-8 lg:p-10 rounded-2xl hover:bg-white/[0.06] hover:border-[#F58220]/50 transition-all duration-500 h-full relative overflow-hidden">
-                <Zap className="w-14 h-14 text-[#F58220] mb-8 transform group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500" />
-                <h4 className="text-2xl font-bold tracking-tight mb-3">Lightning Fast</h4>
-                <p className="text-gray-400 text-[15px] leading-relaxed">Performance is a feature. We optimize every byte and query to ensure your digital presence is blazing fast across all devices.</p>
-              </div>
-            </Reveal>
-
-            <Reveal variants={staggerItem} margin="0px">
-              <div className="group bg-white/[0.03] border border-white/10 p-8 lg:p-10 rounded-2xl hover:bg-white/[0.06] hover:border-[#0799B3]/50 transition-all duration-500 h-full relative overflow-hidden">
-                <TrendingUp className="w-14 h-14 text-[#0799B3] mb-8 transform group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-500" />
-                <h4 className="text-2xl font-bold tracking-tight mb-3">Scalable Growth</h4>
-                <p className="text-gray-400 text-[15px] leading-relaxed">Our solutions are built to grow with you. We use modern architecture patterns that effortlessly scale as your business expands.</p>
-              </div>
-            </Reveal>
+          <Reveal variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {whyChoose.items.map((item, i) => {
+              const { Icon, color, border } = WHY_ICONS[item.icon as keyof typeof WHY_ICONS] ?? WHY_ICONS.shield;
+              return (
+                <Reveal key={`${item.title}-${i}`} variants={staggerItem} margin="0px">
+                  <div className={`group bg-white/3 border border-white/10 p-8 lg:p-10 rounded-2xl hover:bg-white/6 ${border} transition-all duration-500 h-full`}>
+                    <Icon className={`w-12 h-12 ${color} mb-7 transition-transform duration-500 group-hover:scale-110`} aria-hidden="true" />
+                    <h4 className="text-2xl font-bold tracking-tight mb-3">{item.title}</h4>
+                    <p className="text-gray-400 text-[15px] leading-relaxed">{item.description}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
           </Reveal>
         </div>
       </section>
 
-      <ContactCtaSection />
+      <ContactCtaSection
+        heading={cta.heading}
+        subTitle={cta.subTitle}
+        description={cta.description}
+        ctaLabel={cta.ctaLabel}
+        ctaHref={cta.ctaHref}
+      />
     </div>
   );
 }

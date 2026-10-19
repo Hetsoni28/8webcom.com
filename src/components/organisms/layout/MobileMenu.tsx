@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { X, ChevronDown, ChevronUp } from 'lucide-react';
 import { Logo } from '@/components/atoms/Logo';
-import { NAV_LINKS, CONTACT } from '@/lib/constants';
+import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { SocialLink } from '@/components/molecules/SocialLink';
 
 export interface MobileMenuProps {
@@ -14,6 +14,7 @@ export interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+  const { header, socialLinks } = useSiteSettings();
   const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
   const drawerRef = React.useRef<HTMLDivElement>(null);
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
@@ -115,13 +116,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
         <div className="flex-1 overflow-y-auto py-4">
           <nav className="flex flex-col px-4 space-y-2" aria-label="Mobile Navigation Links">
-            {NAV_LINKS.map((link) => {
+            {header.navLinks.map((link) => {
               const panelId = `mobile-acc-panel-${link.label.toLowerCase().replace(/\s+/g, '-')}`;
               const buttonId = `mobile-acc-btn-${link.label.toLowerCase().replace(/\s+/g, '-')}`;
 
               return (
                 <div key={link.label}>
-                  {link.children ? (
+                  {link.children.length > 0 ? (
                     <div className="space-y-1">
                       <button 
                         id={buttonId}
@@ -179,13 +180,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <div className="p-6 bg-gray-50 border-t border-gray-100">
           <h4 className="font-semibold text-sm mb-4 text-[#1F2429]">Follow Us</h4>
           <div className="flex items-center gap-2.5 flex-wrap">
-            <SocialLink platform="Facebook" href="https://www.facebook.com/8webcom" variant="colored" />
-            <SocialLink platform="Instagram" href="https://www.instagram.com/8webcom/" variant="colored" />
-            <SocialLink platform="WhatsApp" href={CONTACT.whatsapp} variant="colored" />
-            <SocialLink platform="LinkedIn" href="https://www.linkedin.com/company/8webcom" variant="colored" />
-            <SocialLink platform="YouTube" href="https://www.youtube.com/@8webcom" variant="colored" />
-            <SocialLink platform="X" href="https://x.com/coo8webcom" variant="colored" />
-            <SocialLink platform="Pinterest" href="https://in.pinterest.com/8webcom/" variant="colored" />
+            {socialLinks.map((s) => (
+              <SocialLink key={s.platform} platform={s.platform} href={s.url} variant="colored" />
+            ))}
           </div>
         </div>
       </div>
