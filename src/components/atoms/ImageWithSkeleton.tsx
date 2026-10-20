@@ -10,6 +10,16 @@ export interface ImageWithSkeletonProps extends Omit<ImageProps, 'onLoad'> {
   onLoad?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 }
 
+/**
+ * Image with a shimmer placeholder.
+ *
+ * The image is ALWAYS visible — the shimmer sits behind it, so whatever has
+ * loaded simply covers it. (Earlier versions hid the image until onLoad fired;
+ * on phones the image can finish loading before JavaScript is ready, the event
+ * is missed, and the image stayed invisible forever.)
+ *
+ * If the optimised request fails, it retries once with the original URL.
+ */
 export function ImageWithSkeleton({
   src,
   alt,
@@ -21,32 +31,25 @@ export function ImageWithSkeleton({
   height,
   priority,
   onLoad,
+  unoptimized,
   ...props
 }: ImageWithSkeletonProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [useOriginal, setUseOriginal] = useState(false);
 
   return (
     <div
-      className={cn(
-        'relative overflow-hidden',
-        fill ? 'w-full h-full' : 'inline-block',
-        wrapperClassName
-      )}
+      className={cn('relative overflow-hidden', fill ? 'w-full h-full' : 'inline-block', wrapperClassName)}
       style={!fill && width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
     >
-      {/* Skeleton Shimmer Loading Placeholder */}
-      {!isLoaded && !hasError && (
+      {/* Shimmer underneath the image (purely decorative) */}
+      {!isLoaded && (
         <div
           aria-hidden="true"
-          className={cn(
-            'absolute inset-0 z-0 bg-gray-200 animate-shimmer pointer-events-none transition-opacity duration-500',
-            skeletonClassName
-          )}
+          className={cn('absolute inset-0 bg-gray-200 animate-shimmer pointer-events-none', skeletonClassName)}
         />
       )}
 
-      {/* Main Image with Smooth Fade-in */}
       <Image
         src={src}
         alt={alt}
@@ -54,16 +57,15 @@ export function ImageWithSkeleton({
         width={width}
         height={height}
         priority={priority}
-        onError={() => setHasError(true)}
+        unoptimized={unoptimized || useOriginal}
+        onError={() => {
+          if (!useOriginal && !unoptimized) setUseOriginal(true);
+        }}
         onLoad={(e) => {
           setIsLoaded(true);
           onLoad?.(e);
         }}
-        className={cn(
-          'transition-all duration-700 ease-out',
-          isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.02] blur-[2px]',
-          className
-        )}
+        className={cn('relative', className)}
         {...props}
       />
     </div>

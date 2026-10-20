@@ -159,7 +159,7 @@ export function WorkShowcaseSection({
         {/* Track viewport — overflow visible on the right so the next card peeks */}
         <motion.div
           ref={viewportRef}
-          className="relative"
+          className="reveal-media relative"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}

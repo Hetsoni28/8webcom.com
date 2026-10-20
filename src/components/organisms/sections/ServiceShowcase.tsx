@@ -29,15 +29,25 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
     <div ref={ref} className={cn('py-20 lg:py-28', index % 2 === 1 && 'bg-[#F6F8F9]')}>
       <div className="container-site">
         <div className={cn('flex flex-col gap-12 lg:gap-20 items-center', isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row')}>
-          {/* Image with gentle parallax + curtain reveal */}
+          {/* Image with gentle parallax + curtain reveal.
+              The OUTER box is what the browser watches (always fully visible);
+              the curtain is on an INNER layer. A fully clipped element has no
+              visible area, so browsers never report it "in view" — that left
+              the images stuck hidden on phones. */}
           <motion.div
-            className="w-full lg:w-1/2 relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100"
-            initial={{ clipPath: 'inset(100% 0% 0% 0%)' }}
-            whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+            className="w-full lg:w-1/2 relative aspect-4/3 rounded-2xl overflow-hidden bg-gray-100"
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1.2, ease: EASE_OUT }}
           >
-            <motion.div style={{ y }} className="absolute -inset-y-[10%] inset-x-0">
+            <motion.div
+              className="reveal-media absolute inset-0"
+              variants={{
+                hidden: { clipPath: 'inset(100% 0% 0% 0%)' },
+                visible: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.2, ease: EASE_OUT } },
+              }}
+            >
+            <motion.div style={{ y }} className="reveal-media absolute inset-y-[-10%] inset-x-0">
               <ImageWithSkeleton
                 src={service.image}
                 alt={service.title}
@@ -45,6 +55,7 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
+            </motion.div>
             </motion.div>
             <span className="absolute top-5 left-5 inline-flex items-center h-9 px-3.5 rounded-full bg-white/95 text-[#1F2429] text-sm font-bold tabular-nums">
               {String(index + 1).padStart(2, '0')}

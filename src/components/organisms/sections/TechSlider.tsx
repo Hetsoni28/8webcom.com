@@ -52,7 +52,7 @@ export function TechSlider({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.9, delay: (idx % 4) * 0.08, ease: EASE_OUT }}
-              className="snap-start shrink-0 w-[78vw] sm:w-[52vw] md:w-auto flex"
+              className="reveal-media snap-start shrink-0 w-[78vw] sm:w-[52vw] md:w-auto flex"
             >
               <TechCard
                 name={platform.name}

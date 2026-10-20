@@ -185,6 +185,7 @@ export function ServicesGrid({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.9, delay: (index % 2) * 0.1, ease: EASE_OUT }}
+              className="reveal-media"
             >
               <ServiceCard
                 number={String(index + 1).padStart(2, '0')}

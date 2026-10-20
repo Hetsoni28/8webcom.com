@@ -75,7 +75,7 @@ function StackCard({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 1, ease: EASE_OUT }}
-        className="group relative w-full grid grid-cols-1 sm:grid-cols-2 bg-white rounded-2xl border border-gray-200/80 p-3 sm:p-4 gap-3 sm:gap-6 shadow-[0_30px_60px_-36px_rgba(31,36,41,0.35)] overflow-hidden"
+        className="reveal-media group relative w-full grid grid-cols-1 sm:grid-cols-2 bg-white rounded-2xl border border-gray-200/80 p-3 sm:p-4 gap-3 sm:gap-6 shadow-[0_30px_60px_-36px_rgba(31,36,41,0.35)] overflow-hidden"
       >
         <div className="relative aspect-16/11 sm:aspect-auto sm:min-h-85 rounded-xl overflow-hidden bg-gray-100">
           <ImageWithSkeleton

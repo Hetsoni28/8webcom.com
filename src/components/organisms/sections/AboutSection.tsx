@@ -79,16 +79,16 @@ function RevealImage({
   return (
     <motion.div
       ref={ref}
-      className={cn('relative overflow-hidden rounded-2xl bg-gray-100', className)}
+      className={cn('reveal-media relative overflow-hidden rounded-2xl bg-gray-100', className)}
       initial={{ opacity: 0, scale: 1.04 }}
       whileInView={{ opacity: 1, scale: 1 }}
       // margin: fire as soon as the element enters the viewport bottom edge
       viewport={{ once: true, margin: '0px 0px -20px 0px' }}
       transition={{ duration: 0.85, delay, ease: EASE_OUT }}
     >
-      <motion.div className="absolute inset-y-[-12%] inset-x-0" style={{ y }}>
+      <motion.div className="reveal-media absolute inset-y-[-12%] inset-x-0" style={{ y }}>
         <motion.div
-          className="absolute inset-0"
+          className="reveal-media absolute inset-0"
           initial={{ scale: 1.08 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true, margin: '0px 0px -20px 0px' }}

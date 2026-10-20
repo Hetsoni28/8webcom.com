@@ -139,6 +139,18 @@ body {
   animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* ─── Media reveals: desktop only ──────────────────────────────
+   Image containers that animate in on scroll (fade / curtain / parallax)
+   carry .reveal-media. On phones & tablets they are always fully visible,
+   so an image can never stay hidden if a scroll animation doesn't fire. */
+@media (max-width: 1023.98px) {
+  .reveal-media {
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+}
+
 /* ─── Outlined display text ────────────────────────────────── */
 .text-outline {
   color: transparent;

@@ -81,7 +81,7 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
       <section className="py-24 lg:py-32">
         <div className="container-site">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            <Reveal variants={fadeLeft}>
+            <Reveal variants={fadeLeft} className="reveal-media">
               <div className="relative aspect-4/5 lg:aspect-auto lg:h-150 rounded-2xl overflow-hidden group bg-gray-100">
                 <Image
                   src={service.image}

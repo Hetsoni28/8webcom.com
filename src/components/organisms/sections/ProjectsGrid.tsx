@@ -73,6 +73,7 @@ export function ProjectsGrid({ projects, subTitle, heading = '', description }: 
                   exit={{ opacity: 0, scale: 0.96 }}
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.9, delay: (i % 3) * 0.08, ease: EASE_OUT }}
+                  className="reveal-media"
                 >
                   <Wrapper
                     {...(project.url
