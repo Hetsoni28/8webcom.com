@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/atoms/Logo';
 import { SocialLink } from '@/components/molecules/SocialLink';
-import { WhatsAppIcon, getSocialIcon } from '@/components/atoms/SocialIcons';
+import { WhatsAppIcon } from '@/components/atoms/SocialIcons';
 import { MapPin, Phone, Mail, Globe, ArrowUpRight, ChevronRight } from 'lucide-react';
 import type { ResolvedSiteSettings } from '@/sanity/content';
 
@@ -63,7 +63,6 @@ export function Footer({ settings }: { settings: ResolvedSiteSettings }) {
                 <SocialLink
                   key={s.platform}
                   platform={s.platform}
-                  icon={getSocialIcon(s.platform)}
                   href={s.url}
                   iconSize={16}
                   className="w-10 h-10 hover:scale-100"

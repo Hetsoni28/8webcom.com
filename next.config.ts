@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
       { source: '/refund-and-cancellation', destination: '/refund-and-cancellation-policy', permanent: true },
     ];
   },
+  // Browsers and crawlers always request /favicon.ico; serve the brand icon
+  // (src/app/icon.png) there instead of returning a 404.
+  async rewrites() {
+    return [{ source: '/favicon.ico', destination: '/icon.png' }];
+  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },

@@ -1,12 +1,12 @@
-import React, { ElementType } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
-import { getSocialIcon } from '@/components/atoms/SocialIcons';
+import { SocialIcon } from '@/components/atoms/SocialIcons';
 
 export type SocialLinkVariant = 'default' | 'floating' | 'colored' | 'footer';
 
 export interface SocialLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  /** Platform name, e.g. "Facebook" — picks the icon */
   platform: string;
-  icon?: ElementType;
   variant?: SocialLinkVariant;
   className?: string;
   iconSize?: number;
@@ -14,14 +14,11 @@ export interface SocialLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorEl
 
 export function SocialLink({
   platform,
-  icon,
   variant = 'default',
   className,
   iconSize = 18,
   ...props
 }: SocialLinkProps) {
-  const IconComponent = icon || getSocialIcon(platform);
-
   const baseClasses = "transition-all duration-300 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2";
   
   const variantClasses = {
@@ -41,7 +38,7 @@ export function SocialLink({
       className={cn(baseClasses, variantClasses[variant], className)}
       {...props}
     >
-      <IconComponent size={iconSize} className="shrink-0 transition-transform duration-300" aria-hidden="true" />
+      <SocialIcon platform={platform} size={iconSize} className="shrink-0 transition-transform duration-300" aria-hidden="true" />
     </a>
   );
 }

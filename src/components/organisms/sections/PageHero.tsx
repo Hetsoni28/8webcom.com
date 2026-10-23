@@ -24,7 +24,7 @@ export function PageHero({ title, highlight, titleSuffix, subTitle, image }: Pag
               src={image}
               alt=""
               fill
-              priority
+              loading="eager"
               fetchPriority="high"
               sizes="100vw"
               className="object-cover opacity-40"

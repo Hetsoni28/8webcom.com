@@ -135,7 +135,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
                     src={slide.image}
                     alt={slide.title}
                     fill
-                    priority={i === 0}
+                    loading={i === 0 ? 'eager' : undefined}
                     fetchPriority={i === 0 ? 'high' : 'low'}
                     sizes="100vw"
                     quality={75}

@@ -11,13 +11,11 @@ import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { 
   ShieldCheck, 
   Clock, 
-  MapPin, 
   Mail, 
   Phone, 
   Printer, 
   FileText, 
   ArrowRight,
-  ExternalLink,
   ChevronRight,
   Sparkles
 } from 'lucide-react';
@@ -47,8 +45,6 @@ const POLICY_TABS = [
 ];
 
 function SectionCard({ section, index }: { section: PolicySection; index: number }) {
-  const formattedNum = String(index + 1).padStart(2, '0');
-
   return (
     <div id={`section-${index}`} className="scroll-mt-36">
     <motion.div

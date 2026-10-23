@@ -53,6 +53,8 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
                 alt={service.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
+                // First block is the largest image on screen (LCP): load it immediately
+                loading={index === 0 ? "eager" : undefined}
                 className="object-cover"
               />
             </motion.div>

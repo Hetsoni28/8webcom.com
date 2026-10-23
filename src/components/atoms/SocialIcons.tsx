@@ -122,16 +122,17 @@ export function PinterestIcon({ size = 18, className = '', ...props }: IconProps
 }
 
 /**
- * Returns the matching SVG icon component for a platform name
+ * Renders the matching SVG icon for a platform name (e.g. from Sanity).
+ * Returns elements directly instead of a component reference, so React never
+ * sees a component "created during render".
  */
-export function getSocialIcon(platform: string) {
+export function SocialIcon({ platform, ...props }: IconProps & { platform: string }) {
   const p = platform.toLowerCase();
-  if (p.includes('facebook')) return FacebookIcon;
-  if (p.includes('instagram')) return InstagramIcon;
-  if (p.includes('whatsapp')) return WhatsAppIcon;
-  if (p.includes('linkedin')) return LinkedInIcon;
-  if (p.includes('youtube')) return YouTubeIcon;
-  if (p === 'x' || p.includes('twitter')) return XIcon;
-  if (p.includes('pinterest')) return PinterestIcon;
-  return FacebookIcon;
+  if (p.includes('instagram')) return <InstagramIcon {...props} />;
+  if (p.includes('whatsapp')) return <WhatsAppIcon {...props} />;
+  if (p.includes('linkedin')) return <LinkedInIcon {...props} />;
+  if (p.includes('youtube')) return <YouTubeIcon {...props} />;
+  if (p === 'x' || p.includes('twitter')) return <XIcon {...props} />;
+  if (p.includes('pinterest')) return <PinterestIcon {...props} />;
+  return <FacebookIcon {...props} />;
 }

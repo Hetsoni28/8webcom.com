@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { SocialLink } from '@/components/molecules/SocialLink';
-import { getSocialIcon } from '@/components/atoms/SocialIcons';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 
 // Brand background per platform; which platforms show is set in Sanity
@@ -47,7 +46,6 @@ export function FloatingSocial() {
           key={s.platform}
           platform={s.platform}
           href={s.url}
-          icon={getSocialIcon(s.platform)}
           variant="floating"
           className={cn(
             BRAND_BG[s.platform] ?? 'bg-[#0799B3]!',

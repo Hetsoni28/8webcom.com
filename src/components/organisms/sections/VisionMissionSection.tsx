@@ -110,8 +110,10 @@ function CardIcon({ type }: { type: 'vision' | 'mission' | 'quality' }) {
         {/* Scallop Dots */}
         {Array.from({ length: 12 }).map((_, i) => {
           const angle = (i * 30 * Math.PI) / 180;
-          const x = 32 + 18 * Math.cos(angle);
-          const y = 28 + 18 * Math.sin(angle);
+          // Rounded: server (Node) and browser trig differ in the last digits,
+          // which caused a React hydration mismatch on these attributes.
+          const x = Math.round((32 + 18 * Math.cos(angle)) * 1000) / 1000;
+          const y = Math.round((28 + 18 * Math.sin(angle)) * 1000) / 1000;
           return <circle key={i} cx={x} cy={y} r="3.5" fill="currentColor" />;
         })}
         {/* White Inner Badge Circle */}

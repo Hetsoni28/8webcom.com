@@ -28,7 +28,8 @@ export function Logo({
       alt={alt} 
       width={width} 
       height={height}
-      priority={priority}
+      loading={priority ? 'eager' : undefined}
+      fetchPriority={priority ? 'high' : undefined}
       className={cn("w-auto h-14 sm:h-16 lg:h-16.5 object-contain block", className)}
     />
   );

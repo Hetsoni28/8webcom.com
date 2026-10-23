@@ -88,6 +88,7 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
                   alt={service.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
+                  loading="eager"
                   className="object-cover transition-transform duration-1200 ease-out-expo group-hover:scale-[1.04]"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-[#12161C]/90 via-[#12161C]/30 to-transparent" />

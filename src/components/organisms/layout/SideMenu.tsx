@@ -3,7 +3,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { X, MapPin, Phone, Mail } from 'lucide-react';
-import { WhatsAppIcon, getSocialIcon } from '@/components/atoms/SocialIcons';
+import { WhatsAppIcon, SocialIcon } from '@/components/atoms/SocialIcons';
 import { Logo } from '@/components/atoms/Logo';
 import { Text } from '@/components/atoms/Text';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
@@ -190,7 +190,6 @@ export function SideMenu({ isOpen, onClose }: SideMenuProps) {
             <h4 className="text-white text-lg font-black tracking-tight">Follow Us</h4>
             <div className="flex items-center gap-2.5 flex-wrap">
               {socialLinks.map((s) => {
-                const Icon = getSocialIcon(s.platform);
                 return (
                   <a
                     key={s.platform}
@@ -200,7 +199,7 @@ export function SideMenu({ isOpen, onClose }: SideMenuProps) {
                     aria-label={s.platform}
                     className={`w-9 h-9 rounded-full border border-white/20 text-gray-300 hover:text-white ${HOVER_BG[s.platform] ?? 'hover:bg-[#0799B3]'} hover:border-transparent flex items-center justify-center transition-all duration-300 shadow-sm`}
                   >
-                    <Icon size={15} />
+                    <SocialIcon platform={s.platform} size={15} />
                   </a>
                 );
               })}

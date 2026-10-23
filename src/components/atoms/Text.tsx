@@ -1,4 +1,4 @@
-import { ElementType, ReactNode } from "react";
+import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface TextProps {

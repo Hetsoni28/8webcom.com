@@ -56,7 +56,8 @@ export function ImageWithSkeleton({
         fill={fill}
         width={width}
         height={height}
-        priority={priority}
+        loading={priority ? 'eager' : props.loading}
+        fetchPriority={priority ? 'high' : props.fetchPriority}
         unoptimized={unoptimized || useOriginal}
         onError={() => {
           if (!useOriginal && !unoptimized) setUseOriginal(true);
