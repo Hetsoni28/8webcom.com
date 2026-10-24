@@ -18,7 +18,9 @@ export const SEO = {
     'Web development, web portal, digital marketing & CRM company in Ahmedabad. 15+ years, 1,500+ projects and 2,000+ clients worldwide. Get a free quote.',
 
   // OpenGraph defaults
-  ogImage: 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png',
+  // Served by this site, so it keeps working after the domain moves off the old server
+  ogImage: 'https://www.8webcom.com/assets/img/logo.png',
+  ogImageSize: { width: 170, height: 64 },
   ogLocale: 'en_IN',
   twitterHandle: '@coo8webcom',
 
@@ -118,3 +120,14 @@ export const SEO = {
     },
   },
 } as const;
+
+/**
+ * Absolute URL in the site's canonical form. Pages end in "/" to match the URLs
+ * the old site had indexed (next.config trailingSlash: true); files and #fragments are kept as is.
+ */
+export function absoluteUrl(path = '/'): string {
+  const [pathname, hash] = (path.startsWith('/') ? path : `/${path}`).split('#');
+  const isFile = /\.[a-z0-9]+$/i.test(pathname);
+  const normalized = isFile || pathname.endsWith('/') ? pathname : `${pathname}/`;
+  return `${SEO.siteUrl}${normalized}${hash ? `#${hash}` : ''}`;
+}

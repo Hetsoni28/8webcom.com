@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getServiceSlugs, getSitemapEntries, type SitemapEntry } from '@/sanity/content';
-
-const BASE = 'https://www.8webcom.com';
+import { absoluteUrl } from '@/lib/seo';
 
 // Used when Sanity is unreachable or a page has no CMS document yet
 const SITE_UPDATED = new Date('2026-10-24');
@@ -11,7 +10,7 @@ type Freq = MetadataRoute.Sitemap[number]['changeFrequency'];
 // Each page's lastModified = newest edit among the Sanity types it renders
 const PAGES: { path: string; types: string[]; changeFrequency: Freq; priority: number }[] = [
   {
-    path: '',
+    path: '/',
     types: ['homepageSettings', 'heroSlide', 'service', 'techPlatform', 'crmCard', 'caseStudy', 'testimonial', 'clientLogo'],
     changeFrequency: 'weekly',
     priority: 1.0,
@@ -42,19 +41,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...PAGES.map(({ path, types, changeFrequency, priority }) => ({
-      url: `${BASE}${path}`,
+      url: absoluteUrl(path),
       lastModified: latest(entries, (e) => types.includes(e._type)),
       changeFrequency,
       priority,
     })),
     ...serviceSlugs.map((slug) => ({
-      url: `${BASE}/services/${slug}`,
+      url: absoluteUrl(`/services/${slug}`),
       lastModified: latest(entries, (e) => e._type === 'service' && e.slug === slug),
       changeFrequency: 'monthly' as const,
       priority: SERVICE_PRIORITY[slug] ?? 0.8,
     })),
     ...POLICIES.map((slug) => ({
-      url: `${BASE}/${slug}`,
+      url: absoluteUrl(`/${slug}`),
       lastModified: latest(entries, (e) => e._type === 'policyPage' && e.slug === slug),
       changeFrequency: 'yearly' as const,
       priority: 0.3,

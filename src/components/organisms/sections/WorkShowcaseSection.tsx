@@ -196,7 +196,7 @@ export function WorkShowcaseSection({
                   <div className="relative aspect-4/5 rounded-2xl overflow-hidden bg-[#F1F4F6] border border-gray-200/80">
                     <Image
                       src={item.image}
-                      alt={item.title}
+                      alt={`${item.title} website designed and developed by 8webcom.com`}
                       fill
                       draggable={false}
                       sizes="(max-width: 640px) 78vw, 392px"

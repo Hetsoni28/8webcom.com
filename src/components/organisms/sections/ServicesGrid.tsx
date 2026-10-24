@@ -148,7 +148,7 @@ export function ServicesGrid({
               >
                 <Image
                   src={service.image}
-                  alt={service.title}
+                  alt={`${service.title} by 8webcom.com, Ahmedabad`}
                   fill
                   sizes="(max-width: 1280px) 40vw, 520px"
                   className="object-cover"

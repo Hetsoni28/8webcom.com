@@ -34,7 +34,7 @@ export function ServiceCard({
       <div className="relative aspect-16/10 rounded-xl overflow-hidden bg-gray-100">
         <ImageWithSkeleton
           src={image}
-          alt={title}
+          alt={`${title} by 8webcom.com, Ahmedabad`}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover group-hover:scale-[1.06] duration-1200 ease-out-expo"

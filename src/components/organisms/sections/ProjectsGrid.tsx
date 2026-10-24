@@ -88,7 +88,7 @@ export function ProjectsGrid({ projects, subTitle, heading = '', description }: 
                     <div className="relative aspect-4/5 rounded-2xl overflow-hidden bg-[#F1F4F6] border border-gray-200/80">
                       <Image
                         src={project.image}
-                        alt={project.title}
+                        alt={`${project.title} website designed and developed by 8webcom.com`}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover object-top transition-[object-position] duration-3500 ease-in-out group-hover:object-bottom"

@@ -5,9 +5,11 @@
  * All data sourced from src/lib/constants.ts and src/lib/seo.ts.
  */
 
-const BASE = 'https://www.8webcom.com';
-const LOGO = 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png';
-const ORG_ID = `${BASE}/#organization`;
+import { SEO, absoluteUrl } from './seo';
+
+const BASE = SEO.siteUrl;
+const LOGO = SEO.ogImage;
+const ORG_ID = absoluteUrl('/#organization');
 
 const SOCIAL_PROFILES = [
   'https://www.facebook.com/8webcom',
@@ -38,7 +40,7 @@ export function breadcrumbSchema(
       '@type': 'ListItem',
       position: idx + 1,
       name: item.name,
-      item: `${BASE}${item.href}`,
+      item: absoluteUrl(item.href),
     })),
   };
 }
@@ -60,12 +62,12 @@ export function webPageSchema({
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': `${BASE}${url}`,
+    '@id': absoluteUrl(url),
     name,
     description,
-    url: `${BASE}${url}`,
+    url: absoluteUrl(url),
     inLanguage: 'en-IN',
-    isPartOf: { '@id': `${BASE}/#website` },
+    isPartOf: { '@id': absoluteUrl('/#website') },
     about: { '@id': ORG_ID },
     dateModified: dateModified ?? new Date().toISOString().split('T')[0],
     publisher: {
@@ -97,10 +99,10 @@ export function serviceSchema({
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    '@id': `${BASE}${url}#service`,
+    '@id': `${absoluteUrl(url)}#service`,
     name,
     description,
-    url: `${BASE}${url}`,
+    url: absoluteUrl(url),
     serviceType,
     keywords: keywords ?? [],
     // References the single business entity declared in the root layout graph
@@ -209,7 +211,7 @@ export function contactPageSchema() {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
     name: 'Contact 8webcom.com',
-    url: `${BASE}/contacts`,
+    url: absoluteUrl('/contacts'),
     description:
       'Contact 8webcom.com at 503, Sun Gravitas, Satellite, Ahmedabad. Call +91 97277 00459 or email info@8webcom.com for a free project consultation.',
     mainEntity: {
@@ -231,7 +233,7 @@ export function aboutPageSchema() {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
     name: 'About 8webcom.com',
-    url: `${BASE}/about-us`,
+    url: absoluteUrl('/about-us'),
     description:
       'Learn about 8webcom.com — a web development and digital marketing agency in Ahmedabad, India, serving businesses since 2011.',
     mainEntity: {

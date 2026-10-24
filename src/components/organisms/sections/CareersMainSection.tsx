@@ -176,7 +176,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
       body.append('website', honeypot);
       // No Content-Type header: the browser sets the multipart boundary itself
       const request: RequestInit = { method: 'POST', body };
-      const res = await fetch('/api/careers', request);
+      const res = await fetch('/api/careers/', request);
       const result = await res.json().catch(() => ({}));
 
       if (!res.ok || !result.ok) {

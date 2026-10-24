@@ -167,7 +167,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, website: honeypot }),
       };
-      const res = await fetch('/api/contact', request);
+      const res = await fetch('/api/contact/', request);
       const result = await res.json().catch(() => ({}));
 
       if (!res.ok || !result.ok) {

@@ -4,12 +4,19 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  // The old site's indexed URLs end in "/" (e.g. /about-us/); keep them identical so rankings carry over
+  trailingSlash: true,
   transpilePackages: ['styled-components'],
-  // Legacy short URLs → canonical policy pages (308 permanent)
+  // Legacy URLs the old site answered on → their pages here (308 permanent)
   async redirects() {
     return [
-      { source: '/disclaimer', destination: '/disclaimer-policy', permanent: true },
-      { source: '/refund-and-cancellation', destination: '/refund-and-cancellation-policy', permanent: true },
+      { source: '/disclaimer', destination: '/disclaimer-policy/', permanent: true },
+      { source: '/refund-and-cancellation', destination: '/refund-and-cancellation-policy/', permanent: true },
+      { source: '/contact', destination: '/contacts/', permanent: true },
+      { source: '/about', destination: '/about-us/', permanent: true },
+      { source: '/home', destination: '/', permanent: true },
+      { source: '/index.php', destination: '/', permanent: true },
+      { source: '/blog', destination: '/', permanent: true },
     ];
   },
   // Browsers and crawlers always request /favicon.ico; serve the brand icon

@@ -85,7 +85,7 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
               <div className="relative aspect-4/5 lg:aspect-auto lg:h-150 rounded-2xl overflow-hidden group bg-gray-100">
                 <Image
                   src={service.image}
-                  alt={service.title}
+                  alt={`${service.title} services in Ahmedabad – 8webcom.com`}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   loading="eager"

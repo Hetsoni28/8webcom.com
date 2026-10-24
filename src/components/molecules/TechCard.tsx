@@ -26,7 +26,7 @@ export function TechCard({ name, image, icon, description, className }: TechCard
       <div className="relative aspect-16/10 w-full rounded-xl overflow-hidden bg-gray-200">
         <ImageWithSkeleton
           src={image}
-          alt={`${name} cover`}
+          alt={`${name} services – 8webcom.com`}
           fill
           sizes="(max-width: 768px) 78vw, (max-width: 1024px) 45vw, 300px"
           className="object-cover group-hover:scale-[1.04] duration-1200 ease-out-expo"

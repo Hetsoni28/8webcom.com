@@ -50,7 +50,7 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
             <motion.div style={{ y }} className="reveal-media absolute inset-y-[-10%] inset-x-0">
               <ImageWithSkeleton
                 src={service.image}
-                alt={service.title}
+                alt={`${service.title} services from 8webcom.com`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 // First block is the largest image on screen (LCP): load it immediately

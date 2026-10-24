@@ -133,7 +133,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
                 >
                   <Image
                     src={slide.image}
-                    alt={slide.title}
+                    alt={`${slide.title} services by 8webcom.com in Ahmedabad`}
                     fill
                     loading={i === 0 ? 'eager' : undefined}
                     fetchPriority={i === 0 ? 'high' : 'low'}

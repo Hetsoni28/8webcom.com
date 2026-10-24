@@ -133,7 +133,7 @@ export function Footer({ settings }: { settings: ResolvedSiteSettings }) {
       {/* ── Bottom bar ── */}
       <div className="border-t border-white/10">
         <div className="container-site py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-400 text-sm">
             Copyright &copy; {currentYear}&nbsp;
             <span className="text-[#F58220] font-semibold">8</span>
             <span className="text-[#0799B3] font-semibold">webcom.com</span>
@@ -142,7 +142,7 @@ export function Footer({ settings }: { settings: ResolvedSiteSettings }) {
           <ul className="flex items-center gap-6 flex-wrap justify-center text-[13px]">
             {footer.legalLinks.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="text-gray-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded">
+                <Link href={l.href} className="text-gray-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded">
                   {l.label}
                 </Link>
               </li>

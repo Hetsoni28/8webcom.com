@@ -3,6 +3,7 @@
 import type { Metadata } from 'next';
 import { sanityFetch } from './fetch';
 import * as Q from './queries';
+import { SEO, absoluteUrl } from '@/lib/seo';
 import {
   SITE_DEFAULTS,
   HOME_DEFAULTS,
@@ -130,14 +131,14 @@ export const getSitemapEntries = () =>
   sanityFetch<SitemapEntry[]>({ query: Q.sitemapQuery, fallback: [], tags: [SANITY_TAG] });
 
 // ─── SEO helper ──────────────────────────────────────────────────
-const SITE_URL = 'https://www.8webcom.com';
-const DEFAULT_OG = 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png';
 
 export function buildMetadata(seo: Seo, path: string, extra?: Partial<Metadata>): Metadata {
-  const url = `${SITE_URL}${path === '/' ? '' : path}`;
+  const url = absoluteUrl(path);
   const title = seo.metaTitle;
   const description = seo.metaDescription;
-  const image = seo.ogImage || DEFAULT_OG;
+  // A CMS share image is a full-size card; the fallback is the small logo, so it gets the small card type
+  const image = seo.ogImage || SEO.ogImage;
+  const imageSize = seo.ogImage ? { width: 1200, height: 630 } : SEO.ogImageSize;
   return {
     title,
     description,
@@ -149,10 +150,10 @@ export function buildMetadata(seo: Seo, path: string, extra?: Partial<Metadata>)
       type: 'website',
       siteName: '8webcom.com',
       locale: 'en_IN',
-      images: [{ url: image, width: 1200, height: 630, alt: title ?? '8webcom.com' }],
+      images: [{ url: image, ...imageSize, alt: title ?? '8webcom.com' }],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: seo.ogImage ? 'summary_large_image' : 'summary',
       site: '@coo8webcom',
       creator: '@coo8webcom',
       title,

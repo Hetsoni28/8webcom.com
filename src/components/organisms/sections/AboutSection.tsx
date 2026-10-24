@@ -199,7 +199,7 @@ export function AboutSection({
             >
               <CtaLink href={ctaHref}>
                 {ctaLabel}
-                {/^(read|learn|know|view|discover).*more|^more$/i.test(ctaLabel.trim()) && (
+                {/^(read|learn|know|view|discover)\b.*more|^more$/i.test(ctaLabel.trim()) && (
                   <span className="sr-only"> about {heading}</span>
                 )}
               </CtaLink>

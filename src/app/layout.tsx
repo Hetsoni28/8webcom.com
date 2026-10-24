@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
-import { SEO } from '@/lib/seo';
+import { SEO, absoluteUrl } from '@/lib/seo';
 import { getSiteSettings, type ResolvedSiteSettings } from '@/sanity/content';
 import './globals.css';
 
@@ -49,8 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
     images: [
       {
         url: SEO.ogImage,
-        width: 1200,
-        height: 630,
+        ...SEO.ogImageSize,
         alt: '8webcom.com — Web Development Company in Ahmedabad, India',
         type: 'image/png',
       },
@@ -59,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   // ── Twitter / X ──────────────────────────────────────────────
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     site: SEO.twitterHandle,
     creator: SEO.twitterHandle,
     title: SEO.pages.home.title,
@@ -87,7 +86,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   // ── Canonical / Alternates ───────────────────────────────────
   alternates: {
-    canonical: SEO.siteUrl,
+    canonical: absoluteUrl('/'),
     languages: {
       'en-IN': SEO.siteUrl,
     },
@@ -152,9 +151,8 @@ function buildSiteGraph({ contact, socialLinks }: ResolvedSiteSettings) {
       logo: {
         '@type': 'ImageObject',
         '@id': `${SEO.siteUrl}/#logo`,
-        url: 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png',
-        width: 300,
-        height: 100,
+        url: SEO.ogImage,
+        ...SEO.ogImageSize,
         caption: '8webcom.com',
       },
       image: SEO.ogImage,
@@ -234,9 +232,9 @@ function buildSiteGraph({ contact, socialLinks }: ResolvedSiteSettings) {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            '@id': `${SEO.siteUrl}${s.path}#service`,
+            '@id': `${absoluteUrl(s.path)}#service`,
             name: s.name,
-            url: `${SEO.siteUrl}${s.path}`,
+            url: absoluteUrl(s.path),
           },
         })),
       },
@@ -267,7 +265,6 @@ export default async function RootLayout({
       <head>
         {/* Preconnect to critical third-party origins */}
         <link rel="preconnect" href="https://cdn.sanity.io" />
-        <link rel="preconnect" href="https://www.8webcom.com" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
 
         {/* JSON-LD Structured Data (single connected graph) */}

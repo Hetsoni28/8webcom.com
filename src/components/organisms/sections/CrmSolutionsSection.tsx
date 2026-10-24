@@ -80,7 +80,7 @@ function StackCard({
         <div className="relative aspect-16/11 sm:aspect-auto sm:min-h-85 rounded-xl overflow-hidden bg-gray-100">
           <ImageWithSkeleton
             src={item.image}
-            alt={item.title}
+            alt={`${item.title} – CRM services by 8webcom.com`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
             className="object-cover group-hover:scale-[1.06] duration-1200 ease-out-expo"

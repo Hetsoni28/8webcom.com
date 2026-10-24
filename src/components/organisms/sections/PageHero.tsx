@@ -15,6 +15,8 @@ export interface PageHeroProps {
  * H1 paints immediately (no waiting on hydration).
  */
 export function PageHero({ title, highlight, titleSuffix, subTitle, image }: PageHeroProps) {
+  // Background is decorative for screen readers (aria-hidden) but still described for image search
+  const pageName = [title, highlight, titleSuffix].filter((t) => typeof t === 'string' && t).join(' ');
   return (
     <section className="bg-white px-2.5 sm:px-4 pt-[100px] sm:pt-[118px] lg:pt-[130px]">
       <div className="relative min-h-[340px] sm:min-h-[400px] lg:min-h-[460px] rounded-[20px] sm:rounded-[28px] overflow-hidden bg-[#12161C] flex items-end">
@@ -22,7 +24,7 @@ export function PageHero({ title, highlight, titleSuffix, subTitle, image }: Pag
           <div className="absolute inset-0" aria-hidden="true">
             <Image
               src={image}
-              alt=""
+              alt={pageName ? `${pageName} – 8webcom.com, Ahmedabad` : ''}
               fill
               loading="eager"
               fetchPriority="high"
