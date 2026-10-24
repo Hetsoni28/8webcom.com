@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { m, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { ServiceCard } from '@/components/molecules/ServiceCard';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
@@ -57,7 +57,7 @@ export function ServicesGrid({
             {services.map((service, i) => {
               const isActive = i === active;
               return (
-                <m.li
+                <motion.li
                   key={service.id ?? i}
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -123,13 +123,13 @@ export function ServicesGrid({
                       </div>
                     </div>
                   </Link>
-                </m.li>
+                </motion.li>
               );
             })}
           </ul>
 
           {/* Preview frame */}
-          <m.div
+          <motion.div
             className="col-span-5 relative aspect-4/5 rounded-2xl overflow-hidden bg-[#1F2429]"
             initial={{ clipPath: 'inset(12% 12% 12% 12% round 16px)', opacity: 0 }}
             whileInView={{ clipPath: 'inset(0% 0% 0% 0% round 16px)', opacity: 1 }}
@@ -158,7 +158,7 @@ export function ServicesGrid({
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/70 to-transparent pointer-events-none" />
             <div className="absolute left-6 right-6 bottom-6 flex items-end justify-between text-white pointer-events-none">
               <AnimatePresence mode="wait" initial={false}>
-                <m.span
+                <motion.span
                   key={active}
                   className="text-xl font-bold tracking-tight"
                   initial={{ opacity: 0, y: 10 }}
@@ -167,19 +167,19 @@ export function ServicesGrid({
                   transition={{ duration: 0.45, ease: EASE_OUT }}
                 >
                   {services[active]?.title}
-                </m.span>
+                </motion.span>
               </AnimatePresence>
               <span className="text-sm font-semibold tabular-nums text-white/60">
                 {String(active + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
               </span>
             </div>
-          </m.div>
+          </motion.div>
         </div>
 
         {/* ── Mobile / tablet: card grid ── */}
         <div className="grid lg:hidden grid-cols-1 md:grid-cols-2 gap-5">
           {services.map((service, index) => (
-            <m.div
+            <motion.div
               key={service.id ?? index}
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -194,7 +194,7 @@ export function ServicesGrid({
                 image={service.image}
                 description={service.description}
               />
-            </m.div>
+            </motion.div>
           ))}
         </div>
       </div>

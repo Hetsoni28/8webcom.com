@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import Image from 'next/image';
-import { m, useReducedMotion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { Phone } from 'lucide-react';
 import { AboutImage, AboutFeature as AboutFeatureType } from '@/types';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
@@ -20,7 +20,7 @@ function Word({ children, progress, range }: { children: string; progress: Motio
   const color = useTransform(progress, range, ['#6B7280', '#1F2429']);
   return (
     <>
-      <m.span style={{ color }}>{children}</m.span>{' '}
+      <motion.span style={{ color }}>{children}</motion.span>{' '}
     </>
   );
 }
@@ -80,7 +80,7 @@ function RevealImage({
   }
 
   return (
-    <m.div
+    <motion.div
       ref={ref}
       className={cn('reveal-media relative overflow-hidden rounded-2xl bg-gray-100', className)}
       initial={{ opacity: 0, scale: 1.04 }}
@@ -89,8 +89,8 @@ function RevealImage({
       viewport={{ once: true, margin: '0px 0px -20px 0px' }}
       transition={{ duration: 0.85, delay, ease: EASE_OUT }}
     >
-      <m.div className="reveal-media absolute inset-y-[-12%] inset-x-0" style={{ y }}>
-        <m.div
+      <motion.div className="reveal-media absolute inset-y-[-12%] inset-x-0" style={{ y }}>
+        <motion.div
           className="reveal-media absolute inset-0"
           initial={{ scale: 1.08 }}
           whileInView={{ scale: 1 }}
@@ -98,9 +98,9 @@ function RevealImage({
           transition={{ duration: 1.05, delay, ease: EASE_OUT }}
         >
           <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
-        </m.div>
-      </m.div>
-    </m.div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -166,7 +166,7 @@ export function AboutSection({
             </h2>
 
             {/* Years counter — shrinks slightly on xs */}
-            <m.div
+            <motion.div
               className="mt-8 sm:mt-10 flex items-center gap-4 sm:gap-5"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -179,7 +179,7 @@ export function AboutSection({
               <span className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.18em] text-gray-500 leading-snug max-w-[7rem]">
                 {experienceText}
               </span>
-            </m.div>
+            </motion.div>
           </div>
 
           {/* ── Right: scroll-highlight body + CTA row ── */}
@@ -190,7 +190,7 @@ export function AboutSection({
             />
 
             {/* CTA + phone — stack vertically on xs, row on sm+ */}
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VIEWPORT}
@@ -216,7 +216,7 @@ export function AboutSection({
                   {phone}
                 </span>
               </a>
-            </m.div>
+            </motion.div>
           </div>
         </div>
 
@@ -277,7 +277,7 @@ export function AboutSection({
         {features.length > 0 && (
           <ul className="mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6 lg:gap-12">
             {features.map((f, i) => (
-              <m.li
+              <motion.li
                 key={f.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -304,7 +304,7 @@ export function AboutSection({
                   {f.title}
                 </h3>
                 <p className="text-gray-600 text-[14px] sm:text-[15px] leading-relaxed">{f.description}</p>
-              </m.li>
+              </motion.li>
             ))}
           </ul>
         )}

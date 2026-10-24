@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Heading } from '@/components/atoms/Heading';
 import { Button } from '@/components/atoms/Button';
 import { Badge } from '@/components/atoms/Badge';
@@ -197,7 +197,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* ── Left Content Column (Beast Typography & Trust Highlights) ── */}
-          <m.div
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
@@ -226,7 +226,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
               {intro.highlights.map((item, i) => {
                 const { Icon, accent } = HIGHLIGHT_STYLE[i % HIGHLIGHT_STYLE.length];
                 return (
-                  <m.div
+                  <motion.div
                     key={`${item.title}-${i}`}
                     whileHover={{ y: -4, scale: 1.012 }}
                     transition={{ type: "spring", stiffness: 350, damping: 25 }}
@@ -240,7 +240,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                       <h3 className="text-base font-bold text-[#1F2429] mb-1 transition-colors duration-300 group-hover:text-(--accent)">{item.title}</h3>
                       <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
                     </div>
-                  </m.div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -252,7 +252,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
               </span>
               <div className="flex flex-wrap gap-2.5">
                 {socialLinks.slice(0, 5).map((item) => (
-                  <m.a
+                  <motion.a
                     key={item.platform}
                     href={item.url}
                     target="_blank"
@@ -263,14 +263,14 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                     className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-[#0799B3] hover:text-white text-xs font-bold text-gray-600 shadow-sm hover:shadow-md transition-colors duration-300"
                   >
                     {item.platform}
-                  </m.a>
+                  </motion.a>
                 ))}
               </div>
             </div>
-          </m.div>
+          </motion.div>
 
           {/* ── Right Form Column (Full Interactive Contact Card) ── */}
-          <m.div
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
@@ -290,7 +290,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
               />
               <AnimatePresence mode="wait">
                 {isSubmitted ? (
-                  <m.div
+                  <motion.div
                     key="success"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -316,7 +316,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                     >
                       Send Another Message
                     </Button>
-                  </m.div>
+                  </motion.div>
                 ) : (
                   <form key="form" onSubmit={handleSubmit} className="space-y-4 relative z-10" noValidate>
                     {/* Live Region for Screen Reader Announcements */}
@@ -479,7 +479,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
 
                     {/* reCAPTCHA Widget with Keyboard Navigation, Real Expiration & Loading Animation */}
                     <div className="pt-2">
-                      <m.div
+                      <motion.div
                         role="checkbox"
                         tabIndex={0}
                         aria-checked={isCaptchaChecked}
@@ -506,21 +506,21 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                         <div className="flex items-center gap-3.5">
                           {isCaptchaLoading ? (
                             <div className="w-7 h-7 flex items-center justify-center shrink-0">
-                              <m.div
+                              <motion.div
                                 animate={{ rotate: 360 }}
                                 transition={{ repeat: Infinity, duration: 0.9, ease: "linear" }}
                                 className="w-6 h-6 rounded-full border-[3px] border-[#1A73E8] border-t-transparent"
                               />
                             </div>
                           ) : isCaptchaChecked ? (
-                            <m.div
+                            <motion.div
                               initial={{ scale: 0, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ type: "spring", stiffness: 450, damping: 20 }}
                               className="w-7 h-7 rounded-xs bg-white border border-[#2e7d32] flex items-center justify-center shrink-0 shadow-sm"
                             >
                               <svg className="w-5 h-5 text-[#2e7d32]" viewBox="0 0 24 24" fill="none">
-                                <m.path
+                                <motion.path
                                   initial={{ pathLength: 0 }}
                                   animate={{ pathLength: 1 }}
                                   transition={{ duration: 0.35, ease: "easeOut" }}
@@ -531,7 +531,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                                   strokeLinejoin="round"
                                 />
                               </svg>
-                            </m.div>
+                            </motion.div>
                           ) : (
                             <div
                               className={`w-7 h-7 rounded-xs border-2 bg-white flex items-center justify-center transition-colors shrink-0 ${
@@ -561,11 +561,11 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                           </svg>
                           <span className="text-[10px] text-[#555] font-normal leading-none mt-1" aria-hidden="true">reCAPTCHA</span>
                         </div>
-                      </m.div>
+                      </motion.div>
 
                       {/* Expiration warning message */}
                       {isCaptchaExpired ? (
-                        <m.div
+                        <motion.div
                           id="error-contact-captcha"
                           role="alert"
                           initial={{ opacity: 0, y: -4 }}
@@ -574,9 +574,9 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                         >
                           <AlertCircle className="w-4 h-4 shrink-0 text-[#d93025]" aria-hidden="true" />
                           <span>Verification expired. Check the checkbox again.</span>
-                        </m.div>
+                        </motion.div>
                       ) : errors.captcha ? (
-                        <m.div
+                        <motion.div
                           id="error-contact-captcha"
                           role="alert"
                           initial={{ opacity: 0, y: -4 }}
@@ -585,7 +585,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                         >
                           <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
                           <span>{errors.captcha}</span>
-                        </m.div>
+                        </motion.div>
                       ) : null}
                     </div>
 
@@ -607,7 +607,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                     )}
 
                     {/* Submit Button with Spring Hover & Tap Physics */}
-                    <m.div 
+                    <motion.div 
                       whileHover={{ scale: 1.012 }}
                       whileTap={{ scale: 0.988 }}
                       transition={{ type: "spring", stiffness: 400, damping: 25 }}
@@ -635,13 +635,13 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                       >
                         Send Message
                       </Button>
-                    </m.div>
+                    </motion.div>
 
                   </form>
                 )}
               </AnimatePresence>
             </div>
-          </m.div>
+          </motion.div>
 
         </div>
       </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { trackPointer } from '@/lib/utils';
 import { MapPin, Phone, Mail, MessageCircle, ArrowUpRight } from 'lucide-react';
@@ -30,7 +30,7 @@ function InfoCard({ card }: InfoCardProps) {
   const Icon = card.icon;
 
   return (
-    <m.a
+    <motion.a
       href={card.href}
       target={card.href.startsWith('http') ? "_blank" : undefined}
       rel={card.href.startsWith('http') ? "noopener noreferrer" : undefined}
@@ -60,7 +60,7 @@ function InfoCard({ card }: InfoCardProps) {
       />
 
       <div className="relative z-10">
-        <m.div 
+        <motion.div 
           whileHover={{ rotate: [0, -8, 8, 0], scale: 1.15 }}
           transition={{ duration: 0.4 }}
           className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 shadow-sm group-hover:shadow-lg"
@@ -70,7 +70,7 @@ function InfoCard({ card }: InfoCardProps) {
           }}
         >
           <Icon className="w-7 h-7" aria-hidden="true" />
-        </m.div>
+        </motion.div>
 
         <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 block mb-1">
           {card.subtitle}
@@ -89,7 +89,7 @@ function InfoCard({ card }: InfoCardProps) {
         <span>{card.action}</span>
         <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
       </div>
-    </m.a>
+    </motion.a>
   );
 }
 
@@ -109,7 +109,7 @@ export function ContactInfoCards({ labels }: { labels: ContactCardLabels }) {
       {/* Subtle floating ambient background light */}
 
       <div className="container-site relative z-10">
-        <m.div
+        <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
@@ -119,7 +119,7 @@ export function ContactInfoCards({ labels }: { labels: ContactCardLabels }) {
           {cards.map((card) => (
             <InfoCard key={card.title} card={card} />
           ))}
-        </m.div>
+        </motion.div>
       </div>
     </section>
   );

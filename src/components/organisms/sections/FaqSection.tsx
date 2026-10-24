@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useState } from 'react';
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { CtaLink } from '@/components/atoms/CtaLink';
@@ -45,7 +45,7 @@ export function FaqSection({
               <div id={`${baseId}-title`}>
                 <SectionHeader eyebrow={subTitle} title={heading} description={description} />
               </div>
-              <m.div
+              <motion.div
                 className="mt-8"
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -55,7 +55,7 @@ export function FaqSection({
                 <CtaLink href="/contacts" variant="dark">
                   Contact Us
                 </CtaLink>
-              </m.div>
+              </motion.div>
             </div>
           </div>
 
@@ -65,7 +65,7 @@ export function FaqSection({
               const btnId = `${baseId}-q-${i}`;
               const panelId = `${baseId}-a-${i}`;
               return (
-                <m.li
+                <motion.li
                   key={item.question}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -114,7 +114,7 @@ export function FaqSection({
                       </p>
                     </div>
                   </div>
-                </m.li>
+                </motion.li>
               );
             })}
           </ul>

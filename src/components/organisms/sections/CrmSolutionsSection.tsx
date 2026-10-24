@@ -3,7 +3,7 @@
 import React, { useRef, useSyncExternalStore } from 'react';
 import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import Link from 'next/link';
-import { m, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
@@ -69,7 +69,7 @@ function StackCard({
       className="lg:sticky lg:h-[min(560px,calc(100svh-160px))] flex items-start"
       style={stack ? { top: STICKY_TOP + index * 28 } : undefined}
     >
-      <m.article
+      <motion.article
         style={stack ? { scale, transformOrigin: 'top center' } : undefined}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -120,13 +120,13 @@ function StackCard({
 
         {/* Dimming veil for cards underneath the stack */}
         {stack && (
-          <m.span
+          <motion.span
             aria-hidden="true"
             className="absolute inset-0 bg-[#1F2429] pointer-events-none rounded-2xl"
             style={{ opacity: dim }}
           />
         )}
-      </m.article>
+      </motion.article>
     </div>
   );
 }

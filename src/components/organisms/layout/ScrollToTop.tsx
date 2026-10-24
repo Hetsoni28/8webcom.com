@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { m, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useLenis } from 'lenis/react';
 import { ChevronUp } from 'lucide-react';
 
@@ -28,7 +28,7 @@ export function ScrollToTop() {
   return (
     <AnimatePresence>
       {isVisible && (
-        <m.div
+        <motion.div
           key="stt-wrapper"
           initial={{ opacity: 0, y: 20, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -45,7 +45,7 @@ export function ScrollToTop() {
             aria-hidden="true"
           >
             <circle cx={SIZE / 2} cy={SIZE / 2} r={RADIUS} fill="none" stroke="rgba(7,153,179,0.20)" strokeWidth={STROKE} />
-            <m.circle
+            <motion.circle
               cx={SIZE / 2}
               cy={SIZE / 2}
               r={RADIUS}
@@ -57,7 +57,7 @@ export function ScrollToTop() {
             />
           </svg>
 
-          <m.button
+          <motion.button
             type="button"
             onClick={scrollTop}
             whileHover={{ scale: 1.08 }}
@@ -66,8 +66,8 @@ export function ScrollToTop() {
             className="absolute inset-1.25 rounded-full bg-[#0799B3] flex items-center justify-center cursor-pointer shadow-[0_4px_18px_rgba(7,153,179,0.55)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
           >
             <ChevronUp className="w-5 h-5 text-white" strokeWidth={3} aria-hidden="true" />
-          </m.button>
-        </m.div>
+          </motion.button>
+        </motion.div>
       )}
     </AnimatePresence>
   );

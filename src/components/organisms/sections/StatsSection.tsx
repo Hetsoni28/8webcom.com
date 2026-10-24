@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { m, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Stat } from '@/types';
 import { EASE_OUT } from '@/lib/animations';
 
@@ -21,7 +21,7 @@ function StatItem({ stat, index }: { stat: Stat; index: number }) {
   const accent = ACCENTS[index % ACCENTS.length];
 
   return (
-    <m.div
+    <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -30,7 +30,7 @@ function StatItem({ stat, index }: { stat: Stat; index: number }) {
       className="relative py-8 sm:py-1 border-white/10 border-t first:border-t-0 sm:border-t-0 sm:pl-8 sm:odd:pl-0 sm:even:border-l lg:pl-10 lg:odd:pl-10 lg:first:pl-0 lg:border-l lg:first:border-l-0"
     >
       {/* Rule that draws in above each metric */}
-      <m.span
+      <motion.span
         aria-hidden="true"
         className="block h-0.5 w-10 mb-8 origin-left"
         style={{ backgroundColor: accent }}
@@ -42,7 +42,7 @@ function StatItem({ stat, index }: { stat: Stat; index: number }) {
 
       <div className="flex items-baseline gap-1 mb-3">
         <span className="text-5xl lg:text-[64px] font-extrabold text-white tracking-[-0.03em] leading-none tabular-nums">
-          <m.span>{displayVal}</m.span>
+          <motion.span>{displayVal}</motion.span>
         </span>
         <span className="text-4xl lg:text-5xl font-bold leading-none" style={{ color: accent }}>
           {stat.suffix}
@@ -50,7 +50,7 @@ function StatItem({ stat, index }: { stat: Stat; index: number }) {
       </div>
 
       <p className="text-[15px] font-medium text-gray-400">{stat.label}</p>
-    </m.div>
+    </motion.div>
   );
 }
 

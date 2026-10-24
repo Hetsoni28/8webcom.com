@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   CheckCircle2, 
   FileText, 
@@ -204,7 +204,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
           {/* ── Left Content Column (Exact match to live screenshot) ── */}
-          <m.div 
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -225,10 +225,10 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                 <p className="text-gray-600 text-base md:text-lg leading-relaxed whitespace-pre-line">{block.text}</p>
               </div>
             ))}
-          </m.div>
+          </motion.div>
 
           {/* ── Right Form Column (Exact match to live screenshot) ── */}
-          <m.div 
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
@@ -237,7 +237,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
             <div className="bg-[#f0f7f9] p-6 sm:p-8 lg:p-10 rounded-3xl border border-[#e2eef2] shadow-sm">
               <AnimatePresence mode="wait">
                 {isSubmitted ? (
-                  <m.div
+                  <motion.div
                     key="success"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -263,7 +263,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                     >
                       Submit Another Application
                     </button>
-                  </m.div>
+                  </motion.div>
                 ) : (
                   <form key="form" onSubmit={handleSubmit} className="space-y-4" noValidate>
                     {/* Live Region for Screen Reader Announcements */}
@@ -473,7 +473,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                           {isCaptchaLoading ? (
                             /* Authentic reCAPTCHA blue spinning circle loader */
                             <div className="w-7 h-7 flex items-center justify-center shrink-0">
-                              <m.div
+                              <motion.div
                                 animate={{ rotate: 360 }}
                                 transition={{ repeat: Infinity, duration: 0.9, ease: "linear" }}
                                 className="w-6 h-6 rounded-full border-[3px] border-[#1A73E8] border-t-transparent"
@@ -481,14 +481,14 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                             </div>
                           ) : isCaptchaChecked ? (
                             /* Animated Green Checkmark */
-                            <m.div
+                            <motion.div
                               initial={{ scale: 0, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ type: "spring", stiffness: 450, damping: 20 }}
                               className="w-7 h-7 rounded-[2px] bg-white border border-[#2e7d32] flex items-center justify-center shrink-0 shadow-sm"
                             >
                               <svg className="w-5 h-5 text-[#2e7d32]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <m.path
+                                <motion.path
                                   initial={{ pathLength: 0 }}
                                   animate={{ pathLength: 1 }}
                                   transition={{ duration: 0.35, ease: "easeOut" }}
@@ -499,7 +499,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                                   strokeLinejoin="round"
                                 />
                               </svg>
-                            </m.div>
+                            </motion.div>
                           ) : (
                             /* Default or Expired Unchecked Square */
                             <div 
@@ -534,7 +534,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
 
                       {/* Expiration warning message */}
                       {isCaptchaExpired ? (
-                        <m.div
+                        <motion.div
                           id="error-career-captcha"
                           role="alert"
                           initial={{ opacity: 0, y: -4 }}
@@ -543,9 +543,9 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                         >
                           <AlertCircle className="w-4 h-4 shrink-0 text-[#d93025]" aria-hidden="true" />
                           <span>Verification expired. Check the checkbox again.</span>
-                        </m.div>
+                        </motion.div>
                       ) : errors.captcha ? (
-                        <m.div
+                        <motion.div
                           id="error-career-captcha"
                           role="alert"
                           initial={{ opacity: 0, y: -4 }}
@@ -554,7 +554,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                         >
                           <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
                           <span>{errors.captcha}</span>
-                        </m.div>
+                        </motion.div>
                       ) : null}
                     </div>
 
@@ -605,7 +605,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                 )}
               </AnimatePresence>
             </div>
-          </m.div>
+          </motion.div>
 
         </div>
       </div>

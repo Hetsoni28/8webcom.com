@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
 
@@ -29,7 +29,7 @@ export function ValuesSection({
 
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-8">
           {values.map((v, i) => (
-            <m.li
+            <motion.li
               key={v.title}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -47,7 +47,7 @@ export function ValuesSection({
               </span>
               <h3 className="text-xl font-bold text-[#1F2429] tracking-tight mb-2.5">{v.title}</h3>
               <p className="text-gray-600 text-[15px] leading-relaxed">{v.description}</p>
-            </m.li>
+            </motion.li>
           ))}
         </ul>
       </div>

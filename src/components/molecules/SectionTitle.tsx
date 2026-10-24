@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Badge } from "@/components/atoms/Badge";
 import { Heading } from "@/components/atoms/Heading";
 import { Text } from "@/components/atoms/Text";
@@ -67,7 +67,7 @@ export function SectionTitle({
   }
 
   return (
-    <m.div
+    <motion.div
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
@@ -75,20 +75,20 @@ export function SectionTitle({
       className={cn("flex flex-col gap-5", alignments[align], className)}
     >
       {subTitle && (
-        <m.div variants={staggerItem}>
+        <motion.div variants={staggerItem}>
           <Badge label={subTitle} />
-        </m.div>
+        </motion.div>
       )}
-      <m.div variants={staggerItem}>
+      <motion.div variants={staggerItem}>
         <Heading as="h2" size={size} color={theme === "dark" ? "white" : "default"}>
           {renderHeading()}
         </Heading>
-      </m.div>
+      </motion.div>
       {description && (
-        <m.div variants={staggerItem}>
+        <motion.div variants={staggerItem}>
           <Text color={theme === "dark" ? "white" : "muted"} className={cn("max-w-2xl text-base sm:text-[17px] leading-[1.75]", theme === "dark" ? "text-gray-400" : "text-gray-600")}>{description}</Text>
-        </m.div>
+        </motion.div>
       )}
-    </m.div>
+    </motion.div>
   );
 }

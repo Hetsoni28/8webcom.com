@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { trackPointer } from '@/lib/utils';
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Heading } from '@/components/atoms/Heading';
 import { Badge } from '@/components/atoms/Badge';
 import { Button } from '@/components/atoms/Button';
@@ -47,7 +47,7 @@ const POLICY_TABS = [
 function SectionCard({ section, index }: { section: PolicySection; index: number }) {
   return (
     <div id={`section-${index}`} className="scroll-mt-36">
-    <m.div
+    <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
@@ -82,7 +82,7 @@ function SectionCard({ section, index }: { section: PolicySection; index: number
           {section.content}
         </p>
       </div>
-    </m.div>
+    </motion.div>
     </div>
   );
 }
@@ -102,7 +102,7 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
       <div className="container-site relative z-10">
 
         {/* ── Policy Switcher Navigation Bar ── */}
-        <m.div
+        <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -139,14 +139,14 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
               Print Document
             </button>
           </div>
-        </m.div>
+        </motion.div>
 
         {/* ── Main 2-Column Grid (Sticky Sidebar + Policy Cards) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
           {/* ── Sticky Left Sidebar (TOC & Details) ── */}
           <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
-            <m.div
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
@@ -201,10 +201,10 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
                   </div>
                 </div>
               </div>
-            </m.div>
+            </motion.div>
 
             {/* Quick Contact Card */}
-            <m.div
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -245,14 +245,14 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
                   Contact Us Directly
                 </Button>
               </div>
-            </m.div>
+            </motion.div>
           </div>
 
           {/* ── Right Content Column (Intro + Policy Cards) ── */}
           <div className="lg:col-span-8 space-y-6">
             
             {/* Lead Intro Box */}
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -272,7 +272,7 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
                   </p>
                 </div>
               </div>
-            </m.div>
+            </motion.div>
 
             {/* List of Policy Sections with Spring Stagger and Spotlight */}
             <div className="space-y-6">
@@ -282,7 +282,7 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
             </div>
 
             {/* Bottom Closing Notice */}
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -303,7 +303,7 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
                 <span>Support Center</span>
                 <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
               </Link>
-            </m.div>
+            </motion.div>
 
           </div>
 

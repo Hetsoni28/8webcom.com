@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { m, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 import { NavChild } from '@/types';
@@ -75,7 +75,7 @@ export function NavItem({ label, href, subLinks, active, className }: NavItemPro
       {hasChildren && (
         <AnimatePresence>
           {isOpen && (
-            <m.div 
+            <motion.div 
               role="menu"
               aria-label={`${label} submenu`}
               initial={{ opacity: 0, y: 10 }}
@@ -95,7 +95,7 @@ export function NavItem({ label, href, subLinks, active, className }: NavItemPro
                   <span className="opacity-0 -translate-x-1 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all text-[#0799B3] text-sm font-bold" aria-hidden="true">→</span>
                 </Link>
               ))}
-            </m.div>
+            </motion.div>
           )}
         </AnimatePresence>
       )}

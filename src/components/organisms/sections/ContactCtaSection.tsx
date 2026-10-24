@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Phone, Mail, ArrowUpRight } from 'lucide-react';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
@@ -41,7 +41,7 @@ export function ContactCtaSection({
   return (
     <section className="relative py-24 lg:py-32 bg-[#1F2429] overflow-hidden" id="contact-cta-sec">
       {/* Top rule that draws across on reveal */}
-      <m.span
+      <motion.span
         aria-hidden="true"
         className="absolute top-0 left-0 h-0.5 w-full bg-linear-to-r from-[#0799B3] to-[#F58220] origin-left"
         initial={{ scaleX: 0 }}
@@ -60,7 +60,7 @@ export function ContactCtaSection({
               theme="dark"
               titleClassName="text-[36px] sm:text-[48px] lg:text-[60px] leading-[1.05]"
             />
-            <m.div
+            <motion.div
               className="mt-10"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -70,12 +70,12 @@ export function ContactCtaSection({
               <CtaLink href={ctaHref} size="lg">
                 {ctaLabel}
               </CtaLink>
-            </m.div>
+            </motion.div>
           </div>
 
           <ul className="lg:col-span-5 flex flex-col">
             {channels.map(({ href, label, value, Icon, accent }, i) => (
-              <m.li
+              <motion.li
                 key={href}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +104,7 @@ export function ContactCtaSection({
                     aria-hidden="true"
                   />
                 </a>
-              </m.li>
+              </motion.li>
             ))}
           </ul>
         </div>

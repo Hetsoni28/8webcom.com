@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { EASE_OUT, VIEWPORT, maskChild, maskParent } from '@/lib/animations';
 
@@ -13,7 +13,7 @@ import { EASE_OUT, VIEWPORT, maskChild, maskParent } from '@/lib/animations';
 export function MaskedWords({ text, className }: { text: React.ReactNode; className?: string }) {
   if (typeof text !== 'string') {
     return (
-      <m.span
+      <motion.span
         className={cn('block', className)}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -21,7 +21,7 @@ export function MaskedWords({ text, className }: { text: React.ReactNode; classN
         transition={{ duration: 0.9, ease: EASE_OUT }}
       >
         {text}
-      </m.span>
+      </motion.span>
     );
   }
 
@@ -29,7 +29,7 @@ export function MaskedWords({ text, className }: { text: React.ReactNode; classN
   // overflow-hidden inline-blocks sit on the baseline and inflate every line box.
   const words = text.split(' ');
   return (
-    <m.span
+    <motion.span
       className={cn('flex flex-wrap gap-x-[0.26em]', className)}
       variants={maskParent}
       initial="hidden"
@@ -38,12 +38,12 @@ export function MaskedWords({ text, className }: { text: React.ReactNode; classN
     >
       {words.map((word, i) => (
         <span key={`${word}-${i}`} className="block overflow-hidden pb-[0.08em] mb-[-0.08em]">
-          <m.span className="block will-change-transform" variants={maskChild}>
+          <motion.span className="block will-change-transform" variants={maskChild}>
             {word}
-          </m.span>
+          </motion.span>
         </span>
       ))}
-    </m.span>
+    </motion.span>
   );
 }
 
@@ -58,13 +58,13 @@ export function Eyebrow({
   className?: string;
 }) {
   return (
-    <m.div
+    <motion.div
       className={cn('flex items-center gap-3', align === 'center' && 'justify-center', className)}
       initial="hidden"
       whileInView="visible"
       viewport={VIEWPORT}
     >
-      <m.span
+      <motion.span
         aria-hidden="true"
         className="h-px w-8 bg-[#0799B3] origin-left"
         variants={{
@@ -72,7 +72,7 @@ export function Eyebrow({
           visible: { scaleX: 1, transition: { duration: 0.8, ease: EASE_OUT } },
         }}
       />
-      <m.span
+      <motion.span
         className={cn(
           'text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.2em]',
           'text-[#0799B3]'
@@ -83,9 +83,9 @@ export function Eyebrow({
         }}
       >
         {label}
-      </m.span>
+      </motion.span>
       {align === 'center' && (
-        <m.span
+        <motion.span
           aria-hidden="true"
           className="h-px w-8 bg-[#0799B3] origin-right"
           variants={{
@@ -94,7 +94,7 @@ export function Eyebrow({
           }}
         />
       )}
-    </m.div>
+    </motion.div>
   );
 }
 
@@ -140,7 +140,7 @@ export function SectionHeader({
         <MaskedWords text={title} className={isCenter ? 'justify-center' : undefined} />
       </Tag>
       {description && (
-        <m.p
+        <motion.p
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={VIEWPORT}
@@ -152,7 +152,7 @@ export function SectionHeader({
           )}
         >
           {description}
-        </m.p>
+        </motion.p>
       )}
     </div>
   );
@@ -164,7 +164,7 @@ export function SectionHeader({
   return (
     <div className={cn('flex flex-col md:flex-row md:items-end md:justify-between gap-8', className)}>
       {body}
-      <m.div
+      <motion.div
         className="shrink-0"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -172,7 +172,7 @@ export function SectionHeader({
         transition={{ duration: 0.9, delay: 0.25, ease: EASE_OUT }}
       >
         {aside}
-      </m.div>
+      </motion.div>
     </div>
   );
 }

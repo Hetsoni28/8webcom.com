@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useSyncExternalStore } from 'react';
 import { ReactLenis, useLenis } from 'lenis/react';
-import { LazyMotion, MotionConfig } from 'framer-motion';
+import { MotionConfig } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 // Smooth (Lenis) scrolling only where it helps: a mouse/trackpad on desktop,
@@ -23,10 +23,6 @@ function useSmoothScrollEnabled() {
     () => false // server: plain native scrolling
   );
 }
-
-// Animation features arrive in their own chunk after first paint; components use the light <m.*>.
-// strict: a stray full <motion.*> (which would pull everything back into the main bundle) throws in dev.
-const loadMotionFeatures = () => import('@/lib/motion-features').then((mod) => mod.default);
 
 // ─── Scroll to top on route change (not on first load, so #anchors / reloads keep their position) ──
 function ScrollReset() {
@@ -70,9 +66,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       )}
       <ScrollReset />
       {/* Honour the OS "reduce motion" setting for every Framer animation */}
-      <LazyMotion features={loadMotionFeatures} strict>
-        <MotionConfig reducedMotion="user">{children}</MotionConfig>
-      </LazyMotion>
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </>
   );
 }

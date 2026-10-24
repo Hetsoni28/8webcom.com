@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export interface VisionMissionItem {
   id: string;
@@ -146,7 +146,7 @@ export function VisionMissionSection({ items = ITEMS }: { items?: VisionMissionI
       <div className="container-site">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {items.map((item, idx) => (
-            <m.div
+            <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -169,7 +169,7 @@ export function VisionMissionSection({ items = ITEMS }: { items?: VisionMissionI
               <p className="text-gray-600 text-sm sm:text-[15px] leading-relaxed select-text flex-1">
                 {item.description}
               </p>
-            </m.div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
-import { m, animate, useMotionValue, useReducedMotion, PanInfo } from 'framer-motion';
+import { motion, animate, useMotionValue, useReducedMotion, PanInfo } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
@@ -157,7 +157,7 @@ export function WorkShowcaseSection({
         />
 
         {/* Track viewport — overflow visible on the right so the next card peeks */}
-        <m.div
+        <motion.div
           ref={viewportRef}
           className="reveal-media relative"
           initial={{ opacity: 0, y: 40 }}
@@ -165,7 +165,7 @@ export function WorkShowcaseSection({
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 1.1, ease: EASE_OUT }}
         >
-          <m.ul
+          <motion.ul
             className="flex cursor-grab active:cursor-grabbing touch-pan-y"
             style={{ x, gap: GAP }}
             drag="x"
@@ -223,12 +223,12 @@ export function WorkShowcaseSection({
                 </a>
               </li>
             ))}
-          </m.ul>
-        </m.div>
+          </motion.ul>
+        </motion.div>
 
         {/* Progress rail */}
         <div className="mt-12 h-px w-full bg-gray-200 relative overflow-hidden" aria-hidden="true">
-          <m.span
+          <motion.span
             className="absolute inset-y-0 left-0 w-full bg-[#1F2429] origin-left"
             animate={{ scaleX: progress }}
             transition={{ duration: 0.8, ease: EASE_OUT }}
