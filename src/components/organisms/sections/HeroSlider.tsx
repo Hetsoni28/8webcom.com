@@ -42,6 +42,8 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  // The first slide is painted as-is (it is the page's LCP); intros play from the first slide change on
+  const [intro, setIntro] = useState(false);
   // Images after the first are only mounted once needed — keeps first load light
   const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0, 1]));
   const totalSlides = activeSlides.length;
@@ -50,6 +52,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
     (i: number) => {
       const next = (i + totalSlides) % totalSlides;
       setActiveSlide(next);
+      setIntro(true);
       setLoaded((prev) => {
         const n = (next + 1) % totalSlides;
         if (prev.has(next) && prev.has(n)) return prev;
@@ -172,8 +175,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
           {/* Page H1 (primary keyword). In the same column as the slide text, so
               the two can never overlap on short screens. */}
           <h1
-            className="hero-fade flex items-center gap-2.5 text-white/80 text-[11px] sm:text-[13px] font-semibold uppercase tracking-[0.16em] leading-snug lg:max-w-[calc(100%-22rem)]"
-            style={{ animationDelay: '0.2s' }}
+            className="flex items-center gap-2.5 text-white/80 text-[11px] sm:text-[13px] font-semibold uppercase tracking-[0.16em] leading-snug lg:max-w-[calc(100%-22rem)]"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#F58220] shrink-0" aria-hidden="true" />
             {h1}
@@ -184,7 +186,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
 
           {/* Keyed by slide: remount replays the CSS intro (works before hydration) */}
           <div key={current.id} className="max-w-190 mb-10 lg:mb-14">
-            <div className="hero-fade flex items-center gap-3 mb-6" style={{ animationDelay: '0.05s' }}>
+            <div className={cn(intro && 'hero-fade', 'flex items-center gap-3 mb-6')} style={{ animationDelay: '0.05s' }}>
               <span className="h-px w-10 bg-[#0799B3]" aria-hidden="true" />
               <span className="text-[#0799B3] text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em]">
                 {current.category}
@@ -194,7 +196,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
             <h2 className="flex flex-wrap gap-x-[0.24em] text-[44px] sm:text-6xl lg:text-[84px] xl:text-[96px] font-extrabold text-white tracking-[-0.04em] leading-none mb-7">
               {titleWords.map((word, i) => (
                 <span key={`${word}-${i}`} className="block overflow-hidden pb-[0.08em] mb-[-0.08em]">
-                  <span className="hero-word" style={{ animationDelay: `${0.1 + i * 0.08}s` }}>
+                  <span className={intro ? 'hero-word' : 'inline-block'} style={{ animationDelay: `${0.1 + i * 0.08}s` }}>
                     {word}
                   </span>
                 </span>
@@ -202,13 +204,13 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
             </h2>
 
             <p
-              className="hero-fade text-gray-300 text-base sm:text-lg lg:text-[19px] leading-[1.7] mb-9 max-w-145"
+              className={cn(intro && 'hero-fade', 'text-gray-300 text-base sm:text-lg lg:text-[19px] leading-[1.7] mb-9 max-w-145')}
               style={{ animationDelay: '0.3s' }}
             >
               {current.description}
             </p>
 
-            <div className="hero-fade flex flex-wrap items-center gap-3 sm:gap-4" style={{ animationDelay: '0.42s' }}>
+            <div className={cn(intro && 'hero-fade', 'flex flex-wrap items-center gap-3 sm:gap-4')} style={{ animationDelay: '0.42s' }}>
               <CtaLink href={current.ctaHref || '/contacts'} size="lg">
                 {current.ctaLabel || 'Get Started Now'}
               </CtaLink>
