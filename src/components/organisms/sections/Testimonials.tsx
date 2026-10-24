@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, CheckCircle2, Building2 } from 'lucide-react';
 import { StarRating } from '@/components/atoms/StarRating';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
@@ -88,7 +88,7 @@ export function Testimonials({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch">
           {/* ── Left: scorecard + client list ── */}
-          <motion.div
+          <m.div
             className="lg:col-span-4 flex flex-col gap-5 lg:gap-6"
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -166,10 +166,10 @@ export function Testimonials({
                 })}
               </div>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* ── Right: active review ── */}
-          <motion.div
+          <m.div
             className="lg:col-span-8"
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -207,7 +207,7 @@ export function Testimonials({
 
               <div className="flex-1 flex items-start mb-10">
                 <AnimatePresence mode="wait">
-                  <motion.blockquote
+                  <m.blockquote
                     key={current.id}
                     initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -216,13 +216,13 @@ export function Testimonials({
                     className="text-xl sm:text-2xl lg:text-[26px] font-medium leading-[1.55] tracking-[-0.01em] text-white/95"
                   >
                     &ldquo;{current.review}&rdquo;
-                  </motion.blockquote>
+                  </m.blockquote>
                 </AnimatePresence>
               </div>
 
               <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                 <AnimatePresence mode="wait">
-                  <motion.div
+                  <m.div
                     key={current.id}
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -240,7 +240,7 @@ export function Testimonials({
                         <span>{current.company}</span>
                       </p>
                     </div>
-                  </motion.div>
+                  </m.div>
                 </AnimatePresence>
 
                 <div className="flex items-center gap-5">
@@ -284,7 +284,7 @@ export function Testimonials({
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

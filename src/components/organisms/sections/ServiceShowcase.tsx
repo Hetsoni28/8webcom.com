@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
 import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import { CtaLink } from '@/components/atoms/CtaLink';
 import { CheckCircle2 } from 'lucide-react';
@@ -34,20 +34,20 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
               the curtain is on an INNER layer. A fully clipped element has no
               visible area, so browsers never report it "in view" — that left
               the images stuck hidden on phones. */}
-          <motion.div
+          <m.div
             className="w-full lg:w-1/2 relative aspect-4/3 rounded-2xl overflow-hidden bg-gray-100"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
           >
-            <motion.div
+            <m.div
               className="reveal-media absolute inset-0"
               variants={{
                 hidden: { clipPath: 'inset(100% 0% 0% 0%)' },
                 visible: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.2, ease: EASE_OUT } },
               }}
             >
-            <motion.div style={{ y }} className="reveal-media absolute inset-y-[-10%] inset-x-0">
+            <m.div style={{ y }} className="reveal-media absolute inset-y-[-10%] inset-x-0">
               <ImageWithSkeleton
                 src={service.image}
                 alt={`${service.title} services from 8webcom.com`}
@@ -57,15 +57,15 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
                 loading={index === 0 ? "eager" : undefined}
                 className="object-cover"
               />
-            </motion.div>
-            </motion.div>
+            </m.div>
+            </m.div>
             <span className="absolute top-5 left-5 inline-flex items-center h-9 px-3.5 rounded-full bg-white/95 text-[#1F2429] text-sm font-bold tabular-nums">
               {String(index + 1).padStart(2, '0')}
             </span>
-          </motion.div>
+          </m.div>
 
           {/* Copy */}
-          <motion.div
+          <m.div
             className="w-full lg:w-1/2 min-w-0"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -92,7 +92,7 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
               {buttonLabel}
               <span className="sr-only">: {service.title}</span>
             </CtaLink>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </div>

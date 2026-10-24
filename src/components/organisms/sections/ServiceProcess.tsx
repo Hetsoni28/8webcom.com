@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
 
@@ -26,7 +26,7 @@ export function ServiceProcess({ subTitle, heading = '', description, steps }: S
         <div className="relative">
           {/* Timeline rule (desktop) */}
           <div className="hidden lg:block absolute top-6 left-0 right-0 h-px bg-gray-300/70" aria-hidden="true">
-            <motion.span
+            <m.span
               className="absolute inset-0 bg-[#0799B3] origin-left"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
@@ -37,7 +37,7 @@ export function ServiceProcess({ subTitle, heading = '', description, steps }: S
 
           <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
             {steps.map((step, i) => (
-              <motion.li
+              <m.li
                 key={`${step.title}-${i}`}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ export function ServiceProcess({ subTitle, heading = '', description, steps }: S
                   {step.title}
                 </h3>
                 <p className="mt-3 text-gray-600 text-[15px] leading-relaxed">{step.description}</p>
-              </motion.li>
+              </m.li>
             ))}
           </ol>
         </div>

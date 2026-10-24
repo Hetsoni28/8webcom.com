@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import Link from 'next/link';
 import {
-  motion,
+  m,
   useAnimationFrame,
   useInView,
   useMotionValue,
@@ -80,10 +80,10 @@ export function ServiceMarquee({ items, baseVelocity = -1.6 }: ServiceMarqueePro
 
   return (
     <section ref={ref} aria-label="Our services" className="py-10 sm:py-14 lg:py-16 bg-white overflow-hidden border-b border-gray-100">
-      <motion.ul className="flex w-max items-center will-change-transform" style={{ x }}>
+      <m.ul className="flex w-max items-center will-change-transform" style={{ x }}>
         {row(false)}
         {row(true)}
-      </motion.ul>
+      </m.ul>
     </section>
   );
 }

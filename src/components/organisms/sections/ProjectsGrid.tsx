@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
@@ -60,12 +60,12 @@ export function ProjectsGrid({ projects, subTitle, heading = '', description }: 
           </div>
         )}
 
-        <motion.ul layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+        <m.ul layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
           <AnimatePresence mode="popLayout">
             {visible.map((project, i) => {
               const Wrapper = project.url ? 'a' : 'div';
               return (
-                <motion.li
+                <m.li
                   key={project.id}
                   layout
                   initial={{ opacity: 0, y: 32 }}
@@ -126,11 +126,11 @@ export function ProjectsGrid({ projects, subTitle, heading = '', description }: 
                       )}
                     </div>
                   </Wrapper>
-                </motion.li>
+                </m.li>
               );
             })}
           </AnimatePresence>
-        </motion.ul>
+        </m.ul>
       </div>
     </section>
   );

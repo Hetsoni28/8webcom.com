@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { TechCard } from '@/components/molecules/TechCard';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
@@ -46,7 +46,7 @@ export function TechSlider({
           aria-label={subTitle}
         >
           {platforms.map((platform, idx) => (
-            <motion.li
+            <m.li
               key={`${platform.name}-${idx}`}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +61,7 @@ export function TechSlider({
                 description={platform.description}
                 className="w-full"
               />
-            </motion.li>
+            </m.li>
           ))}
         </ul>
       </div>

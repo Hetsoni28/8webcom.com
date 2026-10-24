@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { MapPin, Navigation } from 'lucide-react';
 
@@ -11,7 +11,7 @@ export function ContactMapSection({ title }: { title: string }) {
   return (
     <section className="pb-24 lg:pb-32 bg-white relative">
       <div className="container-site">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
@@ -32,7 +32,7 @@ export function ContactMapSection({ title }: { title: string }) {
           />
 
           {/* Floating Location Card Overlay with Spring Physics & Radar Ping */}
-          <motion.div 
+          <m.div 
             initial={{ opacity: 0, y: 25, scale: 0.96 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
@@ -64,8 +64,8 @@ export function ContactMapSection({ title }: { title: string }) {
                 Get Directions
               </a>
             </div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </div>
     </section>
   );

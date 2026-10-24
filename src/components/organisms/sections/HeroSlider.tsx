@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
 import { HeroSlide } from '@/types';
 import { cn } from '@/lib/utils';
 import { EASE_OUT } from '@/lib/animations';
@@ -91,7 +91,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
         Slide {activeSlide + 1} of {totalSlides}: {current.title}. {current.description}
       </div>
 
-      <motion.div
+      <m.div
         ref={frameRef}
         style={{ scale: frameScale }}
         tabIndex={-1}
@@ -117,7 +117,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
         }}
       >
         {/* ── Background: all loaded slides stay mounted and crossfade ── */}
-        <motion.div className="absolute inset-0" style={{ y: bgY }}>
+        <m.div className="absolute inset-0" style={{ y: bgY }}>
           {activeSlides.map((slide, i) => {
             if (!loaded.has(i)) return null;
             const isActive = i === activeSlide;
@@ -150,25 +150,25 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
           })}
           <div className="absolute inset-0 bg-linear-to-r from-[#12161C] via-[#12161C]/75 to-[#12161C]/5" />
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-[#12161C] via-[#12161C]/50 to-transparent" />
-        </motion.div>
+        </m.div>
 
         {/* ── Trust metrics card (desktop) ── */}
-        <motion.dl
+        <m.dl
           className="hidden lg:flex absolute top-8 right-8 z-10 flex-col gap-4 rounded-2xl bg-[#12161C]/60 backdrop-blur-md border border-white/10 px-6 py-5"
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8, ease: EASE_OUT }}
         >
-          {trustMetrics.map((m, i) => (
-            <div key={m.label} className={cn('flex items-baseline justify-between gap-8', i > 0 && 'pt-4 border-t border-white/10')}>
-              <dt className="text-white/75 text-[13px] font-medium order-2">{m.label}</dt>
-              <dd className="text-white text-lg font-bold tracking-tight order-1">{m.value}</dd>
+          {trustMetrics.map((metric, i) => (
+            <div key={metric.label} className={cn('flex items-baseline justify-between gap-8', i > 0 && 'pt-4 border-t border-white/10')}>
+              <dt className="text-white/75 text-[13px] font-medium order-2">{metric.label}</dt>
+              <dd className="text-white text-lg font-bold tracking-tight order-1">{metric.value}</dd>
             </div>
           ))}
-        </motion.dl>
+        </m.dl>
 
         {/* ── Content ── */}
-        <motion.div
+        <m.div
           className="relative z-10 w-full flex flex-col px-6 sm:px-10 lg:px-14 pt-6 sm:pt-8 pb-6 sm:pb-8"
           style={{ y: contentY, opacity: contentOpacity }}
         >
@@ -262,8 +262,8 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
               })}
             </div>
           )}
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
     </section>
   );
 }

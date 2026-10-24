@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion, useInView, Variants } from 'framer-motion';
+import { m, useInView, Variants } from 'framer-motion';
 import { fadeUp } from '@/lib/animations';
 
 interface RevealProps {
@@ -51,7 +51,7 @@ export function Reveal({
   }, [variants, delay]);
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       variants={adjustedVariants}
       initial="hidden"
@@ -59,6 +59,6 @@ export function Reveal({
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
