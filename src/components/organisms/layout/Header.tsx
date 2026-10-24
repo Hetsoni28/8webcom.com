@@ -101,7 +101,7 @@ export function Header() {
             {/* Get In Touch Pill Button */}
             <Link
               href={header.ctaHref}
-              className="group hidden xs-390:inline-flex items-center gap-3 bg-[#0799B3] hover:bg-[#068aa1] text-white font-semibold text-[15px] h-12 pl-6 pr-2 rounded-full transition-colors duration-300 shadow-[0_8px_24px_-8px_rgba(7,153,179,0.55)] active:scale-[0.97] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
+              className="group hidden xs-390:inline-flex items-center gap-3 bg-[#078097] hover:bg-[#066F83] text-white font-semibold text-[15px] h-12 pl-6 pr-2 rounded-full transition-colors duration-300 shadow-[0_8px_24px_-8px_rgba(7,153,179,0.55)] active:scale-[0.97] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2"
             >
               <span>{header.ctaLabel}</span>
               <span aria-hidden="true" className="relative w-8 h-8 rounded-full bg-white/15 inline-flex items-center justify-center overflow-hidden">

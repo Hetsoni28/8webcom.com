@@ -173,7 +173,7 @@ export const SERVICE_SCHEMAS: Record<
   'crm-solutions': {
     name: 'Custom CRM Development for Indian Businesses',
     description:
-      'Custom CRM software development for Indian SMEs — lead management, sales pipeline, customer database, WhatsApp & email automation. Built in Ahmedabad, deployed anywhere.',
+      'Custom CRM software for Indian businesses: lead management, sales pipeline, customer database, WhatsApp & email automation. Built in Ahmedabad.',
     serviceType: 'CRM Software Development',
     keywords: [
       'CRM software development India',

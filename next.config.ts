@@ -19,6 +19,8 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
+    // inlineCss was measured and rejected: it embeds the CSS twice (style tag +
+    // RSC payload), growing the gzipped home HTML 47 → 98 KB to save one cached 17 KB file.
   },
   images: {
     formats: ['image/avif', 'image/webp'],

@@ -136,18 +136,19 @@ export function Testimonials({
                         isActive ? 'bg-[#0799B3]/[0.07]' : 'hover:bg-gray-50'
                       )}
                     >
-                      {isActive && (
-                        <motion.span
-                          layoutId="testi-active-bar"
-                          className="absolute left-0 top-3 bottom-3 w-0.75 rounded-full bg-[#0799B3]"
-                          transition={{ duration: 0.5, ease: EASE_OUT }}
-                        />
-                      )}
+                      {/* CSS-only active bar: a layoutId slide forced a layout read on every autoplay tick */}
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          'absolute left-0 top-3 bottom-3 w-0.75 rounded-full bg-[#0799B3] origin-center transition-[transform,opacity] duration-500 ease-out-expo',
+                          isActive ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
+                        )}
+                      />
                       <div className="flex items-center gap-3 min-w-0 pl-1.5">
                         <span
                           className={cn(
                             'w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs shrink-0 transition-colors duration-300',
-                            isActive ? 'bg-[#0799B3] text-white' : 'bg-gray-100 text-[#0799B3]'
+                            isActive ? 'bg-[#078097] text-white' : 'bg-gray-100 text-[#078097]'
                           )}
                         >
                           {item.name.charAt(0)}
@@ -229,7 +230,7 @@ export function Testimonials({
                     transition={{ duration: 0.45, ease: EASE_OUT }}
                     className="flex items-center gap-4"
                   >
-                    <span className="w-14 h-14 rounded-full bg-[#0799B3] text-white font-bold text-lg flex items-center justify-center">
+                    <span className="w-14 h-14 rounded-full bg-[#078097] text-white font-bold text-lg flex items-center justify-center">
                       {initials}
                     </span>
                     <div>

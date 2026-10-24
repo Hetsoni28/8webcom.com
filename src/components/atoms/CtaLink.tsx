@@ -29,9 +29,9 @@ export function CtaLink({
   'aria-label': ariaLabel,
 }: CtaLinkProps) {
   const variants = {
-    primary: 'bg-[#0799B3] text-white hover:bg-[#068aa1] shadow-[0_8px_24px_-8px_rgba(7,153,179,0.55)]',
+    primary: 'bg-[#078097] text-white hover:bg-[#066F83] shadow-[0_8px_24px_-8px_rgba(7,153,179,0.55)]',
     secondary: 'bg-[#F58220] text-white hover:bg-[#e4741a] shadow-[0_8px_24px_-8px_rgba(245,130,32,0.55)]',
-    dark: 'bg-[#1F2429] text-white hover:bg-[#0799B3]',
+    dark: 'bg-[#1F2429] text-white hover:bg-[#078097]',
     outline: 'border border-[#1F2429]/15 text-[#1F2429] hover:border-[#0799B3] hover:text-[#0799B3] bg-white',
     'outline-light': 'border border-white/25 text-white hover:border-white hover:bg-white hover:text-[#1F2429]',
   };

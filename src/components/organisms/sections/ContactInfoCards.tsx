@@ -105,6 +105,7 @@ export function ContactInfoCards({ labels }: { labels: ContactCardLabels }) {
 
   return (
     <section className="py-16 lg:py-20 bg-gray-50/70 relative overflow-hidden">
+      <h2 className="sr-only">Contact details</h2>
       {/* Subtle floating ambient background light */}
 
       <div className="container-site relative z-10">

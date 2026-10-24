@@ -141,3 +141,10 @@ export const techPlatformsQuery = `
 export const clientLogosQuery = `
   *[_type == "clientLogo"] | order(order asc) { name, "src": logo.asset->url, website }
 `;
+
+/** Last-edit time of every published document, for sitemap lastmod. */
+export const sitemapQuery = `
+  *[!(_id in path("drafts.**")) && !(_type match "sanity.*") && !(_type match "system.*")] {
+    _type, "slug": coalesce(slug.current, slug), _updatedAt
+  }
+`;

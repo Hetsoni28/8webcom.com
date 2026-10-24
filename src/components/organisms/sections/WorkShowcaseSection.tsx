@@ -191,7 +191,6 @@ export function WorkShowcaseSection({
                   onClick={(e) => {
                     if (isDragging.current) e.preventDefault();
                   }}
-                  aria-label={`Visit ${item.title} website (opens in new tab)`}
                   className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-4 rounded-2xl"
                 >
                   <div className="relative aspect-4/5 rounded-2xl overflow-hidden bg-[#F1F4F6] border border-gray-200/80">
@@ -210,7 +209,7 @@ export function WorkShowcaseSection({
 
                   <div className="pt-5 flex items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <span className="block text-[12px] font-bold uppercase tracking-[0.16em] text-[#0799B3] mb-1.5">
+                      <span className="block text-[12px] font-bold uppercase tracking-[0.16em] text-[#078097] mb-1.5">
                         {item.category}
                       </span>
                       <h3 className="text-lg sm:text-xl font-bold text-[#1F2429] tracking-tight leading-snug">
@@ -218,7 +217,7 @@ export function WorkShowcaseSection({
                       </h3>
                     </div>
                     <span className="shrink-0 mt-6 text-[13px] font-semibold text-gray-500 transition-colors duration-300 group-hover:text-[#0799B3]">
-                      Visit Website
+                      Visit Website<span className="sr-only"> (opens in new tab)</span>
                     </span>
                   </div>
                 </a>

@@ -125,6 +125,10 @@ export async function getProjects() {
   return getList(Q.projectsQuery, fallback, 'project');
 }
 
+export type SitemapEntry = { _type: string; slug?: string; _updatedAt: string };
+export const getSitemapEntries = () =>
+  sanityFetch<SitemapEntry[]>({ query: Q.sitemapQuery, fallback: [], tags: [SANITY_TAG] });
+
 // ─── SEO helper ──────────────────────────────────────────────────
 const SITE_URL = 'https://www.8webcom.com';
 const DEFAULT_OG = 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png';

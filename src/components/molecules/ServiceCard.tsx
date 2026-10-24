@@ -23,7 +23,6 @@ export function ServiceCard({
   return (
     <Link
       href={href}
-      aria-label={`Service ${number}: ${title}`}
       className={cn(
         "group block h-full rounded-2xl bg-white border border-gray-200/80 p-3 sm:p-4",
         "transition-[border-color,box-shadow,transform] duration-500 ease-out-expo",

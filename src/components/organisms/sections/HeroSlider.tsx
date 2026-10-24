@@ -92,7 +92,7 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
         ref={frameRef}
         style={{ scale: frameScale }}
         tabIndex={-1}
-        className="relative h-[calc(100svh-112px)] sm:h-[calc(100svh-134px)] lg:h-[calc(100svh-146px)] min-h-150 max-h-230 rounded-[20px] sm:rounded-[28px] overflow-hidden bg-[#12161C] outline-none origin-top touch-pan-y"
+        className="relative flex min-h-[max(600px,calc(100svh-112px))] sm:min-h-[max(600px,calc(100svh-134px))] lg:min-h-[min(920px,max(600px,calc(100svh-146px)))] rounded-[20px] sm:rounded-[28px] overflow-hidden bg-[#12161C] outline-none origin-top touch-pan-y"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onFocus={() => setIsPaused(true)}
@@ -149,24 +149,16 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-[#12161C] via-[#12161C]/50 to-transparent" />
         </motion.div>
 
-        {/* ── Page H1: the primary keyword, always in the HTML regardless of slide ── */}
-        <div className="absolute top-6 left-6 sm:top-8 sm:left-10 lg:left-14 right-6 lg:right-auto z-10 hero-fade" style={{ animationDelay: '0.2s' }}>
-          <h1 className="flex items-center gap-2.5 text-white/80 text-[11px] sm:text-[13px] font-semibold uppercase tracking-[0.16em] leading-snug">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#F58220] shrink-0" aria-hidden="true" />
-            {h1}
-          </h1>
-        </div>
-
         {/* ── Trust metrics card (desktop) ── */}
         <motion.dl
-          className="hidden lg:flex absolute top-8 right-8 z-10 flex-col gap-4 rounded-2xl bg-white/[0.07] backdrop-blur-md border border-white/10 px-6 py-5"
+          className="hidden lg:flex absolute top-8 right-8 z-10 flex-col gap-4 rounded-2xl bg-[#12161C]/60 backdrop-blur-md border border-white/10 px-6 py-5"
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8, ease: EASE_OUT }}
         >
           {trustMetrics.map((m, i) => (
             <div key={m.label} className={cn('flex items-baseline justify-between gap-8', i > 0 && 'pt-4 border-t border-white/10')}>
-              <dt className="text-gray-400 text-[13px] font-medium order-2">{m.label}</dt>
+              <dt className="text-white/75 text-[13px] font-medium order-2">{m.label}</dt>
               <dd className="text-white text-lg font-bold tracking-tight order-1">{m.value}</dd>
             </div>
           ))}
@@ -174,9 +166,22 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
 
         {/* ── Content ── */}
         <motion.div
-          className="relative z-10 h-full flex flex-col justify-end px-6 sm:px-10 lg:px-14 pb-6 sm:pb-8"
+          className="relative z-10 w-full flex flex-col px-6 sm:px-10 lg:px-14 pt-6 sm:pt-8 pb-6 sm:pb-8"
           style={{ y: contentY, opacity: contentOpacity }}
         >
+          {/* Page H1 (primary keyword). In the same column as the slide text, so
+              the two can never overlap on short screens. */}
+          <h1
+            className="hero-fade flex items-center gap-2.5 text-white/80 text-[11px] sm:text-[13px] font-semibold uppercase tracking-[0.16em] leading-snug lg:max-w-[calc(100%-22rem)]"
+            style={{ animationDelay: '0.2s' }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F58220] shrink-0" aria-hidden="true" />
+            {h1}
+          </h1>
+
+          {/* Spacer pushes the slide content to the bottom of the frame */}
+          <div className="flex-1 min-h-10" aria-hidden="true" />
+
           {/* Keyed by slide: remount replays the CSS intro (works before hydration) */}
           <div key={current.id} className="max-w-190 mb-10 lg:mb-14">
             <div className="hero-fade flex items-center gap-3 mb-6" style={{ animationDelay: '0.05s' }}>
@@ -224,7 +229,6 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
                     type="button"
                     role="tab"
                     aria-selected={isActive}
-                    aria-label={`Go to slide ${index + 1}: ${slide.title}`}
                     onClick={() => goTo(index)}
                     className="group relative text-left pt-5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded-sm"
                   >

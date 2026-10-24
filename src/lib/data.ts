@@ -230,16 +230,16 @@ export const TESTIMONIALS = [
 
 // â”€â”€â”€ Client Logos (Brand Slider) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export const CLIENT_LOGOS = [
-  { name: "Client 1", src: "https://www.8webcom.com/admin/upload/media/hW6oX9sV.webp" },
-  { name: "Client 2", src: "https://www.8webcom.com/admin/upload/media/OXDNbeHG.webp" },
-  { name: "Client 3", src: "https://www.8webcom.com/admin/upload/media/2RkLHgDX.webp" },
-  { name: "Client 4", src: "https://www.8webcom.com/admin/upload/media/B5xjGC4J.webp" },
-  { name: "Client 5", src: "https://www.8webcom.com/admin/upload/media/uxen5NjG.webp" },
-  { name: "Client 6", src: "https://www.8webcom.com/admin/upload/media/A9lD7RJ3.webp" },
-  { name: "Client 7", src: "https://www.8webcom.com/admin/upload/media/jfHQw54x.webp" },
-  { name: "Client 8", src: "https://www.8webcom.com/admin/upload/media/SKBr2907.webp" },
-  { name: "Client 9", src: "https://www.8webcom.com/admin/upload/media/y0Ewtu9r.webp" },
-  { name: "Client 10", src: "https://www.8webcom.com/admin/upload/media/BRjy8orJ.webp" },
+  { name: "Gujarat State AIDS Control Society", src: "https://www.8webcom.com/admin/upload/media/hW6oX9sV.webp" },
+  { name: "Alpine FIBC Pvt. Ltd.", src: "https://www.8webcom.com/admin/upload/media/OXDNbeHG.webp" },
+  { name: "Shree Arasuri Ambaji Mata Devasthan Trust", src: "https://www.8webcom.com/admin/upload/media/2RkLHgDX.webp" },
+  { name: "Schwitz Biotech", src: "https://www.8webcom.com/admin/upload/media/B5xjGC4J.webp" },
+  { name: "Eternal E Mech Pvt. Ltd.", src: "https://www.8webcom.com/admin/upload/media/uxen5NjG.webp" },
+  { name: "Zivci", src: "https://www.8webcom.com/admin/upload/media/A9lD7RJ3.webp" },
+  { name: "Into the Blue", src: "https://www.8webcom.com/admin/upload/media/jfHQw54x.webp" },
+  { name: "TF Sweet Dream", src: "https://www.8webcom.com/admin/upload/media/SKBr2907.webp" },
+  { name: "Kaizen Electricals Pvt. Ltd.", src: "https://www.8webcom.com/admin/upload/media/y0Ewtu9r.webp" },
+  { name: "Epitude Transformative Consulting", src: "https://www.8webcom.com/admin/upload/media/BRjy8orJ.webp" },
 ];
 
 // â”€â”€â”€ Contact CTA Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

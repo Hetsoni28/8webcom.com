@@ -88,8 +88,9 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
               </ul>
             )}
 
-            <CtaLink href={service.href} aria-label={`Explore ${service.title}`}>
+            <CtaLink href={service.href}>
               {buttonLabel}
+              <span className="sr-only">: {service.title}</span>
             </CtaLink>
           </motion.div>
         </div>

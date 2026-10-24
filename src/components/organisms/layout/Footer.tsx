@@ -49,7 +49,7 @@ export function Footer({ settings }: { settings: ResolvedSiteSettings }) {
   ];
 
   return (
-    <footer className="relative bg-[#0B131D] text-white" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 900px' }}>
+    <footer className="relative bg-[#0B131D] text-white">
       {/* Brand gradient hairline */}
       <span aria-hidden="true" className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-[#0799B3]/60 to-transparent" />
 
@@ -118,7 +118,7 @@ export function Footer({ settings }: { settings: ResolvedSiteSettings }) {
               href={contact.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-8 inline-flex items-center gap-3 h-12 pl-5 pr-2 rounded-full bg-[#25D366] hover:bg-[#20b558] text-white text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B131D]"
+              className="group mt-8 inline-flex items-center gap-3 h-12 pl-5 pr-2 rounded-full bg-[#25D366] hover:bg-[#20b558] text-[#0B131D] text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B131D]"
             >
               <WhatsAppIcon size={16} />
               Chat on WhatsApp

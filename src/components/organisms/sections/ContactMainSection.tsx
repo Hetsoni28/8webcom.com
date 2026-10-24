@@ -237,7 +237,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                       <Icon className="w-6 h-6" aria-hidden="true" />
                     </div>
                     <div>
-                      <h4 className="text-base font-bold text-[#1F2429] mb-1 transition-colors duration-300 group-hover:text-(--accent)">{item.title}</h4>
+                      <h3 className="text-base font-bold text-[#1F2429] mb-1 transition-colors duration-300 group-hover:text-(--accent)">{item.title}</h3>
                       <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
                     </div>
                   </motion.div>

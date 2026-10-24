@@ -172,7 +172,6 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
                     <button
                       key={sec.title}
                       type="button"
-                      aria-label={`Jump to section ${idx + 1}: ${sec.title}`}
                       onClick={() => {
                         const el = document.getElementById(`section-${idx}`);
                         if (el) {
@@ -215,7 +214,7 @@ export function PolicyPageContent({ policy, activeSlug, badgeLabel }: PolicyPage
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-base font-bold text-white mb-1">Questions on this policy?</h4>
+                <h3 className="text-base font-bold text-white mb-1">Questions on this policy?</h3>
                 <p className="text-xs text-gray-300 leading-relaxed font-light">
                   Our compliance and client management team in Ahmedabad is ready to assist you directly.
                 </p>

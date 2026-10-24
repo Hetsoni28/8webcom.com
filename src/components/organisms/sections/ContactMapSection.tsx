@@ -50,7 +50,7 @@ export function ContactMapSection({ title }: { title: string }) {
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <h4 className="text-sm font-bold text-[#1F2429] mb-1">{title}</h4>
+              <h3 className="text-sm font-bold text-[#1F2429] mb-1">{title}</h3>
               <p className="text-gray-500 text-xs leading-relaxed font-medium">
                 {contact.address}
               </p>

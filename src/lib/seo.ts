@@ -15,7 +15,7 @@ export const SEO = {
 
   // ── Home description: 150-160 chars, keyword-rich, action-led ──
   defaultDescription:
-    'Custom web development, web portal, digital marketing & CRM solutions in Ahmedabad. 15+ years experience, 1,500+ projects, 2,000+ clients served across India & worldwide.',
+    'Web development, web portal, digital marketing & CRM company in Ahmedabad. 15+ years, 1,500+ projects and 2,000+ clients worldwide. Get a free quote.',
 
   // OpenGraph defaults
   ogImage: 'https://www.8webcom.com/admin/upload/general/eNLCZOpr.png',
@@ -52,22 +52,22 @@ export const SEO = {
     home: {
       title: 'Web Development Company in Ahmedabad | 8webcom.com',
       description:
-        'Custom web development, web portals, digital marketing & CRM solutions in Ahmedabad. 15+ years experience, 1,500+ delivered projects, 2,000+ clients across India & worldwide. Get a free quote.',
+        'Web development, web portal, digital marketing & CRM company in Ahmedabad. 15+ years, 1,500+ projects and 2,000+ clients worldwide. Get a free quote.',
     },
     about: {
       title: 'About Us — Web Development Agency Since 2011 | 8webcom.com',
       description:
-        '8webcom.com is a web development & digital marketing agency in Ahmedabad, India, founded in 2011. We deliver websites, web portals, SEO & CRM solutions for businesses across India and globally.',
+        '8webcom.com is a web development & digital marketing agency in Ahmedabad, founded in 2011, building websites, web portals, SEO and CRM for businesses worldwide.',
     },
     services: {
       title: 'Web Development, Digital Marketing & CRM Services | 8webcom.com',
       description:
-        'Explore our core digital services in Ahmedabad: custom web development, web portal development, digital marketing (SEO, PPC, SMM) and CRM solutions for businesses across India.',
+        'Web development, web portal development, digital marketing (SEO, PPC, social media) and CRM solutions from our Ahmedabad team for businesses across India.',
     },
     projects: {
       title: 'Our Projects Portfolio — Web & Digital Work | 8webcom.com',
       description:
-        'Browse projects delivered by 8webcom.com — custom websites, web portals, e-commerce stores, and digital marketing campaigns for clients across multiple industries.',
+        'Projects delivered by 8webcom.com: custom websites, web portals, e-commerce stores and digital marketing campaigns for clients across many industries.',
     },
     careers: {
       title: 'Careers — Join Our Web Development Team | 8webcom.com',
@@ -83,12 +83,12 @@ export const SEO = {
     webDevelopment: {
       title: 'Web Development Services in Ahmedabad | 8webcom.com',
       description:
-        'Professional web development services in Ahmedabad — custom websites, e-commerce, CMS integration and responsive design using WordPress, Next.js, React & PHP. Get a free quote.',
+        'Web development services in Ahmedabad: custom websites, e-commerce, CMS and responsive design with WordPress, Next.js, React & PHP. Get a free quote.',
     },
     webPortal: {
       title: 'Web Portal Development Company in India | 8webcom.com',
       description:
-        'Custom web portal development — B2B portals, B2C portals, employee self-service, vendor management and admin dashboards with role-based access and real-time data.',
+        'Custom web portal development: B2B and B2C portals, employee self-service, vendor management and admin dashboards with role-based access and live data.',
     },
     digitalMarketing: {
       title: 'Digital Marketing Services in Ahmedabad | 8webcom.com',
@@ -98,7 +98,7 @@ export const SEO = {
     crmSolutions: {
       title: 'Custom CRM Development for Indian Businesses | 8webcom.com',
       description:
-        'Custom CRM software development for Indian SMEs — lead management, sales pipeline, customer database, WhatsApp & email automation. Built in Ahmedabad, deployed anywhere.',
+        'Custom CRM software for Indian businesses: lead management, sales pipeline, customer database, WhatsApp & email automation. Built in Ahmedabad.',
     },
     // ── Legal ──
     privacyPolicy: {

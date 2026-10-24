@@ -16,7 +16,6 @@ export function TechCard({ name, image, icon, description, className }: TechCard
   return (
     <Link
       href="/services"
-      aria-label={`Explore ${name} solution`}
       className={cn(
         'group flex flex-col h-full rounded-2xl bg-[#F6F8F9] p-2.5 transition-colors duration-500 ease-out-expo hover:bg-[#EEF3F5]',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-2',

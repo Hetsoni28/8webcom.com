@@ -14,10 +14,13 @@ const ICON_BG = ['#0799B3', '#F58220', '#1F2429'];
 
 // ─── Scroll-linked word highlight ─────────────────────────────────────────────
 function Word({ children, progress, range }: { children: string; progress: MotionValue<number>; range: [number, number] }) {
-  const opacity = useTransform(progress, range, [0.16, 1]);
+  // Grey → dark rather than transparent → solid: every word stays readable
+  // (gray-500 is 4.8:1 on white, passes WCAG AA) — the old 0.16 opacity failed
+  // Lighthouse/Google's contrast check.
+  const color = useTransform(progress, range, ['#6B7280', '#1F2429']);
   return (
     <>
-      <motion.span style={{ opacity }}>{children}</motion.span>{' '}
+      <motion.span style={{ color }}>{children}</motion.span>{' '}
     </>
   );
 }
@@ -194,7 +197,12 @@ export function AboutSection({
               transition={{ duration: 0.9, ease: EASE_OUT }}
               className="mt-8 sm:mt-10 flex flex-col xs:flex-row flex-wrap items-start xs:items-center gap-4 xs:gap-x-8 xs:gap-y-5"
             >
-              <CtaLink href={ctaHref}>{ctaLabel}</CtaLink>
+              <CtaLink href={ctaHref}>
+                {ctaLabel}
+                {/^(read|learn|know|view|discover).*more|^more$/i.test(ctaLabel.trim()) && (
+                  <span className="sr-only"> about {heading}</span>
+                )}
+              </CtaLink>
 
               <a
                 href={`tel:${phone.replace(/\s+/g, '')}`}

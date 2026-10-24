@@ -18,7 +18,7 @@ export function ClientLogo({ name, src, className }: ClientLogoProps) {
     >
       <Image
         src={src}
-        alt={name}
+        alt={`${name} logo`}
         fill
         sizes="144px"
         className="object-contain"

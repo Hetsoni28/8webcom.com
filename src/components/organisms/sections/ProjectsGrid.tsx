@@ -81,7 +81,6 @@ export function ProjectsGrid({ projects, subTitle, heading = '', description }: 
                           href: project.url,
                           target: '_blank',
                           rel: 'noopener noreferrer',
-                          'aria-label': `Visit ${project.title} website (opens in new tab)`,
                         }
                       : {})}
                     className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] focus-visible:ring-offset-4 rounded-2xl"

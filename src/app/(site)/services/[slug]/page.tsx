@@ -98,7 +98,7 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
                     <div className="w-12 h-12 rounded-xl bg-[#0799B3] flex items-center justify-center mb-5">
                       <Zap className="w-6 h-6 text-white" aria-hidden="true" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white tracking-tight leading-tight mb-1.5">{detail.imageCardTitle}</h3>
+                    <p className="text-2xl font-bold text-white tracking-tight leading-tight mb-1.5">{detail.imageCardTitle}</p>
                     <p className="text-white/80 font-medium">{detail.imageCardText}</p>
                   </div>
                 )}
@@ -173,7 +173,7 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
                 <Reveal key={`${item.title}-${i}`} variants={staggerItem} margin="0px">
                   <div className={`group bg-white/3 border border-white/10 p-8 lg:p-10 rounded-2xl hover:bg-white/6 ${border} transition-all duration-500 h-full`}>
                     <Icon className={`w-12 h-12 ${color} mb-7 transition-transform duration-500 group-hover:scale-110`} aria-hidden="true" />
-                    <h4 className="text-2xl font-bold tracking-tight mb-3">{item.title}</h4>
+                    <h3 className="text-2xl font-bold tracking-tight mb-3">{item.title}</h3>
                     <p className="text-gray-400 text-[15px] leading-relaxed">{item.description}</p>
                   </div>
                 </Reveal>

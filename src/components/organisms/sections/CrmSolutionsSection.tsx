@@ -88,7 +88,7 @@ function StackCard({
         </div>
 
         <div className="flex flex-col px-2 sm:px-0 sm:pr-4 pt-3 sm:pt-6 pb-3">
-          <span className="text-sm font-semibold tabular-nums text-[#0799B3] mb-5">
+          <span className="text-sm font-semibold tabular-nums text-[#078097] mb-5">
             {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
           </span>
 
@@ -111,10 +111,9 @@ function StackCard({
 
           <Link
             href={item.href}
-            aria-label={`Explore CRM solution: ${item.title}`}
             className="mt-auto inline-flex items-center gap-2 w-fit text-sm font-semibold text-[#1F2429] pb-1 border-b border-[#1F2429]/20 transition-colors duration-300 hover:text-[#0799B3] hover:border-[#0799B3] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded-sm"
           >
-            <span>More CRM</span>
+            <span>More CRM<span className="sr-only">: {item.title}</span></span>
             <ArrowRight className="w-4 h-4 transition-transform duration-500 ease-out-expo group-hover:translate-x-1" aria-hidden="true" />
           </Link>
         </div>
