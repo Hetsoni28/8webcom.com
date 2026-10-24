@@ -133,11 +133,16 @@ export function Footer({ settings }: { settings: ResolvedSiteSettings }) {
       {/* ── Bottom bar ── */}
       <div className="border-t border-white/10">
         <div className="container-site py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-400 text-sm">
-            Copyright &copy; {currentYear}&nbsp;
-            <span className="text-[#F58220] font-semibold">8</span>
-            <span className="text-[#0799B3] font-semibold">webcom.com</span>
-            &nbsp;— All Rights Reserved.
+          <p className="text-white text-sm">
+            Copyright &copy; {currentYear}{' '}
+            {/* Brand wordmark colours exactly as on the original site */}
+            <Link href="/" className="hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0799B3] rounded">
+              <span className="text-[#f58634]">8</span>
+              <span className="text-[#0096b3]">web</span>
+              <span className="text-[#f58634]">com.</span>
+              <span className="text-[#0096b3]">com</span>
+            </Link>
+            {' '}by All Rights Reserved
           </p>
           <ul className="flex items-center gap-6 flex-wrap justify-center text-[13px]">
             {footer.legalLinks.map((l) => (
