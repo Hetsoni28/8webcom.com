@@ -11,6 +11,7 @@ import {
 import { Heading } from '@/components/atoms/Heading';
 import { Button } from '@/components/atoms/Button';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
+import { MAX_RESUME_MB, resumeError } from '@/lib/resume';
 
 export interface CareerBlock {
   heading: string;
@@ -144,9 +145,9 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
       newErrors.position = "Please select a position for application.";
     }
 
-    if (!resumeFile) {
-      newErrors.resume = "Please upload your resume (PDF/DOC).";
-    }
+    // Same rules as the server, checked before uploading so a too-large file fails with a clear message
+    const resumeProblem = resumeError(resumeFile);
+    if (resumeProblem) newErrors.resume = resumeProblem;
 
     if (isCaptchaExpired) {
       newErrors.captcha = "Verification has expired. Check the checkbox again.";
@@ -396,7 +397,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
                     {/* Upload Resume */}
                     <div className="space-y-1.5 pt-1">
                       <label htmlFor="career-resume" className="block text-xs font-semibold text-gray-700">
-                        Upload Resume (PDF, DOC, DOCX) *
+                        Upload Resume (PDF, DOC, DOCX · max {MAX_RESUME_MB} MB) *
                       </label>
                       <div
                         onClick={() => fileInputRef.current?.click()}

@@ -8,7 +8,7 @@ import { SANITY_TAG } from '@/sanity/content';
  * appear on the live site within seconds (instead of waiting for the 60s cache).
  *
  * Sanity → Manage → API → Webhooks → Create:
- *   URL:     https://www.8webcom.com/api/revalidate
+ *   URL:     https://www.8webcom.com/api/revalidate/   (trailing slash: next.config trailingSlash)
  *   Trigger: Create, Update, Delete   ·   Dataset: production
  *   Secret:  same value as SANITY_REVALIDATE_SECRET
  */

@@ -7,13 +7,7 @@ import {
   renderEmail,
   validateContactBasics,
 } from '@/lib/server/forms';
-
-const MAX_RESUME_BYTES = 5 * 1024 * 1024; // 5 MB
-const ALLOWED_RESUME = {
-  pdf: 'application/pdf',
-  doc: 'application/msword',
-  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-} as const;
+import { ALLOWED_RESUME, resumeError, resumeExt, type ResumeExt } from '@/lib/resume';
 
 // POST /api/careers — job application with resume → info@8webcom.com
 export async function POST(request: Request) {
@@ -42,14 +36,8 @@ export async function POST(request: Request) {
   if (!data.position) errors.position = 'Please select a position for application.';
 
   const resume = form.get('resume');
-  const ext = resume instanceof File ? resume.name.split('.').pop()?.toLowerCase() ?? '' : '';
-  if (!(resume instanceof File) || resume.size === 0) {
-    errors.resume = 'Please upload your resume (PDF/DOC).';
-  } else if (!(ext in ALLOWED_RESUME)) {
-    errors.resume = 'Resume must be a PDF, DOC or DOCX file.';
-  } else if (resume.size > MAX_RESUME_BYTES) {
-    errors.resume = 'Resume must be smaller than 5 MB.';
-  }
+  const resumeProblem = resumeError(resume instanceof File ? resume : null);
+  if (resumeProblem) errors.resume = resumeProblem;
 
   if (Object.keys(errors).length) return json({ ok: false, errors }, 400);
 
@@ -59,6 +47,7 @@ export async function POST(request: Request) {
   }
 
   const file = resume as File;
+  const ext = resumeExt(file.name) as ResumeExt;
   // Safe attachment name: "Resume - Name.pdf"
   const safeName = data.name.replace(/[^\w\s.-]/g, '').trim() || 'Applicant';
   const { html, text } = renderEmail('New job application', [
@@ -79,7 +68,7 @@ export async function POST(request: Request) {
         {
           filename: `Resume - ${safeName}.${ext}`,
           content: Buffer.from(await file.arrayBuffer()),
-          contentType: ALLOWED_RESUME[ext as keyof typeof ALLOWED_RESUME],
+          contentType: ALLOWED_RESUME[ext],
         },
       ],
     });
