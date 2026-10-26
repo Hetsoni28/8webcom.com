@@ -8,6 +8,7 @@ import {
   validateContactBasics,
 } from '@/lib/server/forms';
 import { ALLOWED_RESUME, resumeError, resumeExt, type ResumeExt } from '@/lib/resume';
+import { RECAPTCHA_ERROR, verifyRecaptcha } from '@/lib/server/recaptcha';
 
 // POST /api/careers — job application with resume → info@8webcom.com
 export async function POST(request: Request) {
@@ -40,6 +41,11 @@ export async function POST(request: Request) {
   if (resumeProblem) errors.resume = resumeProblem;
 
   if (Object.keys(errors).length) return json({ ok: false, errors }, 400);
+
+  // Checked last: Google tokens are single-use (see contact route)
+  if (!(await verifyRecaptcha(clean(form.get('recaptchaToken'), 4000), clientIp(request)))) {
+    return json({ ok: false, errors: { captcha: RECAPTCHA_ERROR } }, 400);
+  }
 
   if (!isMailConfigured()) {
     console.error('[careers] SMTP is not configured (SMTP_USER / SMTP_PASS missing).');

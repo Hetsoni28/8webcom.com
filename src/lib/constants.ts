@@ -8,7 +8,6 @@ export const CONTACT = {
   email: "info@8webcom.com",
   website: "www.8webcom.com",
   whatsapp: "https://wa.me/919727700459?text=Hello, I visited your website www.8webcom.com and I would like to start a conversation with 8webcom.",
-  recaptchaSiteKey: "6LdfW5QsAAAAALL_Qiwu3zpbYLHVMl7w17Ahqgjd",
 };
 
 // ─── Social Links ─────────────────────────────────────────────

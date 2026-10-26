@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heading } from '@/components/atoms/Heading';
 import { Button } from '@/components/atoms/Button';
 import { Badge } from '@/components/atoms/Badge';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { trackPointer } from '@/lib/utils';
+import { Recaptcha, RECAPTCHA_SITE_KEY, type RecaptchaHandle } from '@/components/molecules/Recaptcha';
 
 import { 
   CheckCircle2, 
@@ -44,63 +45,12 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
     message: '',
   });
 
-  const [isCaptchaChecked, setIsCaptchaChecked] = useState(false);
-  const [isCaptchaLoading, setIsCaptchaLoading] = useState(false);
-  const [isCaptchaExpired, setIsCaptchaExpired] = useState(false);
-  const [captchaSecondsLeft, setCaptchaSecondsLeft] = useState<number | null>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<RecaptchaHandle>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
 
-  const expiryTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (expiryTimerRef.current) clearTimeout(expiryTimerRef.current);
-      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-    };
-  }, []);
-
-  const handleCaptchaClick = () => {
-    if (isCaptchaLoading) return;
-
-    if (expiryTimerRef.current) clearTimeout(expiryTimerRef.current);
-    if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-
-    if (isCaptchaChecked) {
-      setIsCaptchaChecked(false);
-      setCaptchaSecondsLeft(null);
-      return;
-    }
-
-    setIsCaptchaLoading(true);
-    setIsCaptchaExpired(false);
-    setErrors(prev => ({ ...prev, captcha: '' }));
-
-    setTimeout(() => {
-      setIsCaptchaLoading(false);
-      setIsCaptchaChecked(true);
-      setCaptchaSecondsLeft(60);
-
-      countdownIntervalRef.current = setInterval(() => {
-        setCaptchaSecondsLeft(prev => {
-          if (prev === null || prev <= 1) {
-            if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
-            return null;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      expiryTimerRef.current = setTimeout(() => {
-        setIsCaptchaChecked(false);
-        setIsCaptchaExpired(true);
-        setCaptchaSecondsLeft(null);
-      }, 60000);
-    }, 1200);
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -143,10 +93,8 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
       newErrors.message = "Please write a brief description of your project.";
     }
 
-    if (isCaptchaExpired) {
-      newErrors.captcha = "Verification has expired. Check the checkbox again.";
-    } else if (!isCaptchaChecked) {
-      newErrors.captcha = "Please verify that you are not a robot.";
+    if (RECAPTCHA_SITE_KEY && !recaptchaToken) {
+      newErrors.captcha = 'Please tick “I’m not a robot” before sending.';
     }
 
     setErrors(newErrors);
@@ -165,7 +113,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
       const request: RequestInit = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, website: honeypot }),
+        body: JSON.stringify({ ...formData, website: honeypot, recaptchaToken }),
       };
       const res = await fetch('/api/contact/', request);
       const result = await res.json().catch(() => ({}));
@@ -176,14 +124,14 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
           ...fieldErrors,
           submit: result.error ?? (Object.keys(fieldErrors).length ? 'Please correct the highlighted fields.' : SUBMIT_FALLBACK),
         });
+        recaptchaRef.current?.reset(); // the token was used up by this attempt
         return;
       }
 
       setIsSubmitted(true);
-      if (expiryTimerRef.current) clearTimeout(expiryTimerRef.current);
-      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
     } catch {
       setErrors({ submit: SUBMIT_FALLBACK });
+      recaptchaRef.current?.reset();
     } finally {
       setIsSubmitting(false);
     }
@@ -309,9 +257,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                       onClick={() => {
                         setIsSubmitted(false);
                         setFormData({ name: '', mobile: '', email: '', service: '', message: '' });
-                        setIsCaptchaChecked(false);
-                        setIsCaptchaExpired(false);
-                        setCaptchaSecondsLeft(null);
+                        setRecaptchaToken(null);
                       }}
                     >
                       Send Another Message
@@ -477,105 +423,16 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                       )}
                     </div>
 
-                    {/* reCAPTCHA Widget with Keyboard Navigation, Real Expiration & Loading Animation */}
+                    {/* Google reCAPTCHA v2 — verified again on the server */}
                     <div className="pt-2">
-                      <motion.div
-                        role="checkbox"
-                        tabIndex={0}
-                        aria-checked={isCaptchaChecked}
-                        aria-label="I'm not a robot reCAPTCHA verification"
-                        aria-describedby={errors.captcha ? "error-contact-captcha" : undefined}
-                        onClick={handleCaptchaClick}
-                        onKeyDown={(e) => {
-                          if (e.key === ' ' || e.key === 'Enter') {
-                            e.preventDefault();
-                            handleCaptchaClick();
-                          }
+                      <Recaptcha
+                        ref={recaptchaRef}
+                        onChange={(token) => {
+                          setRecaptchaToken(token);
+                          if (token) setErrors((prev) => ({ ...prev, captcha: '' }));
                         }}
-                        whileHover={{ scale: 1.015 }}
-                        whileTap={{ scale: 0.985 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        className={`w-full max-w-76 h-19.5 px-3.5 py-2.5 rounded-sm border shadow-[0_0_4px_rgba(0,0,0,0.06)] flex items-center justify-between select-none cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A73E8] focus-visible:ring-offset-2 ${
-                          isCaptchaExpired
-                            ? 'border-[#d93025] bg-[#fff8f7]'
-                            : errors.captcha
-                            ? 'border-red-400 bg-red-50/20'
-                            : 'border-[#d3d3d3] bg-[#f9f9f9] hover:bg-gray-50'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3.5">
-                          {isCaptchaLoading ? (
-                            <div className="w-7 h-7 flex items-center justify-center shrink-0">
-                              <motion.div
-                                animate={{ rotate: 360 }}
-                                transition={{ repeat: Infinity, duration: 0.9, ease: "linear" }}
-                                className="w-6 h-6 rounded-full border-[3px] border-[#1A73E8] border-t-transparent"
-                              />
-                            </div>
-                          ) : isCaptchaChecked ? (
-                            <motion.div
-                              initial={{ scale: 0, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ type: "spring", stiffness: 450, damping: 20 }}
-                              className="w-7 h-7 rounded-xs bg-white border border-[#2e7d32] flex items-center justify-center shrink-0 shadow-sm"
-                            >
-                              <svg className="w-5 h-5 text-[#2e7d32]" viewBox="0 0 24 24" fill="none">
-                                <motion.path
-                                  initial={{ pathLength: 0 }}
-                                  animate={{ pathLength: 1 }}
-                                  transition={{ duration: 0.35, ease: "easeOut" }}
-                                  d="M4.5 12.5L9.5 17.5L19.5 6.5"
-                                  stroke="#2e7d32"
-                                  strokeWidth="3"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </motion.div>
-                          ) : (
-                            <div
-                              className={`w-7 h-7 rounded-xs border-2 bg-white flex items-center justify-center transition-colors shrink-0 ${
-                                isCaptchaExpired ? 'border-[#d93025]' : 'border-[#c1c1c1] hover:border-gray-500'
-                              }`}
-                            />
-                          )}
-
-                          <div className="flex flex-col">
-                            <span className="text-[14px] text-[#282727] font-normal">
-                              I&apos;m not a robot
-                            </span>
-                            {isCaptchaChecked && captchaSecondsLeft !== null && (
-                              <span className="text-[10px] text-emerald-600 font-medium">
-                                Verified (expires in {captchaSecondsLeft}s)
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col items-center justify-center shrink-0 pr-1">
-                          <svg className="w-8 h-8" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                            <path d="M24 8C32.8366 8 40 15.1634 40 24H35C35 17.9249 30.0751 13 24 13V8Z" fill="#1A73E8"/>
-                            <path d="M24 4L30 10.5L24 17V4Z" fill="#1A73E8"/>
-                            <path d="M24 40C15.1634 40 8 32.8366 8 24H13C13 30.0751 17.9249 35 24 35V40Z" fill="#80868B"/>
-                            <path d="M24 44L18 37.5L24 31V44Z" fill="#80868B"/>
-                          </svg>
-                          <span className="text-[10px] text-[#555] font-normal leading-none mt-1" aria-hidden="true">reCAPTCHA</span>
-                        </div>
-                      </motion.div>
-
-                      {/* Expiration warning message */}
-                      {isCaptchaExpired ? (
-                        <motion.div
-                          id="error-contact-captcha"
-                          role="alert"
-                          initial={{ opacity: 0, y: -4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="flex items-center gap-1.5 text-xs text-[#d93025] font-semibold mt-2 pl-1"
-                        >
-                          <AlertCircle className="w-4 h-4 shrink-0 text-[#d93025]" aria-hidden="true" />
-                          <span>Verification expired. Check the checkbox again.</span>
-                        </motion.div>
-                      ) : errors.captcha ? (
+                      />
+                      {errors.captcha && (
                         <motion.div
                           id="error-contact-captcha"
                           role="alert"
@@ -586,7 +443,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
                           <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
                           <span>{errors.captcha}</span>
                         </motion.div>
-                      ) : null}
+                      )}
                     </div>
 
                     {/* Honeypot: hidden from people, filled in by spam bots */}

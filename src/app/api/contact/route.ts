@@ -9,6 +9,7 @@ import {
   renderEmail,
   validateContactBasics,
 } from '@/lib/server/forms';
+import { RECAPTCHA_ERROR, verifyRecaptcha } from '@/lib/server/recaptcha';
 
 // POST /api/contact — "Need Expert Help?" enquiry form → info@8webcom.com
 export async function POST(request: Request) {
@@ -42,6 +43,11 @@ export async function POST(request: Request) {
   }
   if (!data.message) errors.message = 'Please write a brief description of your project.';
   if (Object.keys(errors).length) return json({ ok: false, errors }, 400);
+
+  // Checked last: Google tokens are single-use, so only spend one on an otherwise valid submission
+  if (!(await verifyRecaptcha(clean(body.recaptchaToken, 4000), clientIp(request)))) {
+    return json({ ok: false, errors: { captcha: RECAPTCHA_ERROR } }, 400);
+  }
 
   if (!isMailConfigured()) {
     console.error('[contact] SMTP is not configured (SMTP_USER / SMTP_PASS missing).');
