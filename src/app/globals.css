@@ -139,10 +139,16 @@ body {
   animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* ─── Media reveals: desktop only ──────────────────────────────
+/* ─── Media reveals ────────────────────────────────────────────
    Image containers that animate in on scroll (fade / curtain / parallax)
-   carry .reveal-media. On phones & tablets they are always fully visible,
-   so an image can never stay hidden if a scroll animation doesn't fire. */
+   carry .reveal-media. They are never transparent: a scroll trigger only
+   fires once the block is a margin's depth into the viewport, so a fade from
+   opacity 0 left a blank band whenever scrolling stopped short of it.
+   Desktop keeps the motion (rise / scale / curtain); phones & tablets show
+   everything fully, with no motion at all. */
+.reveal-media {
+  opacity: 1 !important;
+}
 @media (max-width: 1023.98px) {
   .reveal-media {
     opacity: 1 !important;
