@@ -24,6 +24,10 @@ export const SEO = {
   ogLocale: 'en_IN',
   twitterHandle: '@coo8webcom',
 
+  // Same Google Analytics 4 property and Search Console verification as the previous site
+  googleAnalyticsId: 'G-PXZF61EQSC',
+  googleSiteVerification: 'hKgARP9Hgs1MjYCkQjxco7ns6OVnFgtV9x6AlcWh2iA',
+
   // ── Primary keywords (intent-focused, no "best" / superlative spam) ──
   keywords: [
     // Core service + city (highest commercial intent)

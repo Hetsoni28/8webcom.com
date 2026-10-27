@@ -44,9 +44,10 @@ export const SITE_DEFAULTS = {
     whatsappNumber: '919727700459',
     whatsappMessage: 'Hello, I visited your website www.8webcom.com and I would like to start a conversation with 8webcom.',
     callHours: 'Mon - Sat (9:30 AM - 7:00 PM)',
-    mapsUrl: 'https://maps.google.com/?q=Sun+Gravitas+Satellite+Ahmedabad',
+    // The business listing (8webcom.com, Google Maps CID 17433543008645004759), not just the building
+    mapsUrl: 'https://maps.app.goo.gl/8omnKoanzH6MkE18A',
     mapEmbedUrl:
-      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.0622288075776!2d72.52853607593688!3d23.010899916382196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f509e5b0cb%3A0xe54d6fa7c207908b!2sSun%20Gravitas!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin',
+      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1836.03!2d72.5310597!3d23.0109297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84e6132e6057%3A0xf1f062ffdec7bdd7!2s8webcom.com!5e0!3m2!1sen!2sin!4v1761500000000!5m2!1sen!2sin',
   },
   socialLinks: [
     { platform: 'WhatsApp', url: 'https://wa.me/919727700459', showInSidebar: true },

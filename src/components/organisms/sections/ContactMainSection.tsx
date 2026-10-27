@@ -8,6 +8,7 @@ import { Badge } from '@/components/atoms/Badge';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { trackPointer } from '@/lib/utils';
 import { Recaptcha, RECAPTCHA_SITE_KEY, type RecaptchaHandle } from '@/components/molecules/Recaptcha';
+import { trackEvent } from '@/components/atoms/Analytics';
 
 import { 
   CheckCircle2, 
@@ -129,6 +130,7 @@ export function ContactMainSection({ intro, formServices }: { intro: ContactIntr
       }
 
       setIsSubmitted(true);
+      trackEvent('generate_lead', { form_name: 'contact', service: formData.service });
     } catch {
       setErrors({ submit: SUBMIT_FALLBACK });
       recaptchaRef.current?.reset();

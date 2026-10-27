@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from '@/components/organisms/layout/Header';
 import { Footer } from '@/components/organisms/layout/Footer';
 import { ClientWidgets } from '@/components/organisms/layout/ClientWidgets';
+import { Analytics } from '@/components/atoms/Analytics';
 import type { ResolvedSiteSettings } from '@/sanity/content';
 
 export interface PageShellProps {
@@ -27,6 +28,7 @@ export function PageShell({ settings, children }: PageShellProps) {
       <Footer settings={settings} />
       {/* Client-only floating widgets — ssr: false lives inside ClientWidgets */}
       <ClientWidgets />
+      <Analytics />
     </div>
   );
 }

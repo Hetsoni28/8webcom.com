@@ -13,6 +13,7 @@ import { Button } from '@/components/atoms/Button';
 import { useSiteSettings } from '@/components/providers/SiteSettingsProvider';
 import { MAX_RESUME_MB, resumeError } from '@/lib/resume';
 import { Recaptcha, RECAPTCHA_SITE_KEY, type RecaptchaHandle } from '@/components/molecules/Recaptcha';
+import { trackEvent } from '@/components/atoms/Analytics';
 
 export interface CareerBlock {
   heading: string;
@@ -136,6 +137,7 @@ export function CareersMainSection({ blocks, positions }: CareersMainSectionProp
       }
 
       setIsSubmitted(true);
+      trackEvent('job_application', { form_name: 'careers', position: formData.position });
     } catch {
       setErrors({ submit: SUBMIT_FALLBACK });
       recaptchaRef.current?.reset();

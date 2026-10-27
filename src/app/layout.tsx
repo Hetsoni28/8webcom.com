@@ -71,6 +71,9 @@ export async function generateMetadata(): Promise<Metadata> {
     ],
   },
 
+  // ── Search Console ownership (meta tag kept from the previous site) ──
+  verification: { google: SEO.googleSiteVerification },
+
   // ── Robots ───────────────────────────────────────────────────
   robots: {
     index: true,
@@ -101,8 +104,8 @@ export async function generateMetadata(): Promise<Metadata> {
   other: {
     'geo.region': 'IN-GJ',
     'geo.placename': 'Ahmedabad',
-    'geo.position': '23.011063;72.531111',
-    'ICBM': '23.011063, 72.531111',
+    'geo.position': '23.0109297;72.5310597',
+    'ICBM': '23.0109297, 72.5310597',
     'contact': contact.email,
     'og:email': contact.email,
     'og:phone_number': contact.phone,
@@ -167,8 +170,9 @@ function buildSiteGraph({ contact, socialLinks }: ResolvedSiteSettings) {
       currenciesAccepted: 'INR',
       paymentAccepted: 'Cash, Bank Transfer, UPI, NEFT',
       address: ADDRESS,
-      geo: { '@type': 'GeoCoordinates', latitude: 23.011063, longitude: 72.531111 },
-      hasMap: 'https://maps.google.com/?q=503+Sun+Gravitas+Near+Shyamal+Cross+Rd+Satellite+Ahmedabad+Gujarat+380015',
+      geo: { '@type': 'GeoCoordinates', latitude: 23.0109297, longitude: 72.5310597 },
+      // Google Business Profile listing (CID is stable, unlike share links)
+      hasMap: 'https://maps.google.com/?cid=17433543008645004759',
       openingHoursSpecification: [
         {
           '@type': 'OpeningHoursSpecification',
