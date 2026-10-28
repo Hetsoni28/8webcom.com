@@ -132,7 +132,9 @@ export function HeroSlider({ slides, h1, trustMetrics }: HeroSliderProps) {
               >
                 <div
                   className="absolute inset-0"
-                  style={isActive ? { animation: `heroKenBurns ${SLIDE_DURATION + 1.5}s linear both` } : undefined}
+                  // Zoom starts from the first slide change: a still first screen settles at once
+                  // (an 8.5 s zoom over most of a phone screen kept Speed Index "unfinished")
+                  style={isActive && intro ? { animation: `heroKenBurns ${SLIDE_DURATION + 1.5}s linear both` } : undefined}
                 >
                   <Image
                     src={slide.image}
