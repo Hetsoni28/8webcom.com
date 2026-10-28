@@ -73,9 +73,11 @@ export function Footer({ settings }: { settings: ResolvedSiteSettings }) {
 
           {stats.length > 0 && (
             <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-10 gap-y-8">
+              {/* column-reverse packs from the bottom by default; justify-end keeps every number on
+                  the same top line even when a label wraps (2-up grid on phones) */}
               {stats.map(({ value, suffix, label }) => (
-                <div key={label} className="flex flex-col-reverse">
-                  <dt className="text-gray-400 text-[13px] mt-1.5 leading-snug max-w-36">{label}</dt>
+                <div key={label} className="flex flex-col-reverse justify-end">
+                  <dt className="text-gray-400 text-[13px] mt-1.5 leading-snug">{label}</dt>
                   <dd className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-none">
                     {value}
                     {suffix}
