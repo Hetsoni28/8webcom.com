@@ -209,9 +209,9 @@ export function Testimonials({
                 <AnimatePresence mode="wait">
                   <motion.blockquote
                     key={current.id}
-                    initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.6, ease: EASE_OUT }}
                     className="text-xl sm:text-2xl lg:text-[26px] font-medium leading-[1.55] tracking-[-0.01em] text-white/95"
                   >
