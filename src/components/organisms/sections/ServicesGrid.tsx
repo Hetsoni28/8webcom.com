@@ -11,6 +11,7 @@ import { CtaLink } from '@/components/atoms/CtaLink';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import { Service } from '@/types';
+import { DETAIL_QUALITY } from '@/lib/images';
 
 export interface ServicesGridProps {
   heading: string;
@@ -151,6 +152,7 @@ export function ServicesGrid({
                   alt={`${service.title} by 8webcom.com, Ahmedabad`}
                   fill
                   sizes="(max-width: 1280px) 40vw, 520px"
+                  quality={DETAIL_QUALITY}
                   className="object-cover"
                 />
               </div>

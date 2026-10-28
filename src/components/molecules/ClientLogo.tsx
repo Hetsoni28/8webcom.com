@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { DETAIL_QUALITY } from '@/lib/images';
 
 export interface ClientLogoProps {
   name: string;
@@ -21,6 +22,7 @@ export function ClientLogo({ name, src, className }: ClientLogoProps) {
         alt={`${name} logo`}
         fill
         sizes="144px"
+        quality={DETAIL_QUALITY}
         className="object-contain"
       />
     </div>

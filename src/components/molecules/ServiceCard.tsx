@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ImageWithSkeleton } from "@/components/atoms/ImageWithSkeleton";
+import { DETAIL_QUALITY } from '@/lib/images';
 
 interface ServiceCardProps {
   number: string;
@@ -37,6 +38,7 @@ export function ServiceCard({
           alt={`${title} by 8webcom.com, Ahmedabad`}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
+          quality={DETAIL_QUALITY}
           className="object-cover group-hover:scale-[1.06] duration-1200 ease-out-expo"
         />
         <span className="absolute top-4 left-4 inline-flex items-center h-8 px-3 rounded-full bg-white/95 text-[#1F2429] text-xs font-bold tabular-nums tracking-wider">

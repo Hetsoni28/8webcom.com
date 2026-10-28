@@ -17,6 +17,7 @@ import {
   getServiceSlugs,
   getServicesPageContent,
 } from "@/sanity/content";
+import { DETAIL_QUALITY } from '@/lib/images';
 
 const WHY_ICONS = {
   shield: { Icon: Shield, color: "text-[#0799B3]", border: "hover:border-[#0799B3]/50" },
@@ -88,6 +89,7 @@ export default async function ServiceInnerPage({ params }: { params: Promise<{ s
                   alt={`${service.title} services in Ahmedabad – 8webcom.com`}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={DETAIL_QUALITY}
                   className="object-cover transition-transform duration-1200 ease-out-expo group-hover:scale-[1.04]"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-[#12161C]/90 via-[#12161C]/30 to-transparent" />

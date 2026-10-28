@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { ImageWithSkeleton } from '@/components/atoms/ImageWithSkeleton';
 import { cn } from '@/lib/utils';
+import { DETAIL_QUALITY } from '@/lib/images';
 
 export interface TechCardProps {
   name: string;
@@ -29,6 +30,7 @@ export function TechCard({ name, image, icon, description, className }: TechCard
           alt={`${name} services – 8webcom.com`}
           fill
           sizes="(max-width: 768px) 78vw, (max-width: 1024px) 45vw, 300px"
+          quality={DETAIL_QUALITY}
           className="object-cover group-hover:scale-[1.04] duration-1200 ease-out-expo"
         />
       </div>

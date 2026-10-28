@@ -31,6 +31,8 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ['image/avif', 'image/webp'],
+    // 75 = default; 90 = DETAIL_QUALITY (src/lib/images.ts) for small Sanity originals
+    qualities: [75, 90],
     minimumCacheTTL: 2592000, // 30 days image cache
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

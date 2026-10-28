@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
+import { DETAIL_QUALITY } from '@/lib/images';
 
 export interface CrmCardItem {
   id: string | number;
@@ -83,6 +84,7 @@ function StackCard({
             alt={`${item.title} – CRM services by 8webcom.com`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
+            quality={DETAIL_QUALITY}
             className="object-cover group-hover:scale-[1.06] duration-1200 ease-out-expo"
           />
         </div>

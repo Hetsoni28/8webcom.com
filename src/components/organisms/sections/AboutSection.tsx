@@ -8,6 +8,7 @@ import { AboutImage, AboutFeature as AboutFeatureType } from '@/types';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
 import { Eyebrow, MaskedWords } from '@/components/molecules/SectionHeader';
 import { CtaLink } from '@/components/atoms/CtaLink';
+import { DETAIL_QUALITY } from '@/lib/images';
 import { cn } from '@/lib/utils';
 
 const ICON_BG = ['#0799B3', '#F58220', '#1F2429'];
@@ -74,7 +75,7 @@ function RevealImage({
   if (reduce) {
     return (
       <div ref={ref} className={cn('relative overflow-hidden rounded-2xl bg-gray-100', className)}>
-        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
+        <Image src={src} alt={alt} fill sizes={sizes} quality={DETAIL_QUALITY} className="object-cover" />
       </div>
     );
   }
@@ -97,7 +98,7 @@ function RevealImage({
           viewport={{ once: true, margin: '0px 0px -20px 0px' }}
           transition={{ duration: 1.05, delay, ease: EASE_OUT }}
         >
-          <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
+          <Image src={src} alt={alt} fill sizes={sizes} quality={DETAIL_QUALITY} className="object-cover" />
         </motion.div>
       </motion.div>
     </motion.div>

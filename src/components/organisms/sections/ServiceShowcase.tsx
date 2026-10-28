@@ -8,6 +8,7 @@ import { CheckCircle2 } from 'lucide-react';
 import { EASE_OUT, VIEWPORT } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import { Service } from '@/types';
+import { DETAIL_QUALITY } from '@/lib/images';
 
 interface ServiceShowcaseProps {
   service: Service;
@@ -53,6 +54,7 @@ export function ServiceShowcase({ service, index, highlights, buttonLabel }: Ser
                 alt={`${service.title} services from 8webcom.com`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={DETAIL_QUALITY}
                 // First block is the largest image on screen (LCP): load it immediately
                 loading={index === 0 ? "eager" : undefined}
                 className="object-cover"

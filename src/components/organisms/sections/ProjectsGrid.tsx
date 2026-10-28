@@ -8,6 +8,7 @@ import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import { Project } from '@/types';
+import { DETAIL_QUALITY } from '@/lib/images';
 
 interface ProjectsGridProps {
   projects: Project[];
@@ -91,6 +92,7 @@ export function ProjectsGrid({ projects, subTitle, heading = '', description }: 
                         alt={`${project.title} website designed and developed by 8webcom.com`}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        quality={DETAIL_QUALITY}
                         className="object-cover object-top transition-[object-position] duration-3500 ease-in-out group-hover:object-bottom"
                       />
                       {project.url && (

@@ -6,6 +6,7 @@ import { motion, animate, useMotionValue, useReducedMotion, PanInfo } from 'fram
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { SectionHeader } from '@/components/molecules/SectionHeader';
 import { EASE_OUT } from '@/lib/animations';
+import { DETAIL_QUALITY } from '@/lib/images';
 
 export interface CaseStudyItem {
   id: string | number;
@@ -200,6 +201,7 @@ export function WorkShowcaseSection({
                       fill
                       draggable={false}
                       sizes="(max-width: 640px) 78vw, 392px"
+                      quality={DETAIL_QUALITY}
                       className="object-cover object-top transition-[object-position,transform] duration-3500 ease-in-out group-hover:object-bottom"
                     />
                     <span className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white text-[#1F2429] flex items-center justify-center shadow-md opacity-0 translate-y-2 transition-[opacity,transform] duration-500 ease-out-expo group-hover:opacity-100 group-hover:translate-y-0">
