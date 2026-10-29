@@ -158,11 +158,13 @@ export function AboutSection({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16">
 
           {/* ── Left: eyebrow + giant heading + years counter ── */}
-          <div className="lg:col-span-5 flex flex-col">
+          <div className="lg:col-span-5 flex flex-col @container">
             <Eyebrow label={subTitle} />
 
-            {/* Fluid heading: 40 px on xs → 72 px sm → 84 px lg → 100 px xl */}
-            <h2 className="mt-4 sm:mt-5 font-extrabold text-[#1F2429] tracking-[-0.04em] leading-[0.95] text-[40px] xs:text-[48px] sm:text-[64px] md:text-[72px] lg:text-[84px] xl:text-[100px] break-words">
+            {/* Sized to the column (cqw), so "8WEBCOM.COM" — one long word — stays on one line at
+                every width instead of being split mid-word: ~96 % of the column on desktop, ~82 %
+                below lg so it clears the floating social bar on the right edge; capped at 100 px */}
+            <h2 className="mt-4 sm:mt-5 font-extrabold text-[#1F2429] tracking-[-0.04em] leading-[0.95] text-[length:clamp(28px,10.2cqw,100px)] lg:text-[length:clamp(28px,11.9cqw,100px)] break-words">
               <MaskedWords text={heading} />
             </h2>
 
